@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <?php
-    require ("../utility/Functions.php");
-    require ("../utility/connect.php");
-    sec_session_start();
-    if(isset($_POST["user"]))
-    {
-        $user = $_POST["user"];
-        $pwd = $_POST["pwd"];
-        login($user,$pwd,$mysqli);
-    }
+require("../utility/Functions.php");
+require("../utility/connect.php");
+sec_session_start();
+if (isset($_POST["user"])) {
+    $user = $_POST["user"];
+    $pwd = $_POST["pwd"];
+    login($user, $pwd, $mysqli);
+}
 ?>
+
 <head>
     <meta charset="utf-8" />
     <title>ComVid</title>
@@ -19,16 +19,20 @@
 </head>
 
 <body onscroll="scrollMenu()">
-<?php
-    if(isset($_COOKIE["user"]))
-    {
+    <?php
+    if (isset($_COOKIE["user"])) {
         $user = $_COOKIE["user"];
-        Login($user[0],$user[1],$mysqli);
+        Login($user[0], $user[1], $mysqli);
     }
     ?>
     <div id="head">
         <div class="row1">
             <img src="../img/logo.jfif">
+            <form onsubmit="event.preventDefault();" role="search">
+                <label for="search">Search for stuff</label>
+                <input id="search" type="search" placeholder="Search..." autofocus required />
+                <button class="search" type="submit">Go</button>
+            </form>
             <div class="topbtns">
                 <a class="btn" href="?page=prenota.php">Prenota i Biglietti</a>
                 <a class="btn" href="Login.php">Login/Account</a>
@@ -50,24 +54,23 @@
         </div>
     </div>
 
-        <?php 
-            if(isset($_GET["page"])){
-                $page = $_GET["page"];
-                switch($page) {
-                    case "filmpage":
-                        include ("includes/film_page.php"); //film singolo
-                        break;
-                    case "prenota":
-                        include ("includes/prenota.php"); //elenco dei film al cinema
-                        break;
-                }
-            }else if(login_check($mysqli)) {
-                include ("includes/elenchi_film.php"); //film in streaming disponibili
-            }
-            else {
-                include ("includes/base.php"); //pagina benvenuto
-            }
-        ?>
+    <?php
+    if (isset($_GET["page"])) {
+        $page = $_GET["page"];
+        switch ($page) {
+            case "filmpage":
+                include("includes/film_page.php"); //film singolo
+                break;
+            case "prenota":
+                include("includes/prenota.php"); //elenco dei film al cinema
+                break;
+        }
+    } else if (login_check($mysqli)) {
+        include("includes/elenchi_film.php"); //film in streaming disponibili
+    } else {
+        include("includes/base.php"); //pagina benvenuto
+    }
+    ?>
 
 </body>
 
