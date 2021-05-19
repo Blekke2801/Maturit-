@@ -1,13 +1,3 @@
-function scrollMenu() {
-    var y = 141;
-    var yb = window.scrollY;
-    if (yb > y) {
-        document.getElementById("head").style.position = "fixed";
-    } else {
-        document.getElementById("head").style.position = "relative";
-    }
-}
-
 function carouselPlus() {
     var posizione = document.getElementById("carousel");
     if (posizione == 5)
@@ -23,4 +13,9 @@ function carouselMinus(a) {
         posizione = 5;
     else
         posizione--;
+}
+
+function ricerca() {
+    var ricerca = document.getElementById("search").value;
+    location.href = "Home.php?page=cerca&ricerca=" + ricerca;
 }

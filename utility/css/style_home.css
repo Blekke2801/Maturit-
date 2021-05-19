@@ -1,229 +1,208 @@
-                body {
-                    margin: 0;
-                    width: 100%;
-                    background-color: black;
-                }
-                
-                #head {
-                    width: 100%;
-                    position: relative;
-                    background: black;
-                    top: 0;
-                }
-                
-                .row1 {
-                    display: flex;
-                    padding: 5px;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    align-content: flex-end;
-                }
-                
-                form {
-                    position: relative;
-                    width: 30rem;
-                    background: var(--color-brand);
-                    border-radius: var(--rad);
-                }
-                
-                input,
-                button {
-                    height: var(--height);
-                    font-family: var(--font-fam);
-                    border: 0;
-                    color: var(--color-dark);
-                    font-size: 1.8rem;
-                }
-                
-                input[type="search"] {
-                    outline: 0;
-                    /*  <-- shold probably remove this for better accessibility,
-        adding for demo aesthetics for now.*/
-                    width: 100%;
-                    background: var(--color-light);
-                    padding: 0 1.6rem;
-                    border-radius: var(--rad);
-                    appearance: none;
-                    /*for iOS input[type="search"] roundedness issue. border-radius alone doesn't work*/
-                    transition: all var(--dur) var(--bez);
-                    transition-property: width, border-radius;
-                    color: white;
-                    z-index: 1;
-                    position: relative;
-                }
-                
-                button.search {
-                    display: none;
-                    /* prevent being able to tab to it*/
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    width: var(--btn-width);
-                    font-weight: bold;
-                    background: var(--color-brand);
-                    border-radius: 0 var(--rad) var(--rad) 0;
-                }
-                
-                input:not(:placeholder-shown) {
-                    border-radius: var(--rad) 0 0 var(--rad);
-                    width: calc(100% - var(--btn-width));
-                }
-                
-                label {
-                    position: absolute;
-                    clip: rect(1px, 1px, 1px, 1px);
-                    padding: 0;
-                    border: 0;
-                    height: 1px;
-                    width: 1px;
-                    overflow: hidden;
-                }
-                
-                .topbtns {
-                    display: flex;
-                    justify-content: space-between;
-                }
-                
-                .btn {
-                    display: flex;
-                    text-decoration: none;
-                    background-color: #e60000;
-                    width: fit-content;
-                    height: fit-content;
-                    align-self: flex-end;
-                    padding: 4px;
-                    border-radius: 4px;
-                    color: black;
-                    cursor: pointer;
-                }
-                
-                .ticket {
-                    float: right;
-                }
-                
-                .row2 {
-                    background: #e60000;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-around;
-                }
-                
-                .dropdown {
-                    position: relative;
-                    display: inline-block;
-                }
-                /* Dropdown Content (Hidden by Default) */
-                
-                .dropdown-content {
-                    background-color: #ffffff;
-                    display: none;
-                    position: absolute;
-                    min-width: 160px;
-                    z-index: 1;
-                }
-                /* Links inside the dropdown */
-                
-                .dropdown-content a {
-                    color: black;
-                    padding: 12px 16px;
-                    text-decoration: none;
-                    display: block;
-                }
-                /* Change color of dropdown links on hover */
-                
-                .dropdown-content a:hover {
-                    background-color: #f1f1f1
-                }
-                
-                .dropdown:hover .dropdown-content {
-                    display: block;
-                }
-                /*pagina locandina film*/
-                
-                .locandina {}
-                
-                .trama {}
-                
-                .info {}
-                /*pagina home no log*/
-                
-                .main {
-                    height: 600px;
-                    margin: 0;
-                    display: grid;
-                    grid-template-rows: 500px 100px;
-                    grid-template-columns: 1fr 30px 30px 30px 30px 30px 1fr;
-                    align-items: center;
-                    justify-items: center;
-                    display: flex;
-                    flex-direction: column;
-                    width: auto;
-                    height: auto;
-                    background: url("../../img/background_base.jpg");
-                    justify-content: center;
-                    background-position: center;
-                }
-                
-                .regLog {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-evenly;
-                }
-                
-                .carousel {
-                    position: relative;
-                    top: -75px;
-                }
-                
-                .horizontal {
-                    width: 300px;
-                    height: auto;
-                }
-                
-                main#carousel {
-                    grid-row: 1 / 2;
-                    grid-column: 1 / 8;
-                    width: 100vw;
-                    height: 500px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    overflow: hidden;
-                    transform-style: preserve-3d;
-                    perspective: 500px;
-                    --items: 5;
-                    --middle: 2;
-                    --position: 3;
-                    pointer-events: none;
-                }
-                
-                div.item {
-                    position: absolute;
-                    width: 300px;
-                    height: 178px;
-                    --r: calc(var(--position) - var(--offset));
-                    --abs: max(calc(var(--r) * -1), var(--r));
-                    transition: all 0.25s linear;
-                    transform: rotateY(calc(-10deg * var(--r))) translateX(calc(-300px * var(--r)));
-                    z-index: calc((var(--position) - var(--abs)));
-                }
-                
-                div.item:nth-of-type(1) {
-                    --offset: 1;
-                }
-                
-                div.item:nth-of-type(2) {
-                    --offset: 2;
-                }
-                
-                div.item:nth-of-type(3) {
-                    --offset: 3;
-                }
-                
-                div.item:nth-of-type(4) {
-                    --offset: 4;
-                }
-                
-                div.item:nth-of-type(5) {
-                    --offset: 5;
-                }
+html,
+body {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+nav {
+    position: sticky;
+    top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    background-color: black;
+}
+
+.searchbar {
+    display: flex;
+    justify-content: center;
+    flex: 2;
+}
+
+.searchbar input {
+    width: 40%;
+    height: 100%;
+    border: 1px solid;
+    outline: none;
+    background-color: black;
+    padding: 4px;
+    font-size: 20px;
+    color: white;
+}
+
+.searchbar label {
+    font-size: 20px;
+    height: 100%;
+    text-decoration: none;
+}
+
+button {
+    margin: 1px;
+    border: 1px solid;
+    outline: none;
+}
+
+.subnav {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 103px;
+    background-color: #267347;
+    justify-content: space-around;
+    padding: 2px;
+}
+
+.subnav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 700px) {
+    .subnav {
+        flex-direction: column;
+    }
+}
+
+
+/* Dropdown Content (Hidden by Default) */
+
+.dropdown-content {
+    background-color: #ffffff;
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
+
+
+/* Links inside the dropdown */
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+
+/* Change color of dropdown links on hover */
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.btn {
+    display: flex;
+    text-decoration: none;
+    background-color: #267347;
+    width: fit-content;
+    height: fit-content;
+    align-self: flex-end;
+    padding: 4px;
+    border-radius: 4px;
+    color: black;
+    cursor: pointer;
+    margin: 0 5px;
+    outline: none;
+}
+
+
+/*pagina locandina film*/
+
+.locandina {}
+
+.trama {}
+
+.info {}
+
+
+/*pagina home no log*/
+
+.main {
+    height: 600px;
+    margin: 0;
+    display: grid;
+    grid-template-rows: 500px 100px;
+    grid-template-columns: 1fr 30px 30px 30px 30px 30px 1fr;
+    align-items: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: auto;
+    background: url("../../img/background_base.jpg");
+    justify-content: center;
+    background-position: center;
+}
+
+.regLog {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.carousel {
+    position: relative;
+    height: 400px;
+}
+
+.horizontal {
+    width: 300px;
+    height: auto;
+}
+
+#carousel {
+    grid-row: 1 / 2;
+    grid-column: 1 / 8;
+    width: 100vw;
+    height: 325px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    perspective: 500px;
+    --items: 5;
+    --middle: 2;
+    --position: 3;
+    pointer-events: none;
+}
+
+div.item {
+    position: absolute;
+    width: 300px;
+    height: 178px;
+    --r: calc(var(--position) - var(--offset));
+    --abs: max(calc(var(--r) * -1), var(--r));
+    transition: all 0.25s linear;
+    transform: rotateY(calc(-10deg * var(--r))) translateX(calc(-300px * var(--r)));
+    z-index: calc((var(--position) - var(--abs)));
+}
+
+div.item:nth-of-type(1) {
+    --offset: 1;
+}
+
+div.item:nth-of-type(2) {
+    --offset: 2;
+}
+
+div.item:nth-of-type(3) {
+    --offset: 3;
+}
+
+div.item:nth-of-type(4) {
+    --offset: 4;
+}
+
+div.item:nth-of-type(5) {
+    --offset: 5;
+}
