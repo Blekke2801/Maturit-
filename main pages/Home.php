@@ -28,7 +28,7 @@ if (isset($_POST["user"])) {
     <div id="head">
         <div class="row1">
             <img src="../img/logo.jfif">
-            <form onsubmit="event.preventDefault();" role="search">
+            <form action="elenchi_film.php" role="search">
                 <label for="search">Search for stuff</label>
                 <input id="search" type="search" placeholder="Search..." autofocus required />
                 <button class="search" type="submit">Go</button>
