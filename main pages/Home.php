@@ -15,7 +15,7 @@ if (isset($_POST["user"])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ComVid</title>
-    <script src="../js/featuresHome.js"></script>
+    <script src="../js/features.js"></script>
     <link href="../utility/css/style_home.css" rel="stylesheet">
     <link rel="icon" href="../img/favicon.ico" />
 </head>
