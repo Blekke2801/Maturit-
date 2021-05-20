@@ -18,7 +18,6 @@ if (isset($_POST["user"])) {
     <title>ComVid</title>
     <script src="../js/featuresHome.js"></script>
     <link href="../utility/css/style_home.css" rel="stylesheet">
-    <link rel="stylesheet" href="../utility/css/search_bar.css">
 </head>
 
 <body>

@@ -18,6 +18,9 @@ function sec_session_start()
     session_start(); // Avvia la sessione php.
     session_regenerate_id(); // Rigenera la sessione e cancella quella creata in precedenza.
 }
+function register($nome,$cognome,$email, $password,$birth,$tariffa, $mysqli){
+    
+}
 function login($email, $password, $mysqli)
 {
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
