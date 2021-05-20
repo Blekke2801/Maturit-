@@ -8,6 +8,7 @@
     <script src="../js/controls.js"></script>
     <script src="../js/sha512.js"></script>
     <script src="../js/features.js"></script>
+    <link rel="icon" href="../img/favicon.ico" />
     <link rel="stylesheet" href="../utility/css/register.css">
     <title>ComVid</title>
 </head>

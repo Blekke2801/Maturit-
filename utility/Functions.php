@@ -44,7 +44,7 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
     $reg->close();
     $mysqli->close();
 }
-function login($email, $password, $mysqli)
+function login($email, $password)
 {
     $mysqli = connect();
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
@@ -94,8 +94,9 @@ function login($email, $password, $mysqli)
         return false;
     }
 }
-function LoginCookie($mysqli)
+function LoginCookie()
 {
+    $mysqli = connect();
     if (isset($_COOKIE["user"])) {
         $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
         $_SESSION['username'] = $_COOKIE["user"][0];
@@ -126,8 +127,9 @@ function logout()
     header('Location: ./');
 }
 //Crea la funzione 'login_check':
-function login_check($mysqli)
+function login_check()
 {
+    $mysqli = connect();
     // Verifica che tutte le variabili di sessione siano impostate correttamente
     if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) {
         $user_id = $_SESSION['user_id'];
@@ -196,9 +198,9 @@ function searchFilm($Titolo)
     $mysqli = connect();
     $AllFilms = array();
     if (!isset($_GET["page"])) {
-        $AllFilms = take_film_prenotabili($mysqli);
+        $AllFilms = take_film_prenotabili();
     } else if ($_GET["page"] == "prenota") {
-        $AllFilms = take_film_stream($mysqli);
+        $AllFilms = take_film_stream();
     } else {
         $mysqli->close();
         return false;

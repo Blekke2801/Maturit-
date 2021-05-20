@@ -4,7 +4,7 @@ sec_session_start();
 $register = false;
 if (isset($_POST["register"])) {
 	$register = true;
-	register($_POST["nome"],$_POST["cognome"],$_POST["mail"],$_POST["pwd"],$_POST["birth"],$_POST["tariffa"],$mysqli);
+	register($_POST["nome"],$_POST["cognome"],$_POST["mail"],$_POST["pwd"],$_POST["birth"],$_POST["tariffa"]);
 }
 ?>
 <!DOCTYPE html>
@@ -16,6 +16,7 @@ if (isset($_POST["register"])) {
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="../js/controls.js"></script>
+	<link rel="icon" href="../img/favicon.ico" />
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
 

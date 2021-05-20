@@ -5,11 +5,11 @@ if (strpos($url, 'Home.php') === false) {
 
     require "../../utility/connect.php";
     require "../../utility/Functions.php";
-    if (login_check($mysqli)) {
+    if (login_check()) {
         logout();
     }
     header("Location:../Home.php");
-}
+}else {
 ?>
 <div class="main">
     <h1 style="color:#fff">Benvenuto nel nostro sito!</h1>
@@ -21,7 +21,7 @@ if (strpos($url, 'Home.php') === false) {
     <div class="carousel">
         <main id="carousel">
             <?php
-            $allFilms = take_film_stream($mysqli);
+            $allFilms = take_film_stream();
 
             for ($i = 0; $i < 6; $i++) {
                 $randIndex = rand(0, sizeof($allFilms) - 1);
@@ -37,3 +37,4 @@ if (strpos($url, 'Home.php') === false) {
 </div>
 </div>
 </div>
+<?php } ?>

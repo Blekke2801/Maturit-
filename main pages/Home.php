@@ -6,7 +6,7 @@ sec_session_start();
 if (isset($_POST["user"])) {
     $user = $_POST["user"];
     $pwd = $_POST["pwd"];
-    login($user, $pwd, $mysqli);
+    login($user, $pwd);
 }
 ?>
 
@@ -17,12 +17,13 @@ if (isset($_POST["user"])) {
     <title>ComVid</title>
     <script src="../js/featuresHome.js"></script>
     <link href="../utility/css/style_home.css" rel="stylesheet">
+    <link rel="icon" href="../img/favicon.ico" />
 </head>
 
 <body>
     <?php
     if (isset($_COOKIE["user"])) {
-        LoginCookie($mysqli);
+        LoginCookie();
     }
     ?>
     <nav>
@@ -54,7 +55,7 @@ if (isset($_POST["user"])) {
                 include("includes/prenota.php"); //elenco dei film al cinema
                 break;
             case "lista":
-                if (login_check($mysqli)) {
+                if (login_check()) {
                     include("includes/elenchi_film.php"); //elenco dei film al cinema
                 } else {
                     include("includes/base.php");
@@ -70,7 +71,7 @@ if (isset($_POST["user"])) {
                 Header("Refresh: 0 ; url = Home.php");
                 break;
         }
-    } else if (login_check($mysqli)) {
+    } else if (login_check()) {
         include("includes/elenchi_film.php"); //film in streaming disponibili
     } else {
         include("includes/base.php"); //pagina benvenuto
