@@ -2,7 +2,6 @@
 <html>
 <?php
 require("../utility/Functions.php");
-require("../utility/connect.php");
 sec_session_start();
 if (isset($_POST["user"])) {
     $user = $_POST["user"];

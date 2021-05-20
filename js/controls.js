@@ -1,17 +1,3 @@
-function formhash(form, password) {
-    // Crea un elemento di input che verrà usato come campo di output per la password criptata.
-    var p = document.createElement("input");
-    // Aggiungi un nuovo elemento al tuo form.
-    form.appendChild(p);
-    p.Id = "p";
-    p.type = "hidden";
-    p.value = hex_sha512(password.value);
-    // Assicurati che la password non venga inviata in chiaro.
-    password.value = "";
-    // Come ultimo passaggio, esegui il 'submit' del form.
-    form.submit();
-}
-
 function different() {
     var pwd = document.getElementById("pwd");
     var repeat = document.getElementById("Cpwd");
@@ -64,7 +50,7 @@ function ceck(form) {
         register = false;
     }
     if (register) {
-        formhash(form, pwd.value);
+        form.submit();
     } else {
         window.scrollTo(0, 0);
         error.className = "error";

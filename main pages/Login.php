@@ -1,10 +1,10 @@
 <?php
 require("../utility/Functions.php");
-require("../utility/connect.php");
 sec_session_start();
 $register = false;
 if (isset($_POST["register"])) {
 	$register = true;
+	register($_POST["nome"],$_POST["cognome"],$_POST["mail"],$_POST["pwd"],$_POST["birth"],$_POST["tariffa"],$mysqli);
 }
 ?>
 <!DOCTYPE html>

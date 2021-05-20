@@ -1,4 +1,14 @@
 <?php
+function connect()
+{
+    define("HOST", "localhost"); // E' il server a cui ti vuoi connettere.
+    define("USER", "root"); // E' l'utente con cui ti collegherai al DB.
+    define("PASSWORD", ""); // Password di accesso al DB.
+    define("DATABASE", "cinema_mat"); // Nome del database.
+    // mysqli_connect corrisponde a mysql_connect + mysql_select_db
+    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE) or die('Could not connect to server.');
+    return $mysqli();
+}
 function sec_session_start()
 {
     $session_name = 'sec_session_id'; // Imposta un nome di sessione
@@ -18,21 +28,35 @@ function sec_session_start()
     session_start(); // Avvia la sessione php.
     session_regenerate_id(); // Rigenera la sessione e cancella quella creata in precedenza.
 }
-function register($nome,$cognome,$email, $password,$birth,$tariffa, $mysqli){
-    
+function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
+{
+    $mysqli = connect();
+    //premium è true, pwd ancora da crypto
+    $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', 1, ?)");
+    $reg->bind_param("sb", $pwd, $tariffa);
+    if ($tariffa == "false") {
+        $tariffa = 0;
+    } else {
+        $tariffa = 1;
+    }
+    $pwd = md5($pwd, FALSE); //pwd crypto md5
+    $reg->execute();
+    $reg->close();
+    $mysqli->close();
 }
 function login($email, $password, $mysqli)
 {
+    $mysqli = connect();
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
     // ...ma noi non lo usiamo!
     $sql = "SELECT id,mail,password FROM members WHERE mail = '$email' LIMIT 1";
     if ($result = $mysqli->query($mysqli, $sql)) {
-        $row = mysqli_fetch_array($result);
+        $row = $mysqli->fetch_array($result);
         // recupera il risultato della query e lo memorizza nelle relative variabili.
         $user_id = $row["id"];
         $username = $row["username"];
         $db_password = $row["password"];
-        $password = hash('sha512', $password); // codifica la password usando una chiave univoca.
+        $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
         if (mysqli_num_rows($result) == 1) { // se l'utente esiste
             // verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
 
@@ -48,6 +72,7 @@ function login($email, $password, $mysqli)
                 if (isset($_POST["remember"])) {
                     setcookie("user", array($username, $password), time() + (86400 * 7));
                 }
+                $mysqli->close();
                 // Login eseguito con successo.
                 return true;
             } else {
@@ -58,11 +83,13 @@ function login($email, $password, $mysqli)
                 echo "INSERT INTO login_attempts (user_id, time) VALUES ('$user_id', '$now')";
                 echo "<br><br>";
 
-                mysqli_query($mysqli, "INSERT INTO login_attempts (user_id, time) VALUES ('$user_id', '$now')");
+                $mysqli->query($mysqli, "INSERT INTO login_attempts (user_id, time) VALUES ('$user_id', '$now')");
+                $mysqli->close();
                 return false;
             }
         }
     } else {
+        $mysqli->close();
         // L'utente inserito non esiste.
         return false;
     }
@@ -113,63 +140,74 @@ function login_check($mysqli)
                 $row = mysqli_fetch_array($result);
 
                 $password = $row["password"]; // recupera le variabili dal risultato ottenuto.
-                $login_check = hash('sha512', $password . $user_browser);
+                $login_check = md5($password . $user_browser, FALSE);
 
                 if ($login_check == $login_string) {
+                    $mysqli->close();
                     // Login eseguito!!!!
                     return true;
                 } else {
+                    $mysqli->close();
                     // Login non eseguito
                     return false;
                 }
             } else {
+                $mysqli->close();
                 // Login non eseguito
                 return false;
             }
         } else {
-
+            $mysqli->close();
             // Login non eseguito
             return false;
         }
     } else {
+        $mysqli->close();
         // Login non eseguito
         return false;
     }
 }
-function take_film_stream($mysqli)
+function take_film_stream()
 {
+    $mysqli = connect();
     $result = $mysqli->query("SELECT * FROM film_stream");
     $films = array();
     $i = 0;
     foreach ($result as $row) {
         $films[$i] = $row["Titolo"];
     }
+    $mysqli->close();
     return $films;
 }
-function take_film_prenotabili($mysqli)
+function take_film_prenotabili()
 {
+    $mysqli = connect();
     $result = $mysqli->query("SELECT * FROM film_prenotabili");
     $films = array();
     $i = 0;
     foreach ($result as $row) {
         $films[$i] = $row["Titolo"];
     }
+    $mysqli->close();
     return $films;
 }
-function searchFilm($mysqli, $Titolo)
+function searchFilm($Titolo)
 {
+    $mysqli = connect();
     $AllFilms = array();
     if (!isset($_GET["page"])) {
         $AllFilms = take_film_prenotabili($mysqli);
     } else if ($_GET["page"] == "prenota") {
         $AllFilms = take_film_stream($mysqli);
     } else {
+        $mysqli->close();
         return false;
     }
-    if (array_search($Titolo,$AllFilms) === true) {
+    if (array_search($Titolo, $AllFilms) === true) {
+        $mysqli->close();
         return true;
     } else {
+        $mysqli->close();
         return false;
     }
 }
-?>
