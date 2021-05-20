@@ -1,4 +1,16 @@
+<?php
+$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
+if (strpos($url, 'Home.php') === false) {
+
+    require "../../utility/connect.php";
+    require "../../utility/Functions.php";
+    if (login_check($mysqli)) {
+        logout();
+    }
+    header("Location:../Home.php");
+}
+?>
 <div class="main">
     <h1 style="color:#fff">Benvenuto nel nostro sito!</h1>
     <p style="color:#fff">Esegui il login o registrati per utilizzare il nostro sito al massimo!</p>
