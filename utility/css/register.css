@@ -1,14 +1,42 @@
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.tariffa {
-    display: flex;
-    flex-direction: column;
-}
-
-.error {
-    border-bottom: 1px solid red;
-    color: red;
-}
+            html,
+            body {
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            label {
+                padding-top: 5px;
+            }
+            
+            img {
+                width: 15%;
+                height: auto;
+            }
+            
+            div.register {
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+            }
+            
+            form {
+                display: flex;
+                flex-direction: column;
+                border: 1px solid black;
+                padding: 25px;
+            }
+            
+            .tariffa {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .error {
+                border-bottom: 1px solid red;
+                color: red;
+            }

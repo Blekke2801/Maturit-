@@ -20,6 +20,8 @@ function different() {
     }
 }
 
+
+
 function ceck(form) {
     var error = document.getElementById("error");
     var nome = document.getElementById("nome");

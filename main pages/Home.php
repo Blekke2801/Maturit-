@@ -68,7 +68,7 @@ if (isset($_POST["user"])) {
                 include("includes/elenchi_film.php");
                 break;
             default:
-                Header("Location:Home.php");
+                Header("Refresh: 0 ; url = Home.php");
                 break;
         }
     } else if (login_check($mysqli)) {
