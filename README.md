@@ -1,5 +1,4 @@
 # Maturit-
-schema database incompleto su erdplus
 
 film nelle cartelle da chiamare a seconda della lingua(en inglese, it italiano)
 
