@@ -1,10 +1,4 @@
 <?php
-function connect()
-{
-    // mysqli_connect corrisponde a mysql_connect + mysql_select_db
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
-    return $mysqli;
-}
 function sec_session_start()
 {
     $session_name = 'sec_session_id'; // Imposta un nome di sessione
@@ -26,23 +20,23 @@ function sec_session_start()
 }
 function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     //premium è true, pwd ancora da crypto
-    $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', 1, ?)");
-    $reg->bind_param("sb", $pwd, $tariffa);
+    $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', true, ?)");
+    $reg->bind_param("si", $pwd, $tariffa);
     if ($tariffa == "false") {
-        $tariffa = 0;
+        $tariffa = false;
     } else {
-        $tariffa = 1;
+        $tariffa = true;
     }
     $pwd = md5($pwd, FALSE); //pwd crypto md5
-    $reg->execute();
+    $reg->execute() or die($mysqli->error);
     $reg->close();
     $mysqli->close();
 }
 function login($email, $password)
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
     // ...ma noi non lo usiamo!
     $sql = "SELECT id,mail,password FROM members WHERE mail = '$email' LIMIT 1";
@@ -92,7 +86,7 @@ function login($email, $password)
 }
 function LoginCookie()
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     if (isset($_COOKIE["user"])) {
         $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
         $_SESSION['username'] = $_COOKIE["user"][0];
@@ -125,7 +119,7 @@ function logout()
 //Crea la funzione 'login_check':
 function login_check()
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     // Verifica che tutte le variabili di sessione siano impostate correttamente
     if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) {
         $user_id = $_SESSION['user_id'];
@@ -167,7 +161,7 @@ function login_check()
 }
 function take_film_stream()
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     $result = $mysqli->query("SELECT * FROM film_stream");
     $films = array();
     $i = 0;
@@ -179,7 +173,7 @@ function take_film_stream()
 }
 function take_film_prenotabili()
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     $result = $mysqli->query("SELECT * FROM film_prenotabili");
     $films = array();
     $i = 0;
@@ -191,7 +185,7 @@ function take_film_prenotabili()
 }
 function searchFilm($Titolo)
 {
-    $mysqli = connect();
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     $AllFilms = array();
     if (!isset($_GET["page"])) {
         $AllFilms = take_film_prenotabili();
