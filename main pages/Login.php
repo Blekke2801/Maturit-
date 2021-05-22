@@ -50,7 +50,7 @@ if (isset($_POST["register"])) {
 							</div>
 						</div>
 						<div class="d-flex justify-content-center mt-3 login_container">
-							<button type="button" name="button" onclick="formhash(this.form,this.form.pwd)" class="btn login_btn">Login</button>
+							<button type="submit" name="button" class="btn login_btn">Login</button>
 						</div>
 					</form>
 				</div>

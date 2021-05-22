@@ -40,7 +40,17 @@ if (isset($_POST["user"])) {
     <div class="subnav">
         <a class="btn" href="Home.php">Home</a>
         <a class="btn" href="?page=lista">Lista</a>
-        <a class="btn" href="">Generi</a>
+        <nav role="navigation">
+            <ul>
+                <li class="btn main-drop"><a>Generi</a>
+                    <ul class="dropdown">
+                        <li><a href="#">Sub-1</a></li>
+                        <li><a href="#">Sub-2</a></li>
+                        <li><a href="#">Sub-3</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
         <a class="btn" href="?page=novita">Novità</a>
     </div>
 

@@ -1,11 +1,11 @@
 function different() {
     var pwd = document.getElementById("pwd");
     var repeat = document.getElementById("Cpwd");
-    if (pwd.value != repeat.value) {
-        repeat.style.borderBottom = "1px solid red";
+    if (pwd.value != repeat.value || repeat.value == null || repeat.value == "" || repeat.value == " ") {
+        repeat.style.borderBottom = "2px solid red";
         return false;
     } else {
-        repeat.style.borderBottom = "1px solid green";
+        repeat.style.borderBottom = "2px solid green";
         return true;
     }
 }
@@ -29,30 +29,29 @@ function ceck(form) {
         register = false;
     }
     if (cognome.value == null || cognome.value == "" || cognome.value == " ") {
-        cognome.style.borderBottom = "1px solid red";
+        cognome.style.borderBottom = "2px solid red";
         register = false;
     }
     if (mail.value == null || mail.value == "" || mail.value == " ") {
-        mail.style.borderBottom = "1px solid red";
+        mail.style.borderBottom = "2px solid red";
         register = false;
     }
     if (birth.value == null || birth.value == "" || birth.value == " " || date < b) {
-        birth.style.borderBottom = "1px solid red";
+        birth.style.borderBottom = "2px solid red";
         register = false;
     }
-    if (tariffa.value != "true" || tariffa.value != "false") {
-        document.getElementById("tariffa").style.borderBottom = "1px solid red";
+    if (tariffa.checked) {
+        document.querySelector(".tariffa div:nth-child(2)").style.borderBottom = "1px solid red";
         register = false;
     }
     if (pwd.value == null || pwd.value == "" || pwd.value == " ") {
-        pwd.style.borderBottom = "1px solid red";
+        pwd.style.borderBottom = "2px solid red";
         register = false;
     }
     if (Cpwd.value == null || Cpwd.value == "" || Cpwd.value == " ") {
-        Cpwd.style.borderBottom = "1px solid red";
         register = false;
     }
-    if (different()) {
+    if (!different()) {
         register = false;
     }
     if (register) {
@@ -60,7 +59,7 @@ function ceck(form) {
     } else {
         window.scrollTo(0, 0);
         error.className = "error";
-        error.innerHTML = "Non tutti i campi sono stati inseriti";
+        error.innerHTML = "Non tutti i campi sono stati inseriti correttamente";
     }
 
 }

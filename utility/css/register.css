@@ -13,12 +13,8 @@
                 padding-top: 5px;
             }
             
-            img {
-                width: 15%;
-                height: auto;
-            }
-            
             div.register {
+                min-height: 758px;
                 display: flex;
                 flex-direction: column;
                 align-content: center;
@@ -26,10 +22,12 @@
             }
             
             form {
+                min-height: 468px;
                 display: flex;
                 flex-direction: column;
                 border: 1px solid black;
                 padding: 25px;
+                align-content: space-between;
             }
             
             input {
@@ -43,6 +41,26 @@
             .tariffa {
                 display: flex;
                 flex-direction: column;
+            }
+            
+            #showOffer>img[src="../img/Free.jpg"] {
+                max-width: 99px;
+                max-height: 55px;
+            }
+            
+            #showOffer>img[src="../img/Premium.jpg"] {
+                max-width: 95px;
+                max-height: 95px;
+            }
+            
+            #showOffer {
+                display: flex;
+                min-height: 135px;
+                justify-content: flex-start;
+            }
+            
+            #showOffer>span {
+                align-self: flex-end;
             }
             
             .error {
