@@ -29,7 +29,7 @@ if (strpos($url, 'Home.php') === false) {
                 echo '<div name="item" id="' . $i . '" class="item"><img src="' . $percorso . '" class="horizontal"></label></div>';
             }
             ?>
-            <main>
+            </main>
 
     </div>
 

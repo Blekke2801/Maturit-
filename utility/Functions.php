@@ -1,14 +1,16 @@
 <?php
+DEFINE ("User","root");
+define("pwd","");
 function checkbrute($user_id, $ip)
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Recupero il timestamp
     $now = time();
-    // Vengono analizzati tutti i tentativi di login a partire dalle ultime due ore.
+    // Vengono analizzati tutti i tentativi_login di login a partire dalle ultime due ore.
     $valid_attempts = $now - (2 * 60 * 60);
-    $sql = "SELECT time FROM login_attempts WHERE user_id = $user_id AND time > '$valid_attempts' AND ip = $ip";
+    $sql = "SELECT time FROM tentativi_login WHERE User_ID = $user_id AND time > '$valid_attempts' AND ip = $ip";
     if ($result = $mysqli->query($sql)) {
-        // Verifico l'esistenza di più di 5 tentativi di login falliti.
+        // Verifico l'esistenza di più di 5 tentativi_login di login falliti.
         if ($result->num_rows > 5) {
             $result->close();
             $mysqli->close();
@@ -57,7 +59,7 @@ function sec_session_start()
 }
 function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     //premium è true, pwd ancora da crypto
     $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', true, ?)");
     $reg->bind_param("si", $pwd, $tariffa);
@@ -73,22 +75,23 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 }
 function login($email, $password, $cookie)
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
     // ...ma noi non lo usiamo!
-    $sql = "SELECT id,mail,password FROM utente WHERE mail = '$email' LIMIT 1";
-    if ($result = $mysqli->query($mysqli, $sql)) {
-        $row = $result->fetch_array($result);
+    $sql = "SELECT ID_User,mail,Password FROM utente WHERE mail = '$email' LIMIT 1";
+    if ($result = $mysqli->query($sql)) {
+        $row = $result->fetch_array();
+        
         // recupera il risultato della query e lo memorizza nelle relative variabili.
-        $user_id = $row["id"];
-        $username = $row["username"];
-        $db_password = $row["password"];
+        $user_id = $row["ID_User"];
+        $username = $row["mail"];
+        $db_password = $row["Password"];
         if (!$cookie) {
             $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
         }
-        if (mysqli_num_rows($result) == 1) { // se l'utente esiste
-            // verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
-
+        if ($result->num_rows == 1) { // se l'utente esiste
+            // verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi_login di accesso errati.
+            $result->close();
             if (checkbrute($user_id, getIPAddress())) {
                 $mysqli->close();
                 return false;
@@ -112,11 +115,9 @@ function login($email, $password, $cookie)
                     // Password incorretta.
                     // Registriamo il tentativo fallito nel database.
                     $now = time();
+                    $ip = getIPAddress();
 
-                    echo "INSERT INTO tentativi (user_id, time) VALUES ('$user_id', '$now')";
-                    echo "<br><br>";
-
-                    $mysqli->query($mysqli, "INSERT INTO tentativi (user_id, time) VALUES ('$user_id', '$now')");
+                    $mysqli->query("INSERT INTO tentativi_login (user_id, time,ip) VALUES ('$user_id', '$now','$ip')");
                     $mysqli->close();
                     return false;
                 }
@@ -153,19 +154,19 @@ function logout()
 //Crea la funzione 'login_check':
 function login_check()
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Verifica che tutte le variabili di sessione siano impostate correttamente
     if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) {
         $user_id = $_SESSION['user_id'];
         $login_string = $_SESSION['login_string'];
         $username = $_SESSION['username'];
         $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
-        $sql = "SELECT password FROM utente WHERE ID_User = $user_id LIMIT 1";
-        if ($result = mysqli_query($mysqli, $sql)) {
-            if (mysqli_num_rows($result) == 1) { // se l'utente esiste
-                $row = mysqli_fetch_array($result);
-
-                $password = $row["password"]; // recupera le variabili dal risultato ottenuto.
+        $sql = "SELECT Password FROM utente WHERE ID_User = $user_id LIMIT 1";
+        if ($result = $mysqli->query($sql)) {
+            if ($result->num_rows == 1) { // se l'utente esiste
+                $row = $result->fetch_array();
+                $result->close();
+                $password = $row["Password"]; // recupera le variabili dal risultato ottenuto.
                 $login_check = md5($password . $user_browser, FALSE);
 
                 if ($login_check == $login_string) {
@@ -195,7 +196,7 @@ function login_check()
 }
 function take_film_stream()
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     $result = $mysqli->query("SELECT * FROM film_stream");
     $films = array();
     $i = 0;
@@ -207,7 +208,7 @@ function take_film_stream()
 }
 function take_film_prenotabili()
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     $result = $mysqli->query("SELECT * FROM film_prenotabili");
     $films = array();
     $i = 0;
@@ -219,7 +220,7 @@ function take_film_prenotabili()
 }
 function searchFilm($Titolo)
 {
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
     $AllFilms = array();
     if (!isset($_GET["page"])) {
         $AllFilms = take_film_prenotabili();

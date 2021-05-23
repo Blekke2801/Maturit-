@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 18, 2021 alle 19:59
+-- Creato il: Mag 23, 2021 alle 22:20
 -- Versione del server: 5.7.17
 -- Versione PHP: 5.6.30
 
@@ -21,6 +21,10 @@ SET time_zone = "+00:00";
 --
 -- Database: `cinema_mat`
 --
+
+DROP DATABASE IF EXISTS `cinema_mat`;
+CREATE DATABASE IF NOT EXISTS `cinema_mat` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `cinema_mat`;
 
 -- --------------------------------------------------------
 
@@ -336,19 +340,38 @@ INSERT INTO `sala` (`ID_Sala`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `tentativi_login`
+--
+
+CREATE TABLE `tentativi_login` (
+  `User_ID` int(11) NOT NULL,
+  `time` varchar(30) NOT NULL,
+  `ip` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `utente`
 --
 
 CREATE TABLE `utente` (
   `ID_User` int(11) NOT NULL,
   `Mail` char(30) NOT NULL,
-  `Password` char(30) NOT NULL,
+  `Password` char(33) NOT NULL,
   `Nome` char(30) NOT NULL,
   `Cognome` char(30) NOT NULL,
-  `Data_Birth` int(11) NOT NULL,
+  `Data_Birth` date NOT NULL,
   `Cln_Imp` tinyint(1) NOT NULL,
   `Free_Premium` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `utente`
+--
+
+INSERT INTO `utente` (`ID_User`, `Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES
+(1, 'comi.emanuele@issvigano.org', 'c6a427a9f1fc3250cfcffee2ba0cc936', 'Emanuele', 'Comi', '2001-12-28', 1, 0);
 
 --
 -- Indici per le tabelle scaricate
@@ -402,6 +425,12 @@ ALTER TABLE `sala`
   ADD PRIMARY KEY (`ID_Sala`);
 
 --
+-- Indici per le tabelle `tentativi_login`
+--
+ALTER TABLE `tentativi_login`
+  ADD PRIMARY KEY (`User_ID`);
+
+--
 -- Indici per le tabelle `utente`
 --
 ALTER TABLE `utente`
@@ -435,7 +464,7 @@ ALTER TABLE `sala`
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- Limiti per le tabelle scaricate
 --
@@ -465,6 +494,12 @@ ALTER TABLE `mostra`
 --
 ALTER TABLE `posti`
   ADD CONSTRAINT `Sala` FOREIGN KEY (`ID_Sala`) REFERENCES `sala` (`ID_Sala`);
+
+--
+-- Limiti per la tabella `tentativi_login`
+--
+ALTER TABLE `tentativi_login`
+  ADD CONSTRAINT `User_ID` FOREIGN KEY (`User_ID`) REFERENCES `utente` (`ID_User`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
