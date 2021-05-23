@@ -1,4 +1,41 @@
 <?php
+function checkbrute($user_id, $ip)
+{
+    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
+    // Recupero il timestamp
+    $now = time();
+    // Vengono analizzati tutti i tentativi di login a partire dalle ultime due ore.
+    $valid_attempts = $now - (2 * 60 * 60);
+    $sql = "SELECT time FROM login_attempts WHERE user_id = $user_id AND time > '$valid_attempts' AND ip = $ip";
+    if ($result = $mysqli->query($sql)) {
+        // Verifico l'esistenza di più di 5 tentativi di login falliti.
+        if ($result->num_rows > 5) {
+            $result->close();
+            $mysqli->close();
+            return true;
+        } else {
+            $result->close();
+            $mysqli->close();
+            return false;
+        }
+    }
+}
+function getIPAddress()
+{
+    //whether ip is from the share internet  
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }
+    //whether ip is from the proxy  
+    else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    //whether ip is from the remote address  
+    else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}
 function sec_session_start()
 {
     $session_name = 'sec_session_id'; // Imposta un nome di sessione
@@ -34,64 +71,61 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
     $reg->close();
     $mysqli->close();
 }
-function login($email, $password)
+function login($email, $password, $cookie)
 {
     $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
     // ...ma noi non lo usiamo!
-    $sql = "SELECT id,mail,password FROM members WHERE mail = '$email' LIMIT 1";
+    $sql = "SELECT id,mail,password FROM utente WHERE mail = '$email' LIMIT 1";
     if ($result = $mysqli->query($mysqli, $sql)) {
         $row = $result->fetch_array($result);
         // recupera il risultato della query e lo memorizza nelle relative variabili.
         $user_id = $row["id"];
         $username = $row["username"];
         $db_password = $row["password"];
-        $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
+        if (!$cookie) {
+            $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
+        }
         if (mysqli_num_rows($result) == 1) { // se l'utente esiste
             // verifichiamo che non sia disabilitato in seguito all'esecuzione di troppi tentativi di accesso errati.
 
-            if ($db_password == $password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
-                // Password corretta!
-                $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
-
-                $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
-                $_SESSION['user_id'] = $user_id;
-                $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username); // ci proteggiamo da un attacco XSS
-                $_SESSION['username'] = $username;
-                $_SESSION['login_string'] = hash('sha512', $password . $user_browser);
-                if (isset($_POST["remember"])) {
-                    setcookie("user", array($username, $password), time() + (86400 * 7));
-                }
-                $mysqli->close();
-                // Login eseguito con successo.
-                return true;
-            } else {
-                // Password incorretta.
-                // Registriamo il tentativo fallito nel database.
-                $now = time();
-
-                echo "INSERT INTO login_attempts (user_id, time) VALUES ('$user_id', '$now')";
-                echo "<br><br>";
-
-                $mysqli->query($mysqli, "INSERT INTO login_attempts (user_id, time) VALUES ('$user_id', '$now')");
+            if (checkbrute($user_id, getIPAddress())) {
                 $mysqli->close();
                 return false;
+            } else {
+                if ($db_password == $password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
+                    // Password corretta!
+                    $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
+
+                    $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
+                    $_SESSION['user_id'] = $user_id;
+                    $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username); // ci proteggiamo da un attacco XSS
+                    $_SESSION['username'] = $username;
+                    $_SESSION['login_string'] = md5($password . $user_browser, false);
+                    if (isset($_POST["remember"])) {
+                        setcookie("user", array($username, $password), time() + (86400 * 7));
+                    }
+                    $mysqli->close();
+                    // Login eseguito con successo.
+                    return true;
+                } else {
+                    // Password incorretta.
+                    // Registriamo il tentativo fallito nel database.
+                    $now = time();
+
+                    echo "INSERT INTO tentativi (user_id, time) VALUES ('$user_id', '$now')";
+                    echo "<br><br>";
+
+                    $mysqli->query($mysqli, "INSERT INTO tentativi (user_id, time) VALUES ('$user_id', '$now')");
+                    $mysqli->close();
+                    return false;
+                }
             }
+        } else {
+            $mysqli->close();
+            // L'utente inserito non esiste.
+            return false;
         }
-    } else {
-        $mysqli->close();
-        // L'utente inserito non esiste.
-        return false;
-    }
-}
-function LoginCookie()
-{
-    $mysqli = new mysqli("localhost", "root", "", "cinema_mat") or die('Could not connect to server.');
-    if (isset($_COOKIE["user"])) {
-        $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
-        $_SESSION['username'] = $_COOKIE["user"][0];
-        $_SESSION['login_string'] = $_COOKIE["user"][1] . hash('sha512', $user_browser);
-        return true;
     }
 }
 function logout()
@@ -126,7 +160,7 @@ function login_check()
         $login_string = $_SESSION['login_string'];
         $username = $_SESSION['username'];
         $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
-        $sql = "SELECT password FROM members WHERE id = $user_id LIMIT 1";
+        $sql = "SELECT password FROM utente WHERE ID_User = $user_id LIMIT 1";
         if ($result = mysqli_query($mysqli, $sql)) {
             if (mysqli_num_rows($result) == 1) { // se l'utente esiste
                 $row = mysqli_fetch_array($result);
@@ -203,3 +237,4 @@ function searchFilm($Titolo)
         return false;
     }
 }
+?>

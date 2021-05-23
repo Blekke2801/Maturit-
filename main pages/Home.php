@@ -6,7 +6,7 @@ sec_session_start();
 if (isset($_POST["user"])) {
     $user = $_POST["user"];
     $pwd = $_POST["pwd"];
-    login($user, $pwd);
+    login($user, $pwd,false);
 }
 ?>
 
@@ -23,7 +23,7 @@ if (isset($_POST["user"])) {
 <body>
     <?php
     if (isset($_COOKIE["user"])) {
-        LoginCookie();
+        Login($_COOKIE["user"][0],$_COOKIE["user"][1],true);
     }
     ?>
     <nav>

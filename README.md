@@ -2,7 +2,7 @@
 
 film nelle cartelle da chiamare a seconda della lingua(en inglese, it italiano)
 
-pagina di login da personalizzare, registrazione da fare
+pagina di login da personalizzare, registrazione da migliorare esteticamente
 
 pagina principale, se non è loggato l'utente non può fare delle operazioni, come vedere la propria lista o prenotare i biglietti
 
