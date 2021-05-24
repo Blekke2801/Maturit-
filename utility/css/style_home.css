@@ -7,6 +7,10 @@ body {
     background-color: black;
 }
 
+.account {
+    display: flex;
+}
+
 nav:not(nav[role=navigation]) {
     position: sticky;
     top: 0px;

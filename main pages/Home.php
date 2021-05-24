@@ -22,6 +22,9 @@ if (isset($_POST["user"])) {
 
 <body>
     <?php
+    if(isset($_GET["logout"]) && $_GET["logout"] === "true"){
+        Logout();
+    }
     if (isset($_COOKIE["user"])) {
         Login($_COOKIE["user"][0],$_COOKIE["user"][1],true);
     }
@@ -32,9 +35,22 @@ if (isset($_POST["user"])) {
             <input id="search" type="text" placeholder="Cerca un film">
             <label class="btn" for="search" id="btnsrc" onclick="ricerca()">Go</label>
         </div>
-        <div style="display: flex;">
+        <div class="account">
+            <?php if(!login_check()) { ?>
             <a class="btn" href="Login.php">Login</a>
             <a class="btn" href="register.php">Register</a>
+            <?php } else {
+                ?>
+                <nav role="navigation">
+            <ul>
+                <li class="btn main-drop"><a>Account</a>
+                    <ul class="dropdown">
+                        <li><a href="Home.php?logout=true">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav> <?php
+            } ?>
         </div>
     </nav>
     <div class="subnav">

@@ -27,7 +27,7 @@
             <label for="pwd">Password:</label>
             <input type="password" id="pwd" name="pwd" placeholder="Password...">
             <label for="Cpwd">Conferma password:</label>
-            <input type="password" id="Cpwd" onchange="different()" placeholder="Ripeti password...">
+            <input type="password" id="Cpwd" onkeyup="different()" placeholder="Ripeti password...">
             <label for="birth">Data di nascita:</label>
             <input type="date" id="birth" name="birth" placeholder="dd/mm/aaaa">
             <label for="tariffa">Piano:</label>

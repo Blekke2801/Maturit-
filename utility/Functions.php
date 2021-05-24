@@ -149,7 +149,7 @@ function logout()
     );
     // Cancella la sessione.
     session_destroy();
-    header('Location: ./');
+    header('Location: Login.php');
 }
 //Crea la funzione 'login_check':
 function login_check()
