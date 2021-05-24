@@ -43,8 +43,12 @@ if (isset($_POST["user"])) {
                 ?>
                 <nav role="navigation">
             <ul>
-                <li class="btn main-drop"><a>Account</a>
+                <li class="btn main-drop"><a><?php echo $_SESSION["username"]; ?></a>
                     <ul class="dropdown">
+                    <?php
+                        if(!$_SESSION["ruolo"]){
+                            echo '<li><a href="NuovoFilm.php">Aggiungi film</a></li>';
+                        }?>
                         <li><a href="Home.php?logout=true">Logout</a></li>
                     </ul>
                 </li>

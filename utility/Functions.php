@@ -86,6 +86,7 @@ function login($email, $password, $cookie)
         $user_id = $row["ID_User"];
         $username = $row["mail"];
         $db_password = $row["Password"];
+        $ruolo = $row["Cln_Imp"];
         if (!$cookie) {
             $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
         }
@@ -102,8 +103,9 @@ function login($email, $password, $cookie)
 
                     $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_id'] = $user_id;
-                    $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $username); // ci proteggiamo da un attacco XSS
+                    $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
+                    $_SESSION["ruolo"] = $ruolo; // 1 per cliente, 0 per impiegato
                     $_SESSION['login_string'] = md5($password . $user_browser, false);
                     if (isset($_POST["remember"])) {
                         setcookie("user", array($username, $password), time() + (86400 * 7));

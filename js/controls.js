@@ -32,7 +32,7 @@ function ceck(form) {
         cognome.style.borderBottom = "2px solid red";
         register = false;
     }
-    if (mail.value == null || mail.value == "" || mail.value == " ") {
+    if (mail.value == null || mail.value == "" || mail.value == " " || mail.value.search("@") == -1) {
         mail.style.borderBottom = "2px solid red";
         register = false;
     }
