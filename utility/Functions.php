@@ -1,9 +1,9 @@
 <?php
-DEFINE ("User","root");
-define("pwd","");
+DEFINE("User", "root");
+define("pwd", "");
 function checkbrute($user_id, $ip)
 {
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Recupero il timestamp
     $now = time();
     // Vengono analizzati tutti i tentativi_login di login a partire dalle ultime due ore.
@@ -59,7 +59,7 @@ function sec_session_start()
 }
 function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 {
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     //premium è true, pwd ancora da crypto
     $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', true, ?)");
     $reg->bind_param("si", $pwd, $tariffa);
@@ -75,13 +75,13 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 }
 function login($email, $password, $cookie)
 {
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
     // ...ma noi non lo usiamo!
     $sql = "SELECT ID_User,mail,Password FROM utente WHERE mail = '$email' LIMIT 1";
     if ($result = $mysqli->query($sql)) {
         $row = $result->fetch_array();
-        
+
         // recupera il risultato della query e lo memorizza nelle relative variabili.
         $user_id = $row["ID_User"];
         $username = $row["mail"];
@@ -156,7 +156,7 @@ function logout()
 //Crea la funzione 'login_check':
 function login_check()
 {
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Verifica che tutte le variabili di sessione siano impostate correttamente
     if (isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) {
         $user_id = $_SESSION['user_id'];
@@ -196,45 +196,52 @@ function login_check()
         return false;
     }
 }
-function take_film_stream()
+function take_film($tipo, $nome = NULL)
 {
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $result = $mysqli->query("SELECT * FROM film_stream");
-    $films = array();
-    $i = 0;
-    foreach ($result as $row) {
-        $films[$i] = $row["Titolo"];
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    if ($nome == NULL) {
+        if ($tipo = "prenota") {
+            $result = $mysqli->query("SELECT * FROM film_prenotabili");
+        } else {
+            $result = $mysqli->query("SELECT * FROM film_stream");
+        }
+        $films = array();
+        $i = 0;
+        foreach ($result as $row) {
+            $films[$i] = $row["Titolo"];
+        }
+        $mysqli->close();
+        return $films;
+    } else {
+        if ($tipo = "prenota") {
+            $result = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = $nome LIMIT 1");
+        } else {
+            $result = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = $nome LIMIT 1");
+        }
+        $i = 0;
+        $Dati = $result->fetch_array();
+        $mysqli->close();
+        return $Dati;
     }
-    $mysqli->close();
-    return $films;
-}
-function take_film_prenotabili()
-{
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $result = $mysqli->query("SELECT * FROM film_prenotabili");
-    $films = array();
-    $i = 0;
-    foreach ($result as $row) {
-        $films[$i] = $row["Titolo"];
-    }
-    $mysqli->close();
-    return $films;
 }
 function searchFilm($Titolo)
 {
-    $mysqli = new mysqli("localhost",User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $AllFilms = array();
+    $tipo = null;
     if (!isset($_GET["page"])) {
-        $AllFilms = take_film_prenotabili();
+        $tipo = "prenota";
+        $AllFilms = take_film($tipo);
     } else if ($_GET["page"] == "prenota") {
-        $AllFilms = take_film_stream();
+        $tipo = "stream";
+        $AllFilms = take_film($tipo);
     } else {
         $mysqli->close();
         return false;
     }
     if (array_search($Titolo, $AllFilms) === true) {
         $mysqli->close();
-        return true;
+        return $tipo;
     } else {
         $mysqli->close();
         return false;
