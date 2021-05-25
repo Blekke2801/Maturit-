@@ -9,6 +9,26 @@
                 justify-content: center;
             }
             
+            .subnav {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 2px;
+            }
+            
+            .subnav a {
+                color: black;
+                text-decoration: none;
+                margin-left: 40px;
+                margin-right: 40px;
+            }
+            
+            @media screen and (max-width: 700px) {
+                .subnav {
+                    flex-direction: column;
+                }
+            }
+            
             label {
                 padding-top: 5px;
             }

@@ -78,15 +78,18 @@ function login($email, $password, $cookie)
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
     // ...ma noi non lo usiamo!
-    $sql = "SELECT ID_User,mail,Password FROM utente WHERE mail = '$email' LIMIT 1";
+    $sql = "SELECT * FROM utente WHERE Mail = '$email' LIMIT 1";
     if ($result = $mysqli->query($sql)) {
         $row = $result->fetch_array();
 
         // recupera il risultato della query e lo memorizza nelle relative variabili.
         $user_id = $row["ID_User"];
-        $username = $row["mail"];
+        $username = $row["Mail"];
         $db_password = $row["Password"];
         $ruolo = $row["Cln_Imp"];
+        if ($ruolo) {
+            $_SESSION["tariffa"] = $row["Free_Premium"]; //0 per free 1 per premium
+        }
         if (!$cookie) {
             $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
         }
@@ -200,7 +203,7 @@ function take_film($tipo, $nome = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     if ($nome == NULL) {
-        if ($tipo = "prenota") {
+        if ($tipo == "prenota") {
             $result = $mysqli->query("SELECT * FROM film_prenotabili");
         } else {
             $result = $mysqli->query("SELECT * FROM film_stream");
@@ -208,11 +211,12 @@ function take_film($tipo, $nome = NULL)
         $films = array();
         $i = 0;
         foreach ($result as $row) {
-            $films[$i] = $row["Titolo"];
+            $films[$i] = $row;
         }
         $mysqli->close();
         return $films;
     } else {
+        $nome = strtolower($nome);
         if ($tipo = "prenota") {
             $result = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = $nome LIMIT 1");
         } else {
@@ -229,11 +233,12 @@ function searchFilm($Titolo)
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $AllFilms = array();
     $tipo = null;
+    $Titolo = strtolower($Titolo);
     if (!isset($_GET["page"])) {
-        $tipo = "prenota";
+        $tipo = "stream";
         $AllFilms = take_film($tipo);
     } else if ($_GET["page"] == "prenota") {
-        $tipo = "stream";
+        $tipo = "prenota";
         $AllFilms = take_film($tipo);
     } else {
         $mysqli->close();
@@ -246,5 +251,31 @@ function searchFilm($Titolo)
         $mysqli->close();
         return false;
     }
+}
+function research($ricerca)
+{
+    $ricerca = strtolower($ricerca);
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $result = $mysqli->query("SELECT * FROM film_stream Where Titolo like '$ricerca%'");
+
+    $films = array();
+    $i = 0;
+    foreach ($result as $row) {
+        $films[$i] = $row;
+    }
+    $mysqli->close();
+    return $films;
+}
+function lista()
+{
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $result = $mysqli->query("SELECT * FROM film_stream");
+    $films = array();
+    $i = 0;
+    foreach ($result as $row) {
+        $films[$i] = $row;
+    }
+    $mysqli->close();
+    return $films;
 }
 ?>

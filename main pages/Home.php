@@ -86,7 +86,7 @@ if (isset($_POST["user"])) {
                 break;
             case "lista":
                 if (login_check()) {
-                    include("includes/elenchi_film.php"); //elenco dei film al cinema
+                    include("includes/elenchi_film.php"); //elenco dei film nella lista dell'utente
                 } else {
                     include("includes/base.php");
                 }

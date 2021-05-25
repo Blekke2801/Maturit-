@@ -4,7 +4,7 @@ sec_session_start();
 $register = false;
 if (isset($_POST["nome"])) {
 	$register = true;
-	register($_POST["nome"],$_POST["cognome"],$_POST["mail"],$_POST["pwd"],$_POST["birth"],$_POST["tariffa"]);
+	register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"]);
 }
 ?>
 <!DOCTYPE html>
@@ -21,6 +21,10 @@ if (isset($_POST["nome"])) {
 </head>
 
 <body>
+	<div class="subnav">
+		<a class="btn" href="Home.php">Home</a>
+		<a class="btn" href="register.php">Registrati</a>
+	</div>
 	<div class="container h-100">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
@@ -35,7 +39,7 @@ if (isset($_POST["nome"])) {
 							<div class="input-group-append">
 								<span class="input-group-text"><i class="fas fa-user"></i></span>
 							</div>
-							<input type="text" name="user" class="form-control input_user" value="<?php if($register) echo htmlentities($_POST["mail"]); ?>" placeholder="username">
+							<input type="text" name="user" class="form-control input_user" value="<?php if ($register) echo htmlentities($_POST["mail"]); ?>" placeholder="username">
 						</div>
 						<div class="input-group mb-2">
 							<div class="input-group-append">

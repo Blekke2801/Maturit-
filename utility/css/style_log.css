@@ -2,9 +2,30 @@ body,
 html {
     margin: 0;
     padding: 0;
-    height: 100%;
+    height: 80%;
     background: #60a3bc !important;
     margin-top: 5%;
+}
+
+.subnav {
+    display: flex;
+    align-items: center;
+    background-color: #267347;
+    justify-content: space-between;
+    padding: 2px;
+}
+
+.subnav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+@media screen and (max-width: 700px) {
+    .subnav {
+        flex-direction: column;
+    }
 }
 
 .user_card {

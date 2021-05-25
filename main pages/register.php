@@ -14,6 +14,7 @@
 </head>
 
 <body>
+
     <div class="register">
         <h1 style="text-align:center">Registrati!</h1>
         <form action="Login.php" method="post" autocomplete="off">
@@ -40,9 +41,14 @@
                     <input type="radio" id="premium" name="tariffa" onclick="show()" value="true">
                     <span>Premium</span>
                 </div>
-                <div id="showOffer"><img src="../img/Free.jpg"><br><span>Potrai vedere tutti i film che vuoi,<br/> ma in una lista limitata</span></div>
+                <div id="showOffer"><img src="../img/Free.jpg"><br><span>Potrai vedere tutti i film che vuoi,<br /> ma in una lista limitata</span></div>
             </div>
             <button type="button" onclick="ceck(this.form)">Registrati!</button>
+
+            <div class="subnav">
+                <a class="btn" href="Home.php">Home</a>
+                <p>Hai un account? <a class="btn" href="Login.php">Esegui il login</a></p>
+            </div>
         </form>
     </div>
 

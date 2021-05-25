@@ -427,8 +427,6 @@ ALTER TABLE `sala`
 --
 -- Indici per le tabelle `tentativi_login`
 --
-ALTER TABLE `tentativi_login`
-  ADD PRIMARY KEY (`User_ID`);
 
 --
 -- Indici per le tabelle `utente`

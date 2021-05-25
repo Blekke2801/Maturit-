@@ -1,239 +1,287 @@
-html,
-body {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background-color: black;
-}
-
-.account {
-    display: flex;
-}
-
-nav:not(nav[role=navigation]) {
-    position: sticky;
-    top: 0px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px;
-    background-color: black;
-}
-
-.searchbar {
-    display: flex;
-    justify-content: center;
-    flex: 2;
-}
-
-.searchbar input {
-    width: 40%;
-    height: 100%;
-    border: 1px solid;
-    outline: none;
-    background-color: black;
-    padding: 4px;
-    font-size: 20px;
-    color: white;
-}
-
-.searchbar label {
-    font-size: 20px;
-    height: 100%;
-    text-decoration: none;
-}
-
-button {
-    margin: 1px;
-    border: 1px solid;
-    outline: none;
-}
-
-.subnav {
-    display: flex;
-    align-items: center;
-    position: sticky;
-    top: 103px;
-    background-color: #267347;
-    justify-content: space-around;
-    padding: 2px;
-}
-
-.subnav a {
-    color: #fff;
-    text-decoration: none;
-}
-
-@media screen and (max-width: 700px) {
-    .subnav {
-        flex-direction: column;
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(0, 66, 63);
     }
-}
-
-
-/* Dropdown Content (Hidden by Default) */
-
-ul {
-    list-style: none;
-    margin: 0;
-    padding-left: 0;
-}
-
-li {
-    display: block;
-    float: left;
-    position: relative;
-    text-decoration: none;
-    transition-duration: 0.5s;
-}
-
-li:not(.main-drop) {
-    padding: 1rem;
-}
-
-li a {
-    color: #fff;
-}
-
-li:hover,
-li:focus-within {
-    cursor: pointer;
-}
-
-li:focus-within a {
-    outline: none;
-}
-
-li .dropdown {
-    background-color: #267347;
-    opacity: 0;
-    min-width: 5rem;
-    position: absolute;
-    margin-top: 1rem;
-    transition: all 0.5s ease;
-    left: 0;
-    display: none;
-}
-
-ul li:hover>ul,
-ul li:focus-within>ul,
-ul li ul:hover,
-ul li ul:focus {
-    visibility: visible;
-    opacity: 1;
-    display: block
-}
-
-ul li ul li {
-    clear: both;
-    width: 100%;
-}
-
-.btn {
-    display: flex;
-    text-decoration: none;
-    background-color: #267347;
-    width: fit-content;
-    height: fit-content;
-    align-self: flex-end;
-    padding: 4px;
-    border-radius: 4px;
-    color: black;
-    cursor: pointer;
-    margin: 0 5px;
-    outline: none;
-}
-
-
-/*pagina locandina film*/
-
-.locandina {}
-
-.trama {}
-
-.info {}
-
-
-/*pagina home no log*/
-
-.main {
-    height: 600px;
-    margin: 0;
-    display: grid;
-    grid-template-rows: 500px 100px;
-    grid-template-columns: 1fr 30px 30px 30px 30px 30px 1fr;
-    align-items: center;
-    justify-items: center;
-    display: flex;
-    flex-direction: column;
-    width: auto;
-    height: auto;
-    background: url("../../img/background_base.jpg");
-    justify-content: center;
-    background-position: center;
-}
-
-.regLog {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-}
-
-.carousel {
-    position: relative;
-    height: 400px;
-}
-
-.horizontal {
-    width: 300px;
-    height: auto;
-}
-
-#carousel {
-    grid-row: 1 / 2;
-    grid-column: 1 / 8;
-    width: 100vw;
-    height: 325px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    transform-style: preserve-3d;
-    perspective: 500px;
-    --items: 5;
-    --middle: 2;
-    --position: 3;
-    pointer-events: none;
-}
-
-div.item {
-    position: absolute;
-    width: 300px;
-    height: 178px;
-    --r: calc(var(--position) - var(--offset));
-    --abs: max(calc(var(--r) * -1), var(--r));
-    transition: all 0.25s linear;
-    transform: rotateY(calc(-10deg * var(--r))) translateX(calc(-300px * var(--r)));
-    z-index: calc((var(--position) - var(--abs)));
-}
-
-div.item:nth-of-type(1) {
-    --offset: 1;
-}
-
-div.item:nth-of-type(2) {
-    --offset: 2;
-}
-
-div.item:nth-of-type(3) {
-    --offset: 3;
-}
-
-div.item:nth-of-type(4) {
-    --offset: 4;
-}
-
-div.item:nth-of-type(5) {
-    --offset: 5;
-}
+    
+    .account {
+        display: flex;
+    }
+    
+    nav:not(nav[role=navigation]) {
+        position: sticky;
+        top: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px;
+        background-color: black;
+    }
+    
+    .searchbar {
+        display: flex;
+        justify-content: center;
+        flex: 2;
+    }
+    
+    .searchbar input {
+        width: 40%;
+        height: 100%;
+        border: 1px solid;
+        outline: none;
+        background-color: black;
+        padding: 4px;
+        font-size: 20px;
+        color: white;
+    }
+    
+    .searchbar label {
+        font-size: 20px;
+        height: 100%;
+        text-decoration: none;
+    }
+    
+    button {
+        margin: 1px;
+        border: 1px solid;
+        outline: none;
+    }
+    
+    .subnav {
+        display: flex;
+        align-items: center;
+        position: sticky;
+        top: 103px;
+        background-color: #267347;
+        justify-content: space-around;
+        padding: 2px;
+    }
+    
+    .subnav a {
+        color: #fff;
+        text-decoration: none;
+    }
+    
+    @media screen and (max-width: 700px) {
+        .subnav {
+            flex-direction: column;
+        }
+    }
+    /* Dropdown Content (Hidden by Default) */
+    
+    ul {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+    }
+    
+    li {
+        display: block;
+        float: left;
+        position: relative;
+        text-decoration: none;
+        transition-duration: 0.5s;
+    }
+    
+    li:not(.main-drop) {
+        padding: 1rem;
+    }
+    
+    li a {
+        color: #fff;
+    }
+    
+    li:hover,
+    li:focus-within {
+        cursor: pointer;
+    }
+    
+    li:focus-within a {
+        outline: none;
+    }
+    
+    li .dropdown {
+        background-color: #267347;
+        opacity: 0;
+        min-width: 5rem;
+        position: absolute;
+        margin-top: 1rem;
+        transition: all 0.5s ease;
+        left: 0;
+        display: none;
+    }
+    
+    ul li:hover>ul,
+    ul li:focus-within>ul,
+    ul li ul:hover,
+    ul li ul:focus {
+        visibility: visible;
+        opacity: 1;
+        display: block
+    }
+    
+    ul li ul li {
+        clear: both;
+        width: 100%;
+    }
+    
+    .btn {
+        display: flex;
+        text-decoration: none;
+        background-color: #267347;
+        width: fit-content;
+        height: fit-content;
+        align-self: flex-end;
+        padding: 4px;
+        border-radius: 4px;
+        color: black;
+        cursor: pointer;
+        margin: 0 5px;
+        outline: none;
+    }
+    /*elenco film*/
+    
+    .film .locandinaElenco {
+        opacity: 100%;
+        border: 2px solid black;
+        width: 20%;
+        height: auto;
+    }
+    
+    .film {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        background-color: rgb(0, 66, 63);
+        width: 80%;
+        border: 1px solid black;
+        padding: 2px;
+        text-decoration: none;
+        margin-left: 40px;
+    }
+    
+    .film .tramaIntro {
+        color: white;
+        opacity: 100%;
+        padding: 5px;
+    }
+    
+    .film .text {
+        color: #fff;
+        position: absolute;
+        align-self: center;
+        opacity: 0%;
+    }
+    
+    .film:hover .text {
+        opacity: 100%;
+        transition: opacity 1s linear;
+    }
+    
+    .film:hover {
+        background-color: black;
+        transition: background-color 1s ease-out 100ms;
+        justify-content: flex-start;
+    }
+    
+    .film:hover .locandinaElenco {
+        opacity: 0%;
+        transition: opacity 1s linear;
+    }
+    
+    .film:hover .tramaIntro {
+        opacity: 0%;
+        transition: opacity 1s linear;
+    }
+    /*pagina locandina film*/
+    
+    .locandina {}
+    
+    .trama {}
+    
+    .info {}
+    /*pagina home no log*/
+    
+    .main {
+        height: 600px;
+        margin: 0;
+        display: grid;
+        grid-template-rows: 500px 100px;
+        grid-template-columns: 1fr 30px 30px 30px 30px 30px 1fr;
+        align-items: center;
+        justify-items: center;
+        display: flex;
+        flex-direction: column;
+        width: auto;
+        height: auto;
+        background: url("../../img/background_base.jpg");
+        justify-content: center;
+        background-position: center;
+    }
+    
+    .regLog {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    
+    .carousel {
+        position: relative;
+        height: 400px;
+    }
+    
+    .horizontal {
+        width: 300px;
+        height: auto;
+    }
+    
+    #carousel {
+        grid-row: 1 / 2;
+        grid-column: 1 / 8;
+        width: 100vw;
+        height: 325px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        transform-style: preserve-3d;
+        perspective: 500px;
+        --items: 5;
+        --middle: 2;
+        --position: 3;
+        pointer-events: none;
+    }
+    
+    div.item {
+        position: absolute;
+        width: 300px;
+        height: 178px;
+        --r: calc(var(--position) - var(--offset));
+        --abs: max(calc(var(--r) * -1), var(--r));
+        transition: all 0.25s linear;
+        transform: rotateY(calc(-10deg * var(--r))) translateX(calc(-300px * var(--r)));
+        z-index: calc((var(--position) - var(--abs)));
+    }
+    
+    div.item:nth-of-type(1) {
+        --offset: 1;
+    }
+    
+    div.item:nth-of-type(2) {
+        --offset: 2;
+    }
+    
+    div.item:nth-of-type(3) {
+        --offset: 3;
+    }
+    
+    div.item:nth-of-type(4) {
+        --offset: 4;
+    }
+    
+    div.item:nth-of-type(5) {
+        --offset: 5;
+    }
