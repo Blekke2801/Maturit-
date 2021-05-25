@@ -199,7 +199,7 @@ function login_check()
         return false;
     }
 }
-function take_film($tipo, $nome = NULL)
+function take_film($tipo ="stream", $nome = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     if ($nome == NULL) {
@@ -234,10 +234,9 @@ function searchFilm($Titolo)
     $AllFilms = array();
     $tipo = null;
     $Titolo = strtolower($Titolo);
-    if (!isset($_GET["page"])) {
-        $tipo = "stream";
-        $AllFilms = take_film($tipo);
-    } else if ($_GET["page"] == "prenota") {
+    if (!isset($_GET["prenota"]) && isset($_GET["NomeFilm"])) {
+        $AllFilms = take_film();
+    } else if (isset($_GET["NomeFilm"])) {
         $tipo = "prenota";
         $AllFilms = take_film($tipo);
     } else {
@@ -278,4 +277,3 @@ function lista()
     $mysqli->close();
     return $films;
 }
-?>

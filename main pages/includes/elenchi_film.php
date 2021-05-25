@@ -35,7 +35,7 @@ if (isset($_GET["ricerca"])) {
         }
         fclose($myfile);
         $trama = $trama . "...";
-        echo "<a href='Home.php?page=filmpage&NomeFilm=".$cartella."' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p><h1 class='text'>$Titolo</h1></a>";
+        echo "<a href='Home.php?NomeFilm=$cartella' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p><h1 class='text'>$Titolo</h1></a>";
     }
     ?>
 </div>

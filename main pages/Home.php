@@ -6,7 +6,7 @@ sec_session_start();
 if (isset($_POST["user"])) {
     $user = $_POST["user"];
     $pwd = $_POST["pwd"];
-    login($user, $pwd,false);
+    login($user, $pwd, false);
 }
 ?>
 
@@ -22,11 +22,11 @@ if (isset($_POST["user"])) {
 
 <body>
     <?php
-    if(isset($_GET["logout"]) && $_GET["logout"] === "true"){
+    if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
         Logout();
     }
     if (isset($_COOKIE["user"])) {
-        Login($_COOKIE["user"][0],$_COOKIE["user"][1],true);
+        Login($_COOKIE["user"][0], $_COOKIE["user"][1], true);
     }
     ?>
     <nav>
@@ -36,25 +36,26 @@ if (isset($_POST["user"])) {
             <label class="btn" for="search" id="btnsrc" onclick="ricerca()">Go</label>
         </div>
         <div class="account">
-            <?php if(!login_check()) { ?>
-            <a class="btn" href="Login.php">Login</a>
-            <a class="btn" href="register.php">Register</a>
+            <?php if (!login_check()) { ?>
+                <a class="btn" href="Login.php">Login</a>
+                <a class="btn" href="register.php">Register</a>
             <?php } else {
-                ?>
+            ?>
+                <a class="btn" href="Home.php?page=prenota">Prenota i Biglietti</a>
                 <nav role="navigation">
-            <ul>
-                <li class="btn main-drop"><a><?php echo $_SESSION["username"]; ?></a>
-                    <ul class="dropdown">
-                    <?php
-                        if(!$_SESSION["ruolo"]){
-                            echo '<li><a href="NuovoFilm.php">Aggiungi film</a></li>';
-                        }?>
-                        <li><a href="Home.php?logout=true">Logout</a></li>
+                    <ul>
+                        <li class="btn main-drop"><a><?php echo $_SESSION["username"]; ?></a>
+                            <ul class="dropdown">
+                                <?php
+                                if (!$_SESSION["ruolo"]) {
+                                    echo '<li><a href="NuovoFilm.php">Aggiungi film</a></li>';
+                                } ?>
+                                <li><a href="Home.php?logout=true">Logout</a></li>
+                            </ul>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-        </nav> <?php
-            } ?>
+                </nav> <?php
+                    } ?>
         </div>
     </nav>
     <div class="subnav">
@@ -78,12 +79,6 @@ if (isset($_POST["user"])) {
     if (isset($_GET["page"])) {
         $page = $_GET["page"];
         switch ($page) {
-            case "filmpage":
-                include("includes/film_page.php"); //film singolo
-                break;
-            case "prenota":
-                include("includes/prenota.php"); //elenco dei film al cinema
-                break;
             case "lista":
                 if (login_check()) {
                     include("includes/elenchi_film.php"); //elenco dei film nella lista dell'utente
@@ -101,11 +96,21 @@ if (isset($_POST["user"])) {
                 Header("Refresh: 0 ; url = Home.php");
                 break;
         }
-    } else if (login_check()) {
+    } else if (isset($_GET["prenota"])) {
+        if (!isset($_GET["NomeFilm"]))
+            include("includes/prenota.php"); //elenco dei film al cinema
+        else
+            include("includes/film_page.php"); //film singolo
+    } else
+    if (login_check()) {
         include("includes/elenchi_film.php"); //film in streaming disponibili
+    } else if (isset($_GET["NomeFilm"])) {
+        include("includes/film_page.php"); //film singolo
     } else {
         include("includes/base.php"); //pagina benvenuto
     }
+
+
     ?>
 
 </body>

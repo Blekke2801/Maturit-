@@ -86,7 +86,7 @@
         transition-duration: 0.5s;
     }
     
-    li:not(.main-drop) {
+    li {
         padding: 1rem;
     }
     

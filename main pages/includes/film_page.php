@@ -3,13 +3,13 @@ if (isset($_GET["NomeFilm"])) {
     $nome = $_GET["NomeFilm"];
     $tipo = searchFilm($nome);
     if ($tipo == false) {
-        Header("Location:../Home.php");
+        Header("Location:Home.php");
     } else {
         $Dati = take_film($tipo, $nome);
         $percorsoFilm = "../../films/" . $nome;
     }
 } else {
-    Header("Location:../Home.php");
+    Header("Location:./Home.php");
 }
 //titolo,riga,prenota/guarda se loggato,locandina,riga,genere,trama
 ?>
