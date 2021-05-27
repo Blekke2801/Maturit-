@@ -21,11 +21,11 @@ if (strpos($url, 'Home.php') === false) {
     <div class="carousel">
         <main id="carousel">
             <?php
-            $allFilms = take_film("stream");
+            $allFilms = take_film_stream();
 
             for ($i = 0; $i < 6; $i++) {
                 $randIndex = rand(0, sizeof($allFilms) - 1);
-                $percorso = "../films/stream/" . $allFilms[$randIndex]["Titolo"] . "/horizontal.jpg";
+                $percorso = "../films/stream/" . $allFilms[$randIndex] . "/horizontal.jpg";
                 echo '<div name="item" id="' . $i . '" class="item"><img src="' . $percorso . '" class="horizontal"></label></div>';
             }
             ?>
