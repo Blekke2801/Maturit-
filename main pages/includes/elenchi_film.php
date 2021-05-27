@@ -10,7 +10,7 @@ if (strpos($url, 'Home.php') === false) {
 if (isset($_GET["ricerca"])) {
     $films = research($_GET["ricerca"]);
 } else {
-    $films = take_film("stream");
+    $films = take_film_stream();
 }
 ?>
 <div>
@@ -22,8 +22,8 @@ if (isset($_GET["ricerca"])) {
     }
     
     foreach ($films as $single) {
-        $percorsoFilm = "../films/" . $single["Titolo"];
-        $Titolo = $single["Titolo"];
+        $percorsoFilm = "../films/stream/" . $single;
+        $Titolo = $single;
         $cartella = $Titolo;
         $Titolo[0] = strtoupper($Titolo[0]);
         $img = $percorsoFilm . "/horizontal.jpg";

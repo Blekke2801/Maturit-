@@ -8,4 +8,5 @@ if (strpos($url, 'Home.php') === false) {
         header("Location:../Home.php");
     }
 }
+echo "<h1 style='color:white'> film in questa settimana </h1>";
 ?>

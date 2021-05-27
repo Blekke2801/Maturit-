@@ -1,6 +1,6 @@
 function ricerca() {
     var ricerca = document.getElementById("search").value;
-    location.href = "Home.php?page=cerca&ricerca=" + ricerca;
+    location.href = "Home.php?site=stream&page=cerca&ricerca=" + ricerca;
 }
 
 function show() {

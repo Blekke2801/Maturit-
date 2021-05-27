@@ -198,6 +198,10 @@
     }
     /*pagina locandina film*/
     
+    .filmRow1 {
+        display: flex;
+    }
+    
     .locandina {}
     
     .trama {}

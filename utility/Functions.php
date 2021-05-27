@@ -199,56 +199,58 @@ function login_check()
         return false;
     }
 }
-function take_film($tipo ="stream", $nome = NULL)
+function take_film_stream($nome = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $Dati = array();
     if ($nome == NULL) {
-        if ($tipo == "prenota") {
-            $result = $mysqli->query("SELECT * FROM film_prenotabili");
-        } else {
-            $result = $mysqli->query("SELECT * FROM film_stream");
-        }
+        $result = $mysqli->query("SELECT * FROM film_stream");
         $films = array();
         $i = 0;
         foreach ($result as $row) {
-            $films[$i] = $row;
+            $films[$i] = $row["Titolo"];
+            $i++;
         }
         $mysqli->close();
         return $films;
     } else {
         $nome = strtolower($nome);
-        if ($tipo = "prenota") {
-            $result = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = $nome LIMIT 1");
+        $resultStream = $mysqli->query("SELECT * FROM film_stream where Titolo = '$nome' LIMIT 1");
+        $Dati = $resultStream->fetch_array();
+        if (sizeof($Dati) == 1) {
+            $mysqli->close();
+            return $Dati[0];
         } else {
-            $result = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = $nome LIMIT 1");
+            $mysqli->close();
+            return $Dati;
         }
-        $i = 0;
-        $Dati = $result->fetch_array();
-        $mysqli->close();
-        return $Dati;
     }
 }
-function searchFilm($Titolo)
+function take_film_prenota($nome = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $AllFilms = array();
-    $tipo = null;
-    $Titolo = strtolower($Titolo);
-    if (!isset($_GET["prenota"]) && isset($_GET["NomeFilm"])) {
-        $AllFilms = take_film();
-    } else if (isset($_GET["NomeFilm"])) {
-        $tipo = "prenota";
-        $AllFilms = take_film($tipo);
+    if ($nome == NULL) {
+        $result = $mysqli->query("SELECT * FROM film_prenotabili");
+        $films = array();
+        $i = 0;
+        foreach ($result as $row) {
+            $films[$i] = $row["Titolo"];
+            $i++;
+        }
+        $mysqli->close();
+        return $films;
     } else {
-        $mysqli->close();
-        return false;
-    }
-    if (array_search($Titolo, $AllFilms) === true) {
-        $mysqli->close();
-        return $tipo;
-    } else {
-        $mysqli->close();
-        return false;
+        $nome = strtolower($nome);
+        $Dati = array();
+        $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = '$nome' LIMIT 1");
+        $Dati = $resultStream->fetch_array();
+        if (sizeof($Dati) == 1) {
+            $mysqli->close();
+            return $Dati[0];
+        } else {
+            $mysqli->close();
+            return $Dati;
+        }
     }
 }
 function research($ricerca)
@@ -260,7 +262,8 @@ function research($ricerca)
     $films = array();
     $i = 0;
     foreach ($result as $row) {
-        $films[$i] = $row;
+        $films[$i] = $row["Titolo"];
+        $i++;
     }
     $mysqli->close();
     return $films;
@@ -272,7 +275,8 @@ function lista()
     $films = array();
     $i = 0;
     foreach ($result as $row) {
-        $films[$i] = $row;
+        $films[$i] = $row["Titolo"];
+        $i++;
     }
     $mysqli->close();
     return $films;

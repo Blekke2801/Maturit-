@@ -25,7 +25,7 @@ if (strpos($url, 'Home.php') === false) {
 
             for ($i = 0; $i < 6; $i++) {
                 $randIndex = rand(0, sizeof($allFilms) - 1);
-                $percorso = "../films/" . $allFilms[$randIndex]["Titolo"] . "/horizontal.jpg";
+                $percorso = "../films/stream/" . $allFilms[$randIndex]["Titolo"] . "/horizontal.jpg";
                 echo '<div name="item" id="' . $i . '" class="item"><img src="' . $percorso . '" class="horizontal"></label></div>';
             }
             ?>

@@ -41,7 +41,7 @@ if (isset($_POST["user"])) {
                 <a class="btn" href="register.php">Register</a>
             <?php } else {
             ?>
-                <a class="btn" href="Home.php?page=prenota">Prenota i Biglietti</a>
+                <a class="btn" href="Home.php?site=fisico">Prenota i Biglietti</a>
                 <nav role="navigation">
                     <ul>
                         <li class="btn main-drop"><a><?php echo $_SESSION["username"]; ?></a>
@@ -76,8 +76,11 @@ if (isset($_POST["user"])) {
     </div>
 
     <?php
-    if (isset($_GET["page"])) {
-        $page = $_GET["page"];
+    if (!isset($_GET["site"]) || $_GET["site"] != "fisico") {
+        if (isset($_GET["page"]))
+            $page = $_GET["page"];
+        else
+            $page = "ciao";
         switch ($page) {
             case "lista":
                 if (login_check()) {
@@ -93,26 +96,26 @@ if (isset($_POST["user"])) {
                 include("includes/elenchi_film.php");
                 break;
             default:
-                Header("Refresh: 0 ; url = Home.php");
+
+                if (isset($_GET["NomeFilm"])) {
+                    include("includes/film_page_stream.php"); //elenco dei film al cinema
+                } else if (login_check()) {
+                    include("includes/elenchi_film.php"); //elenco dei film nella lista dell'utente
+                } else {
+                    include("includes/base.php");
+                }
                 break;
         }
-    } else if (isset($_GET["prenota"])) {
+    } else if ($_GET["site"] == "fisico") {
         if (!isset($_GET["NomeFilm"]))
             include("includes/prenota.php"); //elenco dei film al cinema
         else
-            include("includes/film_page.php"); //film singolo
-    } else
-    if (login_check()) {
-        include("includes/elenchi_film.php"); //film in streaming disponibili
-    } else if (isset($_GET["NomeFilm"])) {
-        include("includes/film_page.php"); //film singolo
-    } else {
-        include("includes/base.php"); //pagina benvenuto
+            include("includes/film_page_fisico.php"); //film singolo
     }
 
 
     ?>
-
+    <div class="contacts"></div>
 </body>
 
 </html>
