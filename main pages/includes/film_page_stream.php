@@ -23,7 +23,7 @@ if (isset($_GET["NomeFilm"])) {
     echo "<h1>$nome</h1><hr>";
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
     echo "<a href='../guardafilm.php' class='btn'>Guarda Subito!</a>";
-    echo "<a href='../Home.php?page=Lista' class='btn'>Aggiungi alla lista!</a></div>";
+    echo "<a onclick='lista()' id='lista' class='btn'>Aggiungi alla lista!</a></div>";
     $myfile = fopen($percorsoFilm."/trama.txt", "r") or die("Unable to open file!");
         $trama = "";
         for($i = 0;$i < 600;$i++) {
