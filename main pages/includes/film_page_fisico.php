@@ -23,6 +23,5 @@ if (isset($_GET["NomeFilm"])) {
     echo "<h1>$Nome</h1><hr>";
     echo "<img src='$percorso/locandina.jpg>";
     echo "<a href='../guardafilm.php' class='btn'>Guarda Subito!</a>";
-    echo "<a href='../Home.php?page=Lista' class='btn'>Aggiungi alla lista!</a>";
     ?>
 </div>

@@ -60,7 +60,12 @@ function sec_session_start()
 function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    //premium è true, pwd ancora da crypto
+    $sql = "SELECT COUNT(*) FROM utente WHERE Mail = '$email'";
+    $exists = $mysqli->query($sql);
+    if ($exists->fetch_row()[0] > 0) {
+        $mysqli->close();
+        return false;
+    }
     $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', true, ?)");
     $reg->bind_param("si", $pwd, $tariffa);
     if ($tariffa == "false") {
@@ -72,6 +77,7 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
     $reg->execute() or die($mysqli->error);
     $reg->close();
     $mysqli->close();
+    return true;
 }
 function login($email, $password, $cookie)
 {
@@ -217,12 +223,12 @@ function take_film_stream($nome = NULL)
         $nome = strtolower($nome);
         $resultStream = $mysqli->query("SELECT * FROM film_stream where Titolo = '$nome' LIMIT 1");
         $Dati = $resultStream->fetch_array();
-        if (sizeof($Dati) == 1) {
-            $mysqli->close();
-            return $Dati[0];
-        } else {
+        if (sizeof($Dati) > 0 ) {
             $mysqli->close();
             return $Dati;
+        } else {
+            $mysqli->close();
+            return array();
         }
     }
 }
@@ -244,12 +250,12 @@ function take_film_prenota($nome = NULL)
         $Dati = array();
         $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = '$nome' LIMIT 1");
         $Dati = $resultStream->fetch_array();
-        if (sizeof($Dati) == 1) {
-            $mysqli->close();
-            return $Dati[0];
-        } else {
+        if (sizeof($Dati) > 0 ) {
             $mysqli->close();
             return $Dati;
+        } else {
+            $mysqli->close();
+            return array();
         }
     }
 }
@@ -280,4 +286,49 @@ function lista()
     }
     $mysqli->close();
     return $films;
+}
+
+function addLista($Titolo)
+{
+    $dati = take_film_stream($Titolo);
+    $user = null;
+    $film = null;
+    if (sizeof($dati) > 0) {
+        $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+        $search = $mysqli->prepare("SELECT * from lista where ID_User = ? AND ID_Film = ? LIMIT 1;");
+        $search->bind_param("ii", $user, $film);
+        $user = $_SESSION['user_id'];
+        $film = $dati["ID_Film"];
+        $search->execute() or die("Error description: " . $search->error);
+        if (!$search->fetch()) {
+            $stmt = $mysqli->prepare("INSERT INTO lista values (?,?);");
+            $stmt->bind_param("ii", $user, $film);
+            $stmt->execute() or die("Error description: " . $stmt->error);
+            $stmt->close();
+        }
+        $search->close();
+        $mysqli->close();
+    }
+}
+function removeLista($Titolo)
+{
+    $dati = take_film_stream($Titolo);
+    $user = null;
+    $film = null;
+    if (sizeof($dati) > 0) {
+        $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+        $search = $mysqli->prepare("SELECT * from lista where ID_User = ? AND ID_Film = ? LIMIT 1;");
+        $search->bind_param("ii", $user, $film);
+        $user = $_SESSION['user_id'];
+        $film = $dati["ID_Film"];
+        $search->execute() or die("Error description: " . $search->error);
+        if ($search->fetch()) {
+            $stmt = $mysqli->prepare("DELETE from lista where ID_User = ? AND ID_Film = ?;");
+            $stmt->bind_param("ii", $user, $film);
+            $stmt->execute() or die("Error description: " . $stmt->error);
+            $stmt->close();
+        }
+        $search->close();
+        $mysqli->close();
+    }
 }

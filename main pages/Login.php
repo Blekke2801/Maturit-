@@ -2,9 +2,12 @@
 require("../utility/Functions.php");
 sec_session_start();
 $register = false;
+$error = false;
 if (isset($_POST["nome"])) {
 	$register = true;
-	register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"]);
+	if(!register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"])){
+		$error = true;
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -17,10 +20,11 @@ if (isset($_POST["nome"])) {
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="../js/controls.js"></script>
 	<link rel="icon" href="../img/favicon.ico" />
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
 
-<body>
+<body <?php if($error) echo "onload='errorReg()'"; ?>>
 	<div class="subnav">
 		<a class="btn" href="Home.php">Home</a>
 		<a class="btn" href="register.php">Registrati</a>

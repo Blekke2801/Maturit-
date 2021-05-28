@@ -6,7 +6,7 @@ if (isset($_GET["NomeFilm"])) {
     } else {
         Header("Location:./Home.php");
     }
-    if (sizeof($Dati) < 1) {
+    if (sizeof($Dati) < 5) {
         Header("Location:Home.php");
     } else {
         $percorsoFilm = "../films/stream/" . $nome;
@@ -19,11 +19,12 @@ if (isset($_GET["NomeFilm"])) {
 <div>
     <?php
     $disabled = false;
+    $DBName = $nome;
     $nome[0] = strtoupper($nome[0]);
     echo "<h1>$nome</h1><hr>";
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
-    echo "<a href='../guardafilm.php' class='btn'>Guarda Subito!</a>";
-    echo "<a onclick='lista()' id='lista' class='btn'>Aggiungi alla lista!</a></div>";
+    echo "<a href='guardafilm.php' class='btn'>Guarda Subito!</a>";
+    echo "<a onclick='lista(this.value)' id='lista' class='btn' value='".$DBName."' >Aggiungi alla lista!</a></div>";
     $myfile = fopen($percorsoFilm."/trama.txt", "r") or die("Unable to open file!");
         $trama = "";
         for($i = 0;$i < 600;$i++) {
