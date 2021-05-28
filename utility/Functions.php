@@ -86,7 +86,7 @@ function login($email, $password, $cookie)
     // ...ma noi non lo usiamo!
     $sql = "SELECT * FROM utente WHERE Mail = '$email' LIMIT 1";
     if ($result = $mysqli->query($sql)) {
-        $row = $result->fetch_array();
+        $row = $result->fetch_assoc();
 
         // recupera il risultato della query e lo memorizza nelle relative variabili.
         $user_id = $row["ID_User"];
@@ -175,7 +175,7 @@ function login_check()
         $sql = "SELECT Password FROM utente WHERE ID_User = $user_id LIMIT 1";
         if ($result = $mysqli->query($sql)) {
             if ($result->num_rows == 1) { // se l'utente esiste
-                $row = $result->fetch_array();
+                $row = $result->fetch_assoc();
                 $result->close();
                 $password = $row["Password"]; // recupera le variabili dal risultato ottenuto.
                 $login_check = md5($password . $user_browser, FALSE);
@@ -222,7 +222,7 @@ function take_film_stream($nome = NULL)
     } else {
         $nome = strtolower($nome);
         $resultStream = $mysqli->query("SELECT * FROM film_stream where Titolo = '$nome' LIMIT 1");
-        $Dati = $resultStream->fetch_array();
+        $Dati = $resultStream->fetch_assoc();
         if (sizeof($Dati) > 0 ) {
             $mysqli->close();
             return $Dati;
@@ -249,8 +249,9 @@ function take_film_prenota($nome = NULL)
         $nome = strtolower($nome);
         $Dati = array();
         $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = '$nome' LIMIT 1");
-        $Dati = $resultStream->fetch_array();
+        $Dati = $resultStream->fetch_assoc();
         if (sizeof($Dati) > 0 ) {
+            
             $mysqli->close();
             return $Dati;
         } else {
