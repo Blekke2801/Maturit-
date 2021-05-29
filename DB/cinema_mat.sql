@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 23, 2021 alle 22:20
+-- Creato il: Mag 29, 2021 alle 21:55
 -- Versione del server: 5.7.17
 -- Versione PHP: 5.6.30
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cinema_mat`
 --
-
-DROP DATABASE IF EXISTS `cinema_mat`;
 CREATE DATABASE IF NOT EXISTS `cinema_mat` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `cinema_mat`;
 
@@ -34,11 +32,12 @@ USE `cinema_mat`;
 
 CREATE TABLE `biglietto` (
   `ID_Ticket` int(11) NOT NULL,
-  `Fila` char(2) NOT NULL,
-  `Numero` int(11) NOT NULL,
   `Data` date NOT NULL,
   `Ora` time NOT NULL,
-  `ID_User` int(11) NOT NULL
+  `ID_User` int(11) NOT NULL,
+  `sala` int(11) NOT NULL,
+  `posto` varchar(6) NOT NULL,
+  `ID_Film` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -50,8 +49,17 @@ CREATE TABLE `biglietto` (
 CREATE TABLE `film_prenotabili` (
   `ID_Film` int(11) NOT NULL,
   `Titolo` char(30) NOT NULL,
-  `Genere` char(20) NOT NULL
+  `Genere` char(20) NOT NULL,
+  `durata` int(11) NOT NULL,
+  `prezzo_a_persona` decimal(4,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `film_prenotabili`
+--
+
+INSERT INTO `film_prenotabili` (`ID_Film`, `Titolo`, `Genere`, `durata`, `prezzo_a_persona`) VALUES
+(1, 'il cattivo poeta', 'biografico', 103, '5.70');
 
 -- --------------------------------------------------------
 
@@ -64,15 +72,16 @@ CREATE TABLE `film_stream` (
   `Titolo` char(30) NOT NULL,
   `Data_Add` date NOT NULL,
   `Genere` char(20) NOT NULL,
-  `Free_Premium` tinyint(1) NOT NULL
+  `Free_Premium` tinyint(1) NOT NULL,
+  `durata` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dump dei dati per la tabella `film_stream`
 --
 
-INSERT INTO `film_stream` (`ID_FIlm`, `Titolo`, `Data_Add`, `Genere`, `Free_Premium`) VALUES
-(1, 'Bohemian Rhapsody', '2019-10-15', 'Biografico', 1);
+INSERT INTO `film_stream` (`ID_FIlm`, `Titolo`, `Data_Add`, `Genere`, `Free_Premium`, `durata`) VALUES
+(1, 'bohemian rhapsody', '2019-10-15', 'Biografico', 1, 133);
 
 -- --------------------------------------------------------
 
@@ -88,258 +97,6 @@ CREATE TABLE `lista` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `mostra`
---
-
-CREATE TABLE `mostra` (
-  `ID_Film` int(11) NOT NULL,
-  `ID_Sala` int(11) NOT NULL,
-  `Ora` time NOT NULL,
-  `Data` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `posti`
---
-
-CREATE TABLE `posti` (
-  `Fila` char(2) NOT NULL,
-  `Numero` int(11) NOT NULL,
-  `Prenotato` tinyint(1) NOT NULL,
-  `ID_Sala` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `posti`
---
-
-INSERT INTO `posti` (`Fila`, `Numero`, `Prenotato`, `ID_Sala`) VALUES
-('A', 1, 0, 1),
-('A', 1, 0, 2),
-('A', 1, 0, 3),
-('A', 1, 0, 4),
-('B', 1, 0, 1),
-('B', 1, 0, 2),
-('B', 1, 0, 3),
-('B', 1, 0, 4),
-('C', 1, 0, 1),
-('C', 1, 0, 2),
-('C', 1, 0, 3),
-('C', 1, 0, 4),
-('D', 1, 0, 1),
-('D', 1, 0, 2),
-('D', 1, 0, 3),
-('D', 1, 0, 4),
-('E', 1, 0, 1),
-('E', 1, 0, 2),
-('E', 1, 0, 3),
-('E', 1, 0, 4),
-('A', 2, 0, 1),
-('A', 2, 0, 2),
-('A', 2, 0, 3),
-('A', 2, 0, 4),
-('B', 2, 0, 1),
-('B', 2, 0, 2),
-('B', 2, 0, 3),
-('B', 2, 0, 4),
-('C', 2, 0, 1),
-('C', 2, 0, 2),
-('C', 2, 0, 3),
-('C', 2, 0, 4),
-('D', 2, 0, 1),
-('D', 2, 0, 2),
-('D', 2, 0, 3),
-('D', 2, 0, 4),
-('E', 2, 0, 1),
-('E', 2, 0, 2),
-('E', 2, 0, 3),
-('E', 2, 0, 4),
-('A', 3, 0, 1),
-('A', 3, 0, 2),
-('A', 3, 0, 3),
-('A', 3, 0, 4),
-('B', 3, 0, 1),
-('B', 3, 0, 2),
-('B', 3, 0, 3),
-('B', 3, 0, 4),
-('C', 3, 0, 1),
-('C', 3, 0, 2),
-('C', 3, 0, 3),
-('C', 3, 0, 4),
-('D', 3, 0, 1),
-('D', 3, 0, 2),
-('D', 3, 0, 3),
-('D', 3, 0, 4),
-('E', 3, 0, 1),
-('E', 3, 0, 2),
-('E', 3, 0, 3),
-('E', 3, 0, 4),
-('A', 4, 0, 1),
-('A', 4, 0, 2),
-('A', 4, 0, 3),
-('A', 4, 0, 4),
-('B', 4, 0, 1),
-('B', 4, 0, 2),
-('B', 4, 0, 3),
-('B', 4, 0, 4),
-('C', 4, 0, 1),
-('C', 4, 0, 2),
-('C', 4, 0, 3),
-('C', 4, 0, 4),
-('D', 4, 0, 1),
-('D', 4, 0, 2),
-('D', 4, 0, 3),
-('D', 4, 0, 4),
-('E', 4, 0, 1),
-('E', 4, 0, 2),
-('E', 4, 0, 3),
-('E', 4, 0, 4),
-('A', 5, 0, 1),
-('A', 5, 0, 2),
-('A', 5, 0, 3),
-('A', 5, 0, 4),
-('B', 5, 0, 1),
-('B', 5, 0, 2),
-('B', 5, 0, 3),
-('B', 5, 0, 4),
-('C', 5, 0, 1),
-('C', 5, 0, 2),
-('C', 5, 0, 3),
-('C', 5, 0, 4),
-('D', 5, 0, 1),
-('D', 5, 0, 2),
-('D', 5, 0, 3),
-('D', 5, 0, 4),
-('E', 5, 0, 1),
-('E', 5, 0, 2),
-('E', 5, 0, 3),
-('E', 5, 0, 4),
-('A', 6, 0, 1),
-('A', 6, 0, 2),
-('A', 6, 0, 3),
-('A', 6, 0, 4),
-('B', 6, 0, 1),
-('B', 6, 0, 2),
-('B', 6, 0, 3),
-('B', 6, 0, 4),
-('C', 6, 0, 1),
-('C', 6, 0, 2),
-('C', 6, 0, 3),
-('C', 6, 0, 4),
-('D', 6, 0, 1),
-('D', 6, 0, 2),
-('D', 6, 0, 3),
-('D', 6, 0, 4),
-('E', 6, 0, 1),
-('E', 6, 0, 2),
-('E', 6, 0, 3),
-('E', 6, 0, 4),
-('A', 7, 0, 1),
-('A', 7, 0, 2),
-('A', 7, 0, 3),
-('A', 7, 0, 4),
-('B', 7, 0, 1),
-('B', 7, 0, 2),
-('B', 7, 0, 3),
-('B', 7, 0, 4),
-('C', 7, 0, 1),
-('C', 7, 0, 2),
-('C', 7, 0, 3),
-('C', 7, 0, 4),
-('D', 7, 0, 1),
-('D', 7, 0, 2),
-('D', 7, 0, 3),
-('D', 7, 0, 4),
-('E', 7, 0, 1),
-('E', 7, 0, 2),
-('E', 7, 0, 3),
-('E', 7, 0, 4),
-('A', 8, 0, 1),
-('A', 8, 0, 2),
-('A', 8, 0, 3),
-('A', 8, 0, 4),
-('B', 8, 0, 1),
-('B', 8, 0, 2),
-('B', 8, 0, 3),
-('B', 8, 0, 4),
-('C', 8, 0, 1),
-('C', 8, 0, 2),
-('C', 8, 0, 3),
-('C', 8, 0, 4),
-('D', 8, 0, 1),
-('D', 8, 0, 2),
-('D', 8, 0, 3),
-('D', 8, 0, 4),
-('E', 8, 0, 1),
-('E', 8, 0, 2),
-('E', 8, 0, 3),
-('E', 8, 0, 4),
-('A', 9, 0, 1),
-('A', 9, 0, 2),
-('A', 9, 0, 3),
-('A', 9, 0, 4),
-('B', 9, 0, 1),
-('B', 9, 0, 2),
-('B', 9, 0, 3),
-('B', 9, 0, 4),
-('C', 9, 0, 1),
-('C', 9, 0, 2),
-('C', 9, 0, 3),
-('C', 9, 0, 4),
-('D', 9, 0, 1),
-('D', 9, 0, 2),
-('D', 9, 0, 3),
-('D', 9, 0, 4),
-('E', 9, 0, 1),
-('E', 9, 0, 2),
-('E', 9, 0, 3),
-('E', 9, 0, 4),
-('A', 10, 0, 1),
-('A', 10, 0, 2),
-('A', 10, 0, 3),
-('A', 10, 0, 4),
-('B', 10, 0, 1),
-('B', 10, 0, 2),
-('B', 10, 0, 3),
-('B', 10, 0, 4),
-('C', 10, 0, 1),
-('C', 10, 0, 2),
-('C', 10, 0, 3),
-('C', 10, 0, 4),
-('D', 10, 0, 1),
-('D', 10, 0, 2),
-('D', 10, 0, 3),
-('D', 10, 0, 4),
-('E', 10, 0, 1),
-('E', 10, 0, 2),
-('E', 10, 0, 3),
-('E', 10, 0, 4);
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `sala`
---
-
-CREATE TABLE `sala` (
-  `ID_Sala` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `sala`
---
-
-INSERT INTO `sala` (`ID_Sala`) VALUES
-(1),
-(2),
-(3),
-(4);
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `tentativi_login`
 --
 
@@ -348,6 +105,27 @@ CREATE TABLE `tentativi_login` (
   `time` varchar(30) NOT NULL,
   `ip` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `timetable`
+--
+
+CREATE TABLE `timetable` (
+  `ID_TimeTable` int(11) NOT NULL,
+  `Data` date NOT NULL,
+  `ora` time NOT NULL,
+  `sala` int(11) NOT NULL,
+  `ID_Film` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `timetable`
+--
+
+INSERT INTO `timetable` (`ID_TimeTable`, `Data`, `ora`, `sala`, `ID_Film`) VALUES
+(1, '2021-05-31', '17:15:00', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -371,7 +149,8 @@ CREATE TABLE `utente` (
 --
 
 INSERT INTO `utente` (`ID_User`, `Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES
-(1, 'comi.emanuele@issvigano.org', 'c6a427a9f1fc3250cfcffee2ba0cc936', 'Emanuele', 'Comi', '2001-12-28', 1, 0);
+(1, 'comi.emanuele@issvigano.org', 'c6a427a9f1fc3250cfcffee2ba0cc936', 'Emanuele', 'Comi', '2001-12-28', 1, 0),
+(2, 'admin.cinema@ComVid.com', '2ac9cb7dc02b3c0083eb70898e549b63', 'admin', 'admin', '2001-11-02', 0, NULL);
 
 --
 -- Indici per le tabelle scaricate
@@ -382,8 +161,8 @@ INSERT INTO `utente` (`ID_User`, `Mail`, `Password`, `Nome`, `Cognome`, `Data_Bi
 --
 ALTER TABLE `biglietto`
   ADD PRIMARY KEY (`ID_Ticket`),
-  ADD KEY `Numero` (`Numero`,`Fila`),
-  ADD KEY `Prenotato da` (`ID_User`);
+  ADD KEY `Prenotato da` (`ID_User`),
+  ADD KEY `prenota il film` (`ID_Film`);
 
 --
 -- Indici per le tabelle `film_prenotabili`
@@ -405,34 +184,24 @@ ALTER TABLE `lista`
   ADD KEY `Lista con` (`ID_FIlm`);
 
 --
--- Indici per le tabelle `mostra`
---
-ALTER TABLE `mostra`
-  ADD PRIMARY KEY (`ID_Film`,`ID_Sala`),
-  ADD KEY `Mostra in` (`ID_Sala`);
-
---
--- Indici per le tabelle `posti`
---
-ALTER TABLE `posti`
-  ADD PRIMARY KEY (`Numero`,`Fila`,`ID_Sala`),
-  ADD KEY `Sala` (`ID_Sala`);
-
---
--- Indici per le tabelle `sala`
---
-ALTER TABLE `sala`
-  ADD PRIMARY KEY (`ID_Sala`);
-
---
 -- Indici per le tabelle `tentativi_login`
 --
+ALTER TABLE `tentativi_login`
+  ADD KEY `User_ID` (`User_ID`);
+
+--
+-- Indici per le tabelle `timetable`
+--
+ALTER TABLE `timetable`
+  ADD PRIMARY KEY (`ID_TimeTable`),
+  ADD KEY `Film disponibile` (`ID_Film`);
 
 --
 -- Indici per le tabelle `utente`
 --
 ALTER TABLE `utente`
-  ADD PRIMARY KEY (`ID_User`);
+  ADD PRIMARY KEY (`ID_User`),
+  ADD UNIQUE KEY `Mail` (`Mail`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -447,22 +216,22 @@ ALTER TABLE `biglietto`
 -- AUTO_INCREMENT per la tabella `film_prenotabili`
 --
 ALTER TABLE `film_prenotabili`
-  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT per la tabella `film_stream`
 --
 ALTER TABLE `film_stream`
   MODIFY `ID_FIlm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT per la tabella `sala`
+-- AUTO_INCREMENT per la tabella `timetable`
 --
-ALTER TABLE `sala`
-  MODIFY `ID_Sala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `timetable`
+  MODIFY `ID_TimeTable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Limiti per le tabelle scaricate
 --
@@ -471,7 +240,8 @@ ALTER TABLE `utente`
 -- Limiti per la tabella `biglietto`
 --
 ALTER TABLE `biglietto`
-  ADD CONSTRAINT `Prenotato da` FOREIGN KEY (`ID_User`) REFERENCES `utente` (`ID_User`);
+  ADD CONSTRAINT `Prenotato da` FOREIGN KEY (`ID_User`) REFERENCES `utente` (`ID_User`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `prenota il film` FOREIGN KEY (`ID_Film`) REFERENCES `film_prenotabili` (`ID_Film`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `lista`
@@ -481,23 +251,16 @@ ALTER TABLE `lista`
   ADD CONSTRAINT `Lista di` FOREIGN KEY (`ID_User`) REFERENCES `utente` (`ID_User`);
 
 --
--- Limiti per la tabella `mostra`
---
-ALTER TABLE `mostra`
-  ADD CONSTRAINT `Mostra il film` FOREIGN KEY (`ID_Film`) REFERENCES `film_prenotabili` (`ID_Film`),
-  ADD CONSTRAINT `Mostra in` FOREIGN KEY (`ID_Sala`) REFERENCES `sala` (`ID_Sala`);
-
---
--- Limiti per la tabella `posti`
---
-ALTER TABLE `posti`
-  ADD CONSTRAINT `Sala` FOREIGN KEY (`ID_Sala`) REFERENCES `sala` (`ID_Sala`);
-
---
 -- Limiti per la tabella `tentativi_login`
 --
 ALTER TABLE `tentativi_login`
   ADD CONSTRAINT `User_ID` FOREIGN KEY (`User_ID`) REFERENCES `utente` (`ID_User`);
+
+--
+-- Limiti per la tabella `timetable`
+--
+ALTER TABLE `timetable`
+  ADD CONSTRAINT `Film disponibile` FOREIGN KEY (`ID_Film`) REFERENCES `film_prenotabili` (`ID_Film`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

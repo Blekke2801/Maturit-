@@ -343,7 +343,30 @@ function removeLista($Titolo)
         $mysqli->close();
     }
 }
-function prendi_orari($nomeFilm){
+function prendi_orari($id){
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+        $Dati = array();
+        $resultStream = $mysqli->query("SELECT Data,ora FROM timetable where ID_Film = $id") or die($mysqli->error);
+        $i = 0;
+        foreach($resultStream as $row)
+        {
+            $Dati[$i] = $row;
+        }
+        if (sizeof($Dati) > 0) {
+            $mysqli->close();
+            return $Dati;
+        } else {
+            $mysqli->close();
+            return array();
+        }
     
+    return array();
+}
+function countPrenotato($id_film,$data,$ora){
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $Dati = array();
+    $resultStream = $mysqli->query("SELECT COUNT() FROM biglietto where ID_Film = $id_film AND Data = '$data' AND Ora = '$ora';") or die($mysqli->error);
+    $number = $resultStream->fetch_row();
+    return intval($number[0]);
 }
 ?>

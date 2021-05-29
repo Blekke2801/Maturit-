@@ -1,4 +1,5 @@
-<script src="../js/fisico.js"></script>
+<!--<script src="../js/fisico.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
 <?php
 if (isset($_GET["NomeFilm"])) {
     $nome = $_GET["NomeFilm"];
@@ -26,14 +27,17 @@ if (isset($_GET["NomeFilm"])) {
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
     ?>
     <form action="Biglietto.php" method="POST">
+    <input type="checkbox" name="NomeFilm" value="<?php echo htmlentities($DBName); ?>" hidden>
     <select name="DateTime">
     <?php
-        $orari = prendi_orari($DBName);
+        $orari = prendi_orari($Dati["ID_Film"]);
         foreach($orari as $ora){
-            
+            echo '<option value="'.$ora["Data"] . " " . $ora["ora"] .'">Data:'.$ora["Data"] . " Alle ore:" . $ora["ora"].'</option>';
         } 
     ?>
     </select>
+    <input type="number" name="numero" min="1" max="20" step="1" value="1" placeholder="n°">
+    <button type="submit">Prenota ora!</button>
     </form>
     <?php
     $myfile = fopen($percorsoFilm."/trama.txt", "r") or die("Unable to open file!");
