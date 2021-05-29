@@ -53,7 +53,7 @@ if (isset($_POST["nome"])) {
 						</div>
 						<div class="form-group">
 							<div class="custom-control custom-checkbox">
-								<input type="checkbox" name="remember" value="1" class="custom-control-input" id="customControlInline">
+								<input type="checkbox" name="remember" value="1" class="custom-control-input" id="customControlInline" checked>
 								<label class="custom-control-label" for="customControlInline">Remember me</label>
 							</div>
 						</div>

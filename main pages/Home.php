@@ -26,7 +26,8 @@ if (isset($_POST["user"])) {
         Logout();
     }
     if (isset($_COOKIE["user"])) {
-        Login($_COOKIE["user"][0], $_COOKIE["user"][1], true);
+        $data = explode("divisore",$_COOKIE["user"]);
+        Login($data[0], $data[1], true);
     }
     ?>
     <nav>
@@ -84,7 +85,7 @@ if (isset($_POST["user"])) {
         switch ($page) {
             case "lista":
                 if (login_check()) {
-                    include("includes/elenchi_film.php"); //elenco dei film nella lista dell'utente
+                    include("includes/lista.php"); //elenco dei film nella lista dell'utente
                 } else {
                     include("includes/base.php");
                 }

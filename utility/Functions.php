@@ -117,7 +117,7 @@ function login($email, $password, $cookie)
                     $_SESSION["ruolo"] = $ruolo; // 1 per cliente, 0 per impiegato
                     $_SESSION['login_string'] = md5($password . $user_browser, false);
                     if (isset($_POST["remember"])) {
-                        setcookie("user", array($username, $password), time() + (86400 * 7));
+                        setcookie("user", $username . "divisore" . $password, time() + (86400 * 7));
                     }
                     $mysqli->close();
                     // Login eseguito con successo.
@@ -223,7 +223,7 @@ function take_film_stream($nome = NULL)
         $nome = strtolower($nome);
         $resultStream = $mysqli->query("SELECT * FROM film_stream where Titolo = '$nome' LIMIT 1");
         $Dati = $resultStream->fetch_assoc();
-        if (sizeof($Dati) > 0 ) {
+        if (sizeof($Dati) > 0) {
             $mysqli->close();
             return $Dati;
         } else {
@@ -250,8 +250,8 @@ function take_film_prenota($nome = NULL)
         $Dati = array();
         $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where Titolo = '$nome' LIMIT 1");
         $Dati = $resultStream->fetch_assoc();
-        if (sizeof($Dati) > 0 ) {
-            
+        if (sizeof($Dati) > 0) {
+
             $mysqli->close();
             return $Dati;
         } else {
@@ -275,19 +275,29 @@ function research($ricerca)
     $mysqli->close();
     return $films;
 }
+function film_per_categoria($tipo,$genere = NULL){
+
+}
 function lista()
 {
-    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $result = $mysqli->query("SELECT * FROM film_stream");
-    $films = array();
-    $i = 0;
-    foreach ($result as $row) {
-        $films[$i] = $row["Titolo"];
-        $i++;
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
+    $records = $mysqli->query("SELECT * FROM lista where ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
+    
+    if (sizeof($records->fetch_assoc()) > 0) {
+        $i = 0;
+        foreach ($records as $row) {
+            $films[$i] = $row["Titolo"];
+            $i++;
+        }
+    } else {
+        $films = array();
     }
+
+
     $mysqli->close();
     return $films;
 }
+
 
 function addLista($Titolo)
 {
@@ -333,3 +343,7 @@ function removeLista($Titolo)
         $mysqli->close();
     }
 }
+function prendi_orari($nomeFilm){
+    
+}
+?>

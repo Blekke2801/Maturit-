@@ -4,20 +4,11 @@ $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 if (strpos($url, 'Home.php') === false) {
     header("Location:../Home.php");
 }
-if (isset($_GET["ricerca"])) {
-    $films = research($_GET["ricerca"]);
-} else {
-    $films = take_film_stream();
-}
-?>
-<div>
-    <?php
-    if (isset($_GET["ricerca"])) {
-        echo "<h3> Ecco i risultati per la ricerca: " . $_GET["ricerca"] . "</h3><hr>";
-    } else {
-        echo "<h3> Ecco i Film disponibili nel nostro sito</h3><hr>";
-    }
+$films = lista();
 
+echo "<div>";
+echo "<h3> Ecco i Film presenti nella tua lista</h3><hr>";
+if (sizeof($films) > 0) {
     foreach ($films as $single) {
         $percorsoFilm = "../films/stream/" . $single;
         $Titolo = $single;
@@ -34,5 +25,8 @@ if (isset($_GET["ricerca"])) {
         $trama = $trama . "...";
         echo "<a href='Home.php?NomeFilm=$cartella' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p><h1 class='text'>$Titolo</h1></a>";
     }
-    ?>
+} else {
+    echo "<h4>Nessun film presente nella tua lista</h4>";
+}
+?>
 </div>
