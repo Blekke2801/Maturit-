@@ -117,7 +117,7 @@ function login($email, $password, $cookie)
                     $_SESSION["ruolo"] = $ruolo; // 1 per cliente, 0 per impiegato
                     $_SESSION['login_string'] = md5($password . $user_browser, false);
                     if (isset($_POST["remember"])) {
-                        setcookie("user", $username . "divisore" . $password, time() + (86400 * 7));
+                        setcookie("user", serialize($username . $password), time() + (86400 * 7));
                     }
                     $mysqli->close();
                     // Login eseguito con successo.
@@ -362,11 +362,11 @@ function prendi_orari($id){
     
     return array();
 }
-function countPrenotato($id_film,$data,$ora){
+function Prenotato($id_film,$data,$ora){
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $Dati = array();
-    $resultStream = $mysqli->query("SELECT COUNT() FROM biglietto where ID_Film = $id_film AND Data = '$data' AND Ora = '$ora';") or die($mysqli->error);
-    $number = $resultStream->fetch_row();
-    return intval($number[0]);
+    $resultStream = $mysqli->query("SELECT posto FROM biglietto where ID_Film = $id_film AND Data = '$data' AND Ora = '$ora';") or die($mysqli->error);
+    $Biglietti = $resultStream->fetch_array(MYSQLI_NUM);
+    return $Biglietti;
 }
 ?>

@@ -4,10 +4,16 @@
 require("../utility/Functions.php");
 sec_session_start();
 if (isset($_POST["user"])) {
-    $user = $_POST["user"];
-    $pwd = $_POST["pwd"];
+    $user = htmlentities($_POST["user"]);
+    $pwd = htmlentities($_POST["pwd"]);
     login($user, $pwd, false);
+} else if (isset($_COOKIE["user"])) {
+    $data = unserialize($_COOKIE["user"], ["allowed_classes" => false]);
+    Login($data[0], $data[1], true);
+} else if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
+    Logout();
 }
+
 ?>
 
 <head>
@@ -21,15 +27,6 @@ if (isset($_POST["user"])) {
 </head>
 
 <body>
-    <?php
-    if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
-        Logout();
-    }
-    if (isset($_COOKIE["user"])) {
-        $data = explode("divisore",$_COOKIE["user"]);
-        Login($data[0], $data[1], true);
-    }
-    ?>
     <nav>
         <img src="../img/logo.jfif" alt="Brand">
         <div class="searchbar">

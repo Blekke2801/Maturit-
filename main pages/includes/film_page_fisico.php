@@ -27,7 +27,7 @@ if (isset($_GET["NomeFilm"])) {
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
     ?>
     <form action="Biglietto.php" method="POST">
-    <input type="checkbox" name="NomeFilm" value="<?php echo htmlentities($DBName); ?>" hidden>
+    <input type="checkbox" name="NomeFilm" value="<?php echo htmlentities($DBName); ?>" hidden checked>
     <select name="DateTime">
     <?php
         $orari = prendi_orari($Dati["ID_Film"]);
@@ -36,7 +36,7 @@ if (isset($_GET["NomeFilm"])) {
         } 
     ?>
     </select>
-    <input type="number" name="numero" min="1" max="20" step="1" value="1" placeholder="n°">
+    <input type="number" name="numero" min="1" max="20" step="1" value="1" placeholder="n°" required>
     <button type="submit">Prenota ora!</button>
     </form>
     <?php
