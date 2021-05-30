@@ -8,7 +8,7 @@ if (isset($_POST["user"])) {
     $pwd = htmlentities($_POST["pwd"]);
     login($user, $pwd, false);
 } else if (isset($_COOKIE["user"])) {
-    $data = unserialize($_COOKIE["user"], ["allowed_classes" => false]);
+    $data = unserialize($_COOKIE["user"]);
     Login($data[0], $data[1], true);
 } else if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
     Logout();
@@ -105,7 +105,7 @@ if (isset($_POST["user"])) {
                 break;
         }
     } else if ($_GET["site"] == "fisico") {
-        if (!isset($_GET["NomeFilm"]))
+        if (!isset($_GET["ID_Film"]))
             include("includes/prenota.php"); //elenco dei film al cinema
         else
             include("includes/film_page_fisico.php"); //film singolo

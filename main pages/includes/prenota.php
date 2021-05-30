@@ -9,8 +9,9 @@ if (strpos($url, 'Home.php') === false) {
     }
 }
 echo "<h1 style='color:white'> film in questa settimana </h1>";
-$films = take_film_prenota();
-foreach ($films as $single) {
+$Table = this_week();
+foreach ($Table as $row) {
+    $single = take_film_prenota($row["ID_Film"])[1];
     $percorsoFilm = "../films/prenota/" . $single;
     $Titolo = $single;
     $cartella = $Titolo;
@@ -24,6 +25,6 @@ foreach ($films as $single) {
     }
     fclose($myfile);
     $trama = $trama . "...";
-    echo "<a href='Home.php?site=fisico&NomeFilm=$cartella' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p><h1 class='text'>$Titolo</h1></a>";
+    echo "<a href='Home.php?site=fisico&ID_Film=".$row["ID_Film"]."' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p><h1 class='text'>$Titolo</h1></a>";
 }
 ?>
