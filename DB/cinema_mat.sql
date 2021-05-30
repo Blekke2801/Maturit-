@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 29, 2021 alle 21:55
+-- Creato il: Mag 30, 2021 alle 22:13
 -- Versione del server: 5.7.17
 -- Versione PHP: 5.6.30
 
@@ -32,13 +32,36 @@ USE `cinema_mat`;
 
 CREATE TABLE `biglietto` (
   `ID_Ticket` int(11) NOT NULL,
-  `Data` date NOT NULL,
-  `Ora` time NOT NULL,
   `ID_User` int(11) NOT NULL,
-  `sala` int(11) NOT NULL,
   `posto` varchar(6) NOT NULL,
-  `ID_Film` int(11) NOT NULL
+  `ID_TimeTable` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `biglietto`
+--
+
+INSERT INTO `biglietto` (`ID_Ticket`, `ID_User`, `posto`, `ID_TimeTable`) VALUES
+(4, 1, 'A-1', 1),
+(5, 1, 'E-5', 1),
+(6, 1, 'E-5', 1),
+(7, 1, 'E-6', 1),
+(8, 1, 'E-5', 1),
+(9, 1, 'E-6', 1),
+(10, 1, 'E-5', 1),
+(11, 1, 'E-6', 1),
+(12, 1, 'E-5', 1),
+(13, 1, 'E-6', 1),
+(14, 1, 'E-5', 1),
+(15, 1, 'E-6', 1),
+(16, 1, 'E-5', 1),
+(17, 1, 'E-6', 1),
+(18, 1, 'E-5', 1),
+(19, 1, 'E-6', 1),
+(20, 1, 'E-5', 1),
+(21, 1, 'E-6', 1),
+(22, 1, 'E-5', 1),
+(23, 1, 'E-6', 1);
 
 -- --------------------------------------------------------
 
@@ -114,9 +137,10 @@ CREATE TABLE `tentativi_login` (
 
 CREATE TABLE `timetable` (
   `ID_TimeTable` int(11) NOT NULL,
-  `Data` date NOT NULL,
-  `ora` time NOT NULL,
+  `Data` varchar(40) NOT NULL,
+  `ora` varchar(40) NOT NULL,
   `sala` int(11) NOT NULL,
+  `liberi` int(11) NOT NULL DEFAULT '50',
   `ID_Film` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -124,8 +148,8 @@ CREATE TABLE `timetable` (
 -- Dump dei dati per la tabella `timetable`
 --
 
-INSERT INTO `timetable` (`ID_TimeTable`, `Data`, `ora`, `sala`, `ID_Film`) VALUES
-(1, '2021-05-31', '17:15:00', 2, 1);
+INSERT INTO `timetable` (`ID_TimeTable`, `Data`, `ora`, `sala`, `liberi`, `ID_Film`) VALUES
+(1, '2021-05-31', '17:15', 2, 50, 1);
 
 -- --------------------------------------------------------
 
@@ -162,7 +186,7 @@ INSERT INTO `utente` (`ID_User`, `Mail`, `Password`, `Nome`, `Cognome`, `Data_Bi
 ALTER TABLE `biglietto`
   ADD PRIMARY KEY (`ID_Ticket`),
   ADD KEY `Prenotato da` (`ID_User`),
-  ADD KEY `prenota il film` (`ID_Film`);
+  ADD KEY `prenota per` (`ID_TimeTable`);
 
 --
 -- Indici per le tabelle `film_prenotabili`
@@ -211,7 +235,7 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `biglietto`
 --
 ALTER TABLE `biglietto`
-  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT per la tabella `film_prenotabili`
 --
@@ -241,7 +265,7 @@ ALTER TABLE `utente`
 --
 ALTER TABLE `biglietto`
   ADD CONSTRAINT `Prenotato da` FOREIGN KEY (`ID_User`) REFERENCES `utente` (`ID_User`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `prenota il film` FOREIGN KEY (`ID_Film`) REFERENCES `film_prenotabili` (`ID_Film`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `prenota per` FOREIGN KEY (`ID_TimeTable`) REFERENCES `timetable` (`ID_TimeTable`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `lista`

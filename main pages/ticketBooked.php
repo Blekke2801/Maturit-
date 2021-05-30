@@ -28,13 +28,15 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
 </head>
 
 <body>
+
+<div class="subnav">
+        <a class="btn" href="Home.php">Home</a>
+    </div>
     <?php
     if ($prenotato) {
         echo "<h1>Pagamento eseguito con successo!</h1>";
-    }
-    if ($prenotato && is_array($_POST["posto"])) {
         foreach ($idB as $biglietto) {
-            $t = biglietti($biglietto[0]);
+            $t = biglietti($biglietto);
             $TimeTable = prendi_orari(null, $t[3]);
             $film = take_film_prenota($TimeTable["ID_Film"]);
             $titolo = $film[1];
