@@ -369,4 +369,27 @@ function Prenotato($id_film,$data,$ora){
     $Biglietti = $resultStream->fetch_array(MYSQLI_NUM);
     return $Biglietti;
 }
+function biglietti($id = null){
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    if($id == NULL){
+        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION["user_id"] . ";") or die($mysqli->error);
+        $Biglietti = array();
+        $i = 0;
+        foreach ($resultStream as $row) {
+            $Biglietti[$i] = $row;
+            $i++;
+        }
+        $mysqli->close();
+        return $Biglietti;
+    }
+    else {
+        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION["user_id"] . " AND ID_Ticket = $id;") or die($mysqli->error);
+        $Biglietto = $resultStream->fetch_row();
+        $mysqli->close();
+        return $Biglietto;
+    }
+} function prenota($data,$ora,$sala,$posto,$film){
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $reg = $mysqli->prepare("INSERT INTO `utente` (`Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES ('$email', ?, '$nome', '$cognome', '$birth', true, ?)");
+}
 ?>

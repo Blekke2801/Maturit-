@@ -6,10 +6,14 @@ sec_session_start();
 <html>
 
 <head>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../img/favicon.ico" />
-    <link rel="stylesheet" href="../utility/css/Biglietto.css">
+    <link rel="stylesheet" href="../utility/css/prenota.css">
     <script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
     <script src="../js/fisico.js"></script>
+    <title>Prenota!</title>
 </head>
 
 <body>
