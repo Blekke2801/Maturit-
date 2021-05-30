@@ -36,13 +36,14 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
     if ($prenotato) {
         echo "<h1>Pagamento eseguito con successo!</h1>";
         foreach ($idB as $biglietto) {
+            echo "<h1>Il tuo biglietto:</h1>";
             $t = biglietti($biglietto);
             $TimeTable = prendi_orari(null, $t[3]);
-            $film = take_film_prenota($TimeTable["ID_Film"]);
+            $film = take_film_prenota($TimeTable[5]);
             $titolo = $film[1];
             $genere = $film[2];
-            $data = $TimeTable["Data"];
-            $ora = $TimeTable["ora"];
+            $data = $TimeTable[1];
+            $ora = $TimeTable[2];
             echo '<div class="biglietto"><h4>' . $titolo . '</h4><h3>Genere: ' . $genere . '</h3><h3>Data: ' . $data . '</h3><h3>Ora: ' . $ora . '</h3><h3>Codice QR:</h3>';
             echo '<img src="../utility/qr.php?id="' . $biglietto . ' /></div>';
         }

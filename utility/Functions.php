@@ -112,10 +112,10 @@ function login($email, $password, $cookie)
 
                     $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_id'] = $user_id;
-                    if(!empty($_POST["remember"])) {
-                        setcookie ("user",serialize(array($username,$password)),time()+ (86400*7));
+                    if (!empty($_POST["remember"])) {
+                        setcookie("user", serialize(array($username, $password)), time() + (86400 * 7));
                     } else {
-                        setcookie("user","");
+                        setcookie("user", "");
                     }
                     $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
@@ -237,18 +237,17 @@ function take_film_stream($nome = NULL)
 function take_film_prenota($id)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-        $Dati = array();
-        $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where ID_Film = '$id' LIMIT 1") or die($mysqli->error);
-        $Dati = $resultStream->fetch_row() or die($resultStream->error);
-        if (sizeof($Dati) > 0) {
+    $Dati = array();
+    $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where ID_Film = '$id' LIMIT 1") or die($mysqli->error);
+    $Dati = $resultStream->fetch_row() or die($resultStream->error);
+    if (sizeof($Dati) > 0) {
 
-            $mysqli->close();
-            return $Dati;
-        } else {
-            $mysqli->close();
-            return array();
-        }
-    
+        $mysqli->close();
+        return $Dati;
+    } else {
+        $mysqli->close();
+        return array();
+    }
 }
 function research($ricerca)
 {
@@ -269,7 +268,7 @@ function lista()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
     $records = $mysqli->query("SELECT * FROM lista where ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
-    
+
     if (sizeof($records->fetch_assoc()) > 0) {
         $i = 0;
         foreach ($records as $row) {
@@ -330,14 +329,14 @@ function removeLista($Titolo)
         $mysqli->close();
     }
 }
-function prendi_orari($id,$preciso = null){
+function prendi_orari($id, $preciso = null)
+{
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    if($preciso == NULL){
+    if ($preciso == NULL) {
         $Dati = array();
         $resultStream = $mysqli->query("SELECT ID_TimeTable,Data,ora FROM timetable where ID_Film = $id") or die($mysqli->error);
         $i = 0;
-        foreach($resultStream as $row)
-        {
+        foreach ($resultStream as $row) {
             $Dati[$i] = $row;
         }
         if (sizeof($Dati) > 0) {
@@ -347,14 +346,11 @@ function prendi_orari($id,$preciso = null){
             $mysqli->close();
             return array();
         }
-    }else{
+    } else {
         $Dati = array();
-        $resultStream = $mysqli->query("SELECT * FROM timetable where ID_TimeTable = $preciso;") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT ID_TimeTable,Data,ora,sala,liberi,ID_Film FROM timetable where ID_TimeTable = $preciso LIMIT 1;") or die($mysqli->error);
         $i = 0;
-        foreach($resultStream as $row)
-        {
-            $Dati[$i] = $row;
-        }
+        $Dati = $resultStream->fetch_row();
         if (sizeof($Dati) > 0) {
             $mysqli->close();
             return $Dati;
@@ -364,16 +360,18 @@ function prendi_orari($id,$preciso = null){
         }
     }
 }
-function Prenotato($ID_TIME){
+function Prenotato($ID_TIME)
+{
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $Dati = array();
     $resultStream = $mysqli->query("SELECT posto FROM biglietto where ID_TimeTable = $ID_TIME;") or die($mysqli->error);
     $Biglietti = $resultStream->fetch_array(MYSQLI_NUM);
     return $Biglietti;
 }
-function biglietti($id = null){
+function biglietti($id = null)
+{
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    if($id == NULL){
+    if ($id == NULL) {
         $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION["user_id"] . ";") or die($mysqli->error);
         $Biglietti = array();
         $i = 0;
@@ -383,36 +381,39 @@ function biglietti($id = null){
         }
         $mysqli->close();
         return $Biglietti;
-    }
-    else {
+    } else {
         $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION["user_id"] . " AND ID_Ticket = $id;") or die($mysqli->error);
         $Biglietto = $resultStream->fetch_row();
         $mysqli->close();
         return $Biglietto;
     }
-} 
-function this_week(){
-    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-        $result = $mysqli->query("SELECT * FROM TimeTable where week(data) = week(CURDATE()) OR week(data) = week(CURDATE()) + 1;");
-        $films = array();
-        $i = 0;
-        foreach ($result as $row) {
-            $films[$i] = $row;
-            $i++;
-        }
-        $mysqli->close();
-        return $films;
 }
-function prenota($id,$posto){
+function this_week()
+{
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $result = $mysqli->query("SELECT * FROM TimeTable where week(data) = week(CURDATE()) OR week(data) = week(CURDATE()) + 1;");
+    $films = array();
+    $i = 0;
+    foreach ($result as $row) {
+        $films[$i] = $row;
+        $i++;
+    }
+    $mysqli->close();
+    return $films;
+}
+function prenota($id, $posto)
+{
     //film = nome del film, usare funzione take film prenota
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $reg = $mysqli->prepare("INSERT INTO biglietto (ID_User,posto,ID_TimeTable) VALUES (?,'$posto',$id);") or die($mysqli->error);
     $user = NULL;
-    $reg->bind_param("i",$user);
+    $reg->bind_param("i", $user);
     $user = $_SESSION["user_id"];
     $reg->execute() or die($mysqli->error);
     $reg->close();
+    //$mysqli->query("UPDATE timetable SET liberi = liberi-1 WHERE ID_TimeTable = $id;") or die($mysqli->error);
     $reg = $mysqli->query("SELECT Max(ID_Ticket) as 'ticket' FROM biglietto;") or die($mysqli->error);
-    return $reg->fetch_row();
+    $idB = $reg->fetch_row();
+    return $idB[0];
     $mysqli->close();
 }
