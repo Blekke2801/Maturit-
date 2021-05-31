@@ -1,4 +1,5 @@
 <?php
+//uguale a film_page_fisico ma al posto del form per prenotare ci sono 2 pulsanti: 1 per vedere il film, l'altro per aggiungerlo alla lista(nessuno dei 2 funziona)
 if (isset($_GET["NomeFilm"])) {
     $nome = $_GET["NomeFilm"];
     if (!isset($_GET["site"]) || $_GET["site"] != "fisico") {
@@ -14,7 +15,6 @@ if (isset($_GET["NomeFilm"])) {
 } else {
     Header("Location:./Home.php");
 }
-//titolo,riga,prenota/guarda se loggato,locandina,riga,genere,trama
 ?>
 <div>
     <?php

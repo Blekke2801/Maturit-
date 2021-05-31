@@ -1,11 +1,12 @@
 <?php
 //pagina riservata agli admin
-//l'admin può aggiungere un nuovo film streaming e una nuova tabella oraria
+//l'admin può aggiungere un nuovo film streaming e una nuova tabella oraria gestiti con js
 require "../utility/Functions.php";
 sec_session_start();
-if (!login_check() || !$_SESSION["ruolo"]) {
+if (!login_check() || !$_SESSION["ruolo"]) { //controllo se ha effettuato il login e se è un admin
     header("Location:Home.php");
 }
+
 ?>
 <!DOCTYPE html>
 <html>

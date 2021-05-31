@@ -1,6 +1,7 @@
 <?php
 require "../utility/Functions.php";
 sec_session_start();
+//pagina in cui vengono effettuate effettivamente le operazioni dell'admin
 if (!login_check() || !$_SESSION["ruolo"]) {
     header("Location:Home.php");
 } else {

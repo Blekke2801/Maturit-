@@ -5,7 +5,7 @@ if (strpos($url, 'Home.php') === false) {
     header("Location:../Home.php");
 }
 $films = lista();
-
+//mostra i film presenti nella lista dell'utente
 echo "<div>";
 echo "<h3> Ecco i Film presenti nella tua lista</h3><hr>";
 if (sizeof($films) > 0) {

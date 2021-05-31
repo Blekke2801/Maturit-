@@ -1,5 +1,5 @@
 <?php
-    //prima background video, poi con i comandi (request_fullscreen());
+    //pagina incompleta per player del film in streaming
 ?>
 <video playsinline autoplay muted loop poster="polina.jpg" id="bgvid">
   <source src="polina.webm" type="video/webm">

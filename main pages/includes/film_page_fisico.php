@@ -1,6 +1,6 @@
-<!--<script src="../js/fisico.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+
 <?php
+//controllo per vedere se l'utente è entrato in questa pagina senza home, viene mostrato il film selezionato, cercato tramite id contenente in $_GET["ID_Film]
 if (isset($_GET["ID_Film"])) {
     $id = $_GET["ID_Film"];
     if (isset($_GET["site"]) && $_GET["site"] == "fisico") {
@@ -19,12 +19,15 @@ if (isset($_GET["ID_Film"])) {
 ?>
 <div>
     <?php
+    //dati del film
     $disabled = false;
     $nome = $Dati[1];
     $DBName = $nome;
     $nome[0] = strtoupper($nome[0]);
     echo "<h1>$nome</h1><hr>";
+    //la pagina mostra titolo,locandina,parte della trama e altri dati del film
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
+    //form per far comprare all'utente i biglietti per il film
     ?>
     <form action="Biglietto.php" method="POST">
         <input type="checkbox" name="ID_Film" value="<?php echo htmlentities($id); ?>" hidden checked>

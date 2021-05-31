@@ -1,6 +1,7 @@
 <?php
 require "../utility/Functions.php";
 sec_session_start();
+//pagina in cui seleziono il posto da prenotare
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +25,7 @@ sec_session_start();
         <?php
         if (isset($_POST["ID_Film"])) {
             $film = take_film_prenota($_POST["ID_Film"]);
-            $titolo = $film[1];
+            $titolo = $film[1]; //dati del film e della tabella oraria
             $titolo[0] = strtoupper($titolo[0]);
             $TimeTable = prendi_orari($film[0], $_POST["TimeTable"]);
             $Biglietti = Prenotato($_POST["TimeTable"]);

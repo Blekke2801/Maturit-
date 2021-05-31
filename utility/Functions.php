@@ -1,6 +1,8 @@
 <?php
-DEFINE("User", "sec_user");
+//pogina contenente tutte le funzioni del sito
+DEFINE("User", "sec_user");//utente che ha un numero limitato di permessi
 define("pwd", "5e91a8e7a77acba9e3e9f1f545a7da4b");
+//ci previene da un attacco a forza bruta
 function checkbrute($user_id, $ip)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -22,22 +24,24 @@ function checkbrute($user_id, $ip)
         }
     }
 }
+//prende l'inidirzzo ip dell'utente
 function getIPAddress()
 {
-    //whether ip is from the share internet  
+    //se l'ip proviene dalla condivisione Internet
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         $ip = $_SERVER['HTTP_CLIENT_IP'];
     }
-    //whether ip is from the proxy  
+    //se l'ip arriva dal proxy  
     else if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
-    //whether ip is from the remote address  
+    //se l'ip arriva dal campo remote address  
     else {
         $ip = $_SERVER['REMOTE_ADDR'];
     }
     return $ip;
 }
+//avvia una sessione sicura
 function sec_session_start()
 {
     $session_name = 'sec_session_id'; // Imposta un nome di sessione
@@ -57,10 +61,12 @@ function sec_session_start()
     session_start(); // Avvia la sessione php.
     session_regenerate_id(); // Rigenera la sessione e cancella quella creata in precedenza.
 }
+
+//effettua la registrazione
 function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $sql = "SELECT COUNT(*) FROM utente WHERE Mail = '$email'";
+    $sql = "SELECT COUNT(*) FROM utente WHERE Mail = '$email'"; //controlla se l'utente esiste già
     $exists = $mysqli->query($sql);
     if ($exists->fetch_row()[0] > 0) {
         $mysqli->close();
@@ -79,11 +85,10 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
     $mysqli->close();
     return true;
 }
+//effettua il login
 function login($email, $password, $cookie)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
-    // ...ma noi non lo usiamo!
     $sql = "SELECT * FROM utente WHERE Mail = '$email' LIMIT 1";
     if ($result = $mysqli->query($sql)) {
         $row = $result->fetch_assoc();
@@ -113,7 +118,7 @@ function login($email, $password, $cookie)
                     $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_id'] = $user_id;
                     if (!empty($_POST["remember"])) {
-                        setcookie("user", serialize(array($username, $password)), time() + (86400 * 7));
+                        setcookie("user", serialize(array($username, $password)), time() + (86400 * 7)); //metto un cookie con valore un simil array che contiene username e password criptata
                     } else {
                         setcookie("user", "");
                     }
@@ -121,7 +126,7 @@ function login($email, $password, $cookie)
                     $_SESSION['username'] = $username;
                     $_SESSION["ruolo"] = $ruolo; // 1 per cliente, 0 per impiegato
                     if($_SESSION["ruolo"]){
-                        $_SESSION["tariffa"] = $tariffa;
+                        $_SESSION["tariffa"] = $tariffa; //0 se free altrimenti premium
                     }
                     $_SESSION['login_string'] = md5($password . $user_browser, false);
                     $mysqli->close();
@@ -145,6 +150,7 @@ function login($email, $password, $cookie)
         }
     }
 }
+//effettua la funzione di logout
 function logout()
 {
     require_once 'functions.php';
@@ -167,7 +173,7 @@ function logout()
     session_destroy();
     header('Location: Login.php');
 }
-//Crea la funzione 'login_check':
+//funzione che controlla se l'utente ha eseguito il login
 function login_check()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -210,6 +216,7 @@ function login_check()
         return false;
     }
 }
+//se la variabile nome non è settata prende tutti i titoli film, altrimenti prende i dati del film indicato in $nome
 function take_film_stream($nome = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -237,6 +244,7 @@ function take_film_stream($nome = NULL)
         }
     }
 }
+//come la funzione take_film_stream ma utilizza l'id
 function take_film_prenota($id = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -269,6 +277,7 @@ function take_film_prenota($id = NULL)
         }
     }
 }
+//restituisce i film che risultano nella ricerca effettuata dall'utente
 function research($ricerca)
 {
     $ricerca = strtolower($ricerca);
@@ -284,6 +293,7 @@ function research($ricerca)
     $mysqli->close();
     return $films;
 }
+//restituisce la l'id dei film nella lista dell'utente
 function lista()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
@@ -304,7 +314,7 @@ function lista()
     return $films;
 }
 
-
+//aggiunge alla lista il film indicato
 function addLista($Titolo)
 {
     $dati = take_film_stream($Titolo);
@@ -327,6 +337,7 @@ function addLista($Titolo)
         $mysqli->close();
     }
 }
+//rimuove alla lista il film indicato
 function removeLista($Titolo)
 {
     $dati = take_film_stream($Titolo);
@@ -349,6 +360,7 @@ function removeLista($Titolo)
         $mysqli->close();
     }
 }
+//ottiene tutti gli orari di un film, se preciso è settato l'orario con id = preciso
 function prendi_orari($id, $preciso = null)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -380,6 +392,8 @@ function prendi_orari($id, $preciso = null)
         }
     }
 }
+
+//controlla tutti i posti già prenotati in un determinato orario un determinato giorno
 function Prenotato($ID_TIME)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -392,6 +406,8 @@ function Prenotato($ID_TIME)
     }
     return $Biglietti;
 }
+
+//controlla tutti i biglietti o il singolo biglietto a seconda di id (se è null li prende tutti)
 function biglietti($id = null)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -412,6 +428,8 @@ function biglietti($id = null)
         return $Biglietto;
     }
 }
+
+//prende tutti i film disponibili la settimana corrente
 function this_week()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -425,6 +443,8 @@ function this_week()
     $mysqli->close();
     return $films;
 }
+
+//prenota il biglietto
 function prenota($id, $posto)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -447,6 +467,8 @@ function prenota($id, $posto)
         return false;
     }
 }
+
+//operazione dell'admin che permette di inserire un nuovo film e di aggiungerlo nella cartella del server
 function new_film()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -490,6 +512,8 @@ function new_film()
         return false;
     }
 }
+
+//operazione dell'admin che permette di aggiungere una nuova tabella oraria
 function new_hour()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
@@ -512,3 +536,4 @@ function new_hour()
         return false;
     }
 }
+?>

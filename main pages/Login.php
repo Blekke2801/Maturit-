@@ -3,12 +3,13 @@ require("../utility/Functions.php");
 sec_session_start();
 $register = false;
 $error = false;
-if (isset($_POST["nome"])) {
+if (isset($_POST["nome"])) { // se true vuol dire che l'utente arriva dalla pagina di registrazione, quindi lo registra
 	$register = true;
 	if(!register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"])){
 		$error = true;
 	}
 }
+//pagina del login
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +25,7 @@ if (isset($_POST["nome"])) {
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
 
-<body <?php if($error) echo "onload='errorReg()'"; ?>>
+<body <?php if($error) echo "onload='errorReg()'"; //funzione js per avvisare che la registrazione ha fallito?>>
 	<div class="subnav">
 		<a class="btn" href="Home.php">Home</a>
 		<a class="btn" href="register.php">Registrati</a>

@@ -1,6 +1,6 @@
 <?php
 $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-
+//controllo per vedere se l'utente è entrato in questa pagina senza home
 if (strpos($url, 'Home.php') === false) {
     header("Location:../Home.php");
 }

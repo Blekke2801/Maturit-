@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <?php
-require("../utility/Functions.php");
-sec_session_start();
-if (isset($_POST["user"])) {
+//pagina home
+require("../utility/Functions.php");// file con tutte le funzioni
+sec_session_start(); //avvia la sessione sicura
+if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quindi lo effettuo
     $user = htmlentities($_POST["user"]);
     $pwd = htmlentities($_POST["pwd"]);
     login($user, $pwd, false);
 } else if (isset($_COOKIE["user"])) {
-    $data = unserialize($_COOKIE["user"]);
+    $data = unserialize($_COOKIE["user"]); //il cookie ha un value creato dalla funzione serialize che restituisce un simil array formato da 2 campi inseriti, in questo caso sono stati inseriti user e pwd criptata
     Login($data[0], $data[1], true);
 } else if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
-    Logout();
+    Logout(); //cliccando su logout viene ricaricata la pagina con $_GET["logout" = true, così da poter effettuare il logout
 }
 
 ?>
@@ -27,6 +28,7 @@ if (isset($_POST["user"])) {
 </head>
 
 <body>
+<!-- navbar -->
     <nav>
         <img src="../img/logo.jfif" alt="Brand">
         <div class="searchbar">
@@ -34,7 +36,7 @@ if (isset($_POST["user"])) {
             <label class="btn" for="search" id="btnsrc" onclick="ricerca()">Go</label>
         </div>
         <div class="account">
-            <?php if (!login_check()) { ?>
+            <?php if (!login_check()) { //se l'utente ha effettuato il login viene mostrato nome utente e pulsante per prenotare i biglietti, altrimenti 2 pulsanti per login o registrazione?>
                 <a class="btn" href="Login.php">Login</a>
                 <a class="btn" href="register.php">Register</a>
             <?php } else {
@@ -76,8 +78,9 @@ if (isset($_POST["user"])) {
     </div>
 
     <?php
+    //a seconda del campo $_GET["site"] il sito si divide in 2, la parte di prenotazione e la parte di streaming
     if (!isset($_GET["site"]) || $_GET["site"] != "fisico") {
-        if (isset($_GET["page"]))
+        if (isset($_GET["page"])) // se non è specificata la parte del sito verrà mostrata di default la zon streming con pagina specifica e non, il tutto viene mostrato con include
             $page = $_GET["page"];
         else
             $page = "null";
@@ -86,23 +89,23 @@ if (isset($_POST["user"])) {
                 if (login_check()) {
                     include("includes/lista.php"); //elenco dei film nella lista dell'utente
                 } else {
-                    include("includes/base.php");
+                    include("includes/base.php"); //pagina di benvenuto
                 }
                 break;
             case "cerca":
-                include("includes/elenchi_film.php");
+                include("includes/elenchi_film.php"); //elenco dei film in streaming che risultano nella ricerca effettuata
                 break;
             case "novita":
-                include("includes/elenchi_film.php");
+                include("includes/elenchi_film.php"); // film appena aggiunti(non sviluppato per il momento)
                 break;
             default:
 
                 if (isset($_GET["NomeFilm"])) {
-                    include("includes/film_page_stream.php"); //elenco dei film al cinema
+                    include("includes/film_page_stream.php"); //elenco dei film in streming
                 } else if (login_check()) {
                     include("includes/elenchi_film.php"); //elenco dei film nella lista dell'utente
                 } else {
-                    include("includes/base.php");
+                    include("includes/base.php"); //pagina di benvenuto
                 }
                 break;
         }
@@ -117,7 +120,7 @@ if (isset($_POST["user"])) {
 
 
     ?>
-    <div class="contacts"></div>
+    <div class="contacts"></div><!-- zona in cui sono indicati i possibili contatti con il cinema (non compilato)-->
 </body>
 
 </html>

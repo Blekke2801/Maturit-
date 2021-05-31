@@ -1,8 +1,9 @@
 <?php
 require "../utility/Functions.php";
+//pagina in cui viene visualizzato il biglietto selezionato
 sec_session_start();
 $prenotato = false;
-if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
+if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arriva dalla pagina di prenotazione viene eseguita la prenotazione, poi vengono visualizzati i biglietti
     if (is_array($_POST["posto"])) {
         $idB = array();
         $i = 0;

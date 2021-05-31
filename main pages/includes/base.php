@@ -1,13 +1,8 @@
 <?php
 $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-
+//pagina di benvenuto, viene controllato se l'utente è entrato direttamente in questa pagina o è passato tramite home, se passato tramite home vengono mostrati: un messaggio di benvenuto, richiesta di login o regitrazione con appositi pulsanti e 5 film di esempio per vedere cosa è disponibile vedere nel sito 
 if (strpos($url, 'Home.php') === false) {
-
-    require "../../utility/connect.php";
     require "../../utility/Functions.php";
-    if (login_check()) {
-        logout();
-    }
     header("Location:../Home.php");
 }else {
 ?>

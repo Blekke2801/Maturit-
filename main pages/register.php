@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+<!--pagina di registrazione, controlli dei campi effettuati con js -->
     <div class="register">
         <h1 style="text-align:center">Registrati!</h1>
         <form action="Login.php" method="post" autocomplete="off">
