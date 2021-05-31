@@ -33,6 +33,7 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
         <a class="btn" href="Home.php">Home</a>
     </div>
     <?php
+    //il pagamento viene eseguito(se online) dopo aver controllato se il biglietto è disponibile o no
     if ($prenotato) {
         echo "<h1>Pagamento eseguito con successo!</h1>";
         foreach ($idB as $biglietto) {
@@ -46,7 +47,8 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
                 $data = $TimeTable[1];
                 $ora = $TimeTable[2];
                 $posto = $t[2];
-                echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Posto:' . $posto . '</h4><h4>Codice QR:</h4>';
+                $sala = $TimeTable[3];
+                echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Sala:' . $sala . '</h4><h4>Posto:' . $posto . '</h4><h4>Codice QR:</h4>';
                 $url = urlencode("ticketBooked.php?id=" . $biglietto);
                 echo '<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr"/></div>';
             } else {
@@ -67,7 +69,8 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
         $data = $TimeTable[1];
         $ora = $TimeTable[2];
         $posto = $t[2];
-        echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Posto:' . $posto . '</h4><h4>Codice QR:</h4>';
+        $sala = $TimeTable[3];
+        echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Sala: ' . $sala . '</h4><h4>Posto: ' . $posto . '</h4><h4>Codice QR:</h4>';
         $url = urlencode("ticketBooked.php?id=" . $biglietto);
         echo '<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr"/></div>';
     }

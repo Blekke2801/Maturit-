@@ -1,3 +1,4 @@
+<?php //pagina riservata agli admin?>
 <!DOCTYPE html>
 <html>
 

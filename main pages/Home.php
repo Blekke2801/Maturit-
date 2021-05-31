@@ -46,7 +46,7 @@ if (isset($_POST["user"])) {
                             <ul class="dropdown">
                                 <?php
                                 if (!$_SESSION["ruolo"]) {
-                                    echo '<li><a href="NuovoFilm.php">Aggiungi film</a></li>';
+                                    echo '<li><a href="AdminPage.php">Aggiungi film</a></li>';
                                 } else {
                                     echo '<li><a href="Home.php?site=fisico&page=biglietti">I miei biglietti</a></li>';
                                 } ?>
@@ -107,12 +107,12 @@ if (isset($_POST["user"])) {
                 break;
         }
     } else if ($_GET["site"] == "fisico") {
-        if (!isset($_GET["ID_Film"]))
-            include("includes/prenota.php"); //elenco dei film al cinema
-        else if (isset($_GET["page"]) && $_GET["page"] == "biglietti")
-            include("includes/elencoBiglietti.php.php"); //elenco dei film al cinema
-        else
+        if (isset($_GET["ID_Film"]))
             include("includes/film_page_fisico.php"); //film singolo
+        else if (isset($_GET["page"]) && $_GET["page"] == "biglietti")
+            include("includes/elencoBiglietti.php"); //elenco dei film al cinema
+        else
+            include("includes/prenota.php"); //elenco dei film al cinema
     }
 
 
