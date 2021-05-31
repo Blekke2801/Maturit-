@@ -48,7 +48,7 @@ if (isset($_POST["user"])) {
                                 if (!$_SESSION["ruolo"]) {
                                     echo '<li><a href="AdminPage.php">Aggiungi film</a></li>';
                                 } else {
-                                    echo '<li><a href="Home.php?site=fisico&page=biglietti">I miei biglietti</a></li>';
+                                    //echo '<li><a href="Home.php?site=fisico&page=biglietti">I miei biglietti</a></li>';
                                 } ?>
                                 <li><a href="Home.php?logout=true">Logout</a></li>
                             </ul>

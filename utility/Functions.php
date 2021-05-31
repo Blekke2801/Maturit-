@@ -234,19 +234,36 @@ function take_film_stream($nome = NULL)
         }
     }
 }
-function take_film_prenota($id)
+function take_film_prenota($id = NULL)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $Dati = array();
-    $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where ID_Film = '$id' LIMIT 1") or die($mysqli->error);
-    $Dati = $resultStream->fetch_row() or die($resultStream->error);
-    if (sizeof($Dati) > 0) {
+    if (isset($id)) {
+        $resultStream = $mysqli->query("SELECT * FROM film_prenotabili where ID_Film = '$id' LIMIT 1") or die($mysqli->error);
+        $Dati = $resultStream->fetch_row() or die($resultStream->error);
+        if (sizeof($Dati) > 0) {
 
-        $mysqli->close();
-        return $Dati;
+            $mysqli->close();
+            return $Dati;
+        } else {
+            $mysqli->close();
+            return array();
+        }
     } else {
-        $mysqli->close();
-        return array();
+        $resultStream = $mysqli->query("SELECT * FROM film_prenotabili;") or die($mysqli->error);
+        $i = 0;
+        foreach ($resultStream as $single) {
+            $Dati[$i] = $single;
+            $i++;
+        }
+        if (sizeof($Dati) > 0) {
+
+            $mysqli->close();
+            return $Dati;
+        } else {
+            $mysqli->close();
+            return array();
+        }
     }
 }
 function research($ricerca)
@@ -418,6 +435,71 @@ function prenota($id, $posto)
         $idB = $reg->fetch_row();
         $mysqli->close();
         return $idB[0];
+    } else {
+        $mysqli->close();
+        return false;
+    }
+}
+function new_film()
+{
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $titolo = $_POST["titolo"];
+    $genere = $_POST["genere"];
+    $durata = $_POST["durata"];
+    $tariffa = $_POST["tariffa"];
+    $locandinaV = $_FILES["locandinaV"];
+    $locandinaH = $_FILES["locandinaH"];
+    $film = $_FILES["film"];
+    $trama = $_FILES["trama"];
+    $result = $mysqli->query("SELECT COUNT(ID_Film) from film_stream where Titolo = '$titolo';");
+    $controllo = $result->fetch_row();
+    if ($controllo[0] == "0") {
+        $result = $mysqli->prepare("INSERT INTO film_stream (Titolo,Data_Add,Genere,Free_Premium,durata) VALUES ('$titolo',?,'$genere',?,$durata);");
+        $cartella = "../films/$titolo";
+        mkdir($cartella, 0700);
+        $result->bind_param("si", $data, $tariffa);
+        $data = date("Y-m-d");
+        if ($tariffa == "free") {
+            $tariffa = false;
+        } else {
+            $tariffa = true;
+        }
+        $result->execute();
+        move_uploaded_file($locandinaV["tmp_name"], $cartella);
+        rename($locandinaV["name"], "locandina.jpg");
+        move_uploaded_file($locandinaH["tmp_name"], $cartella);
+        rename($locandinaH["name"], "horizontal.jpg");
+        move_uploaded_file($trama["tmp_name"], $cartella);
+        rename($trama["name"], "trama.txt");
+        mkdir($cartella . "/film", 0700);
+        move_uploaded_file($film["tmp_name"], $cartella . "/film");
+        $estensione = explode(".", $film["name"]);
+        rename($film["name"], "it" . $estensione[1]);
+        $result->close();
+        $mysqli->close();
+        return true;
+    } else {
+        $mysqli->close();
+        return false;
+    }
+}
+function new_hour()
+{
+    $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+    $data = $_POST["data"];
+    $ora = $_POST["ora"];
+    $sala = $_POST["sala"];
+    $film = $_POST["id_film"];
+    $result = $mysqli->query("SELECT COUNT(ID_TimeTable) from timetable where Data = '$data' AND ora = '$ora' AND sala = $sala AND ID_Film = $film;");
+    $controllo = $result->fetch_row();
+    if ($controllo[0] == "0") {
+        if ($mysqli->query("INSERT INTO TimeTable (Data,ora,sala,ID_Film) VALUES ('$data','$ora',$sala,$film);")) {
+            $mysqli->close();
+            return true;
+        } else {
+            $mysqli->close();
+            return false;
+        }
     } else {
         $mysqli->close();
         return false;
