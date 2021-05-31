@@ -37,8 +37,8 @@ if (isset($_GET["ID_Film"])) {
             }
             ?>
         </select>
-        <input type="number" name="numero" min="1" max="20" step="1" value="1" placeholder="n°" required>
-        <button type="submit">Prenota ora!</button>
+        <input type="number" name="numero" min="1" max="<?php if($ora["liberi"] == 0){ echo "disabled";} else {$numero = $ora["liberi"]; echo $numero;}?>" step="1" value="1" placeholder="n°" required>
+        <button type="submit" <?php if($ora["liberi"] == 0) echo "disabled"; ?>>Prenota ora!</button>
     </form>
     <?php
     $myfile = fopen($percorsoFilm . "/trama.txt", "r") or die("Unable to open file!");

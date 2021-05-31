@@ -29,7 +29,7 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
 
 <body>
 
-<div class="subnav">
+    <div class="subnav">
         <a class="btn" href="Home.php">Home</a>
     </div>
     <?php
@@ -37,31 +37,39 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") {
         echo "<h1>Pagamento eseguito con successo!</h1>";
         foreach ($idB as $biglietto) {
             echo "<h1>Il tuo biglietto:</h1>";
-            $t = biglietti($biglietto);
-            $TimeTable = prendi_orari(null, $t[3]);
-            $film = take_film_prenota($TimeTable[5]);
-            $titolo = $film[1];
-            $genere = $film[2];
-            $data = $TimeTable[1];
-            $ora = $TimeTable[2];
-            echo '<div class="biglietto"><h4>' . $titolo . '</h4><h3>Genere: ' . $genere . '</h3><h3>Data: ' . $data . '</h3><h3>Ora: ' . $ora . '</h3><h3>Codice QR:</h3>';
-            echo '<img src="../utility/qr.php?id="' . $biglietto . ' /></div>';
+            if ($biglietto != false) {
+                $t = biglietti($biglietto);
+                $TimeTable = prendi_orari(null, $t[3]);
+                $film = take_film_prenota($TimeTable[5]);
+                $titolo = $film[1];
+                $genere = $film[2];
+                $data = $TimeTable[1];
+                $ora = $TimeTable[2];
+                $posto = $t[2];
+                echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Posto:' . $posto . '</h4><h4>Codice QR:</h4>';
+                $url = urlencode("ticketBooked.php?id=" . $biglietto);
+                echo '<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr"/></div>';
+            } else {
+                echo "<div class='biglietto'><h4>Biglietto già prenotato o non disponibile</h4></div>";
+            }
         }
     } else {
         if (isset($_GET["id"])) {
             $biglietto = $_GET["id"];
         } else {
-            header("Location:Home.php?ste=fisico");
+            header("Location:Home.php?site=fisico");
         }
         $t = biglietti($biglietto);
         $TimeTable = prendi_orari(null, $t[3]);
-        $film = take_film_prenota($TimeTable["ID_Film"]);
+        $film = take_film_prenota($TimeTable[5]);
         $titolo = $film[1];
         $genere = $film[2];
-        $data = $TimeTable["Data"];
-        $ora = $TimeTable["ora"];
-        echo '<div class="biglietto"><h4>' . $titolo . '</h4><h3>Genere: ' . $genere . '</h3><h3>Data: ' . $data . '</h3><h3>Ora: ' . $ora . '</h3><h3>Codice QR:</h3>';
-        echo '<div class="QRCode"><img src="../utility/qr.php?id="' . $biglietto . ' /></div>';
+        $data = $TimeTable[1];
+        $ora = $TimeTable[2];
+        $posto = $t[2];
+        echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Posto:' . $posto . '</h4><h4>Codice QR:</h4>';
+        $url = urlencode("ticketBooked.php?id=" . $biglietto);
+        echo '<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr"/></div>';
     }
 
     ?>

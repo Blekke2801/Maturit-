@@ -334,7 +334,7 @@ function prendi_orari($id, $preciso = null)
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     if ($preciso == NULL) {
         $Dati = array();
-        $resultStream = $mysqli->query("SELECT ID_TimeTable,Data,ora FROM timetable where ID_Film = $id") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT * FROM timetable where ID_Film = $id") or die($mysqli->error);
         $i = 0;
         foreach ($resultStream as $row) {
             $Dati[$i] = $row;
@@ -348,7 +348,7 @@ function prendi_orari($id, $preciso = null)
         }
     } else {
         $Dati = array();
-        $resultStream = $mysqli->query("SELECT ID_TimeTable,Data,ora,sala,liberi,ID_Film FROM timetable where ID_TimeTable = $preciso LIMIT 1;") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT * FROM timetable where ID_TimeTable = $preciso LIMIT 1;") or die($mysqli->error);
         $i = 0;
         $Dati = $resultStream->fetch_row();
         if (sizeof($Dati) > 0) {
@@ -403,17 +403,23 @@ function this_week()
 }
 function prenota($id, $posto)
 {
-    //film = nome del film, usare funzione take film prenota
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $reg = $mysqli->prepare("INSERT INTO biglietto (ID_User,posto,ID_TimeTable) VALUES (?,'$posto',$id);") or die($mysqli->error);
-    $user = NULL;
-    $reg->bind_param("i", $user);
-    $user = $_SESSION["user_id"];
-    $reg->execute() or die($mysqli->error);
-    $reg->close();
-    //$mysqli->query("UPDATE timetable SET liberi = liberi-1 WHERE ID_TimeTable = $id;") or die($mysqli->error);
-    $reg = $mysqli->query("SELECT Max(ID_Ticket) as 'ticket' FROM biglietto;") or die($mysqli->error);
-    $idB = $reg->fetch_row();
-    return $idB[0];
-    $mysqli->close();
+    $result = $mysqli->query("SELECT COUNT(ID_Ticket) FROM biglietto where posto = '$posto' AND ID_TimeTable = $id;") or die($mysqli->error);
+    $rows = $result->fetch_row() or false;
+    if ($rows[0] == "0" || $rows == false) {
+        $reg = $mysqli->prepare("INSERT INTO biglietto (ID_User,posto,ID_TimeTable) VALUES (?,'$posto',$id);") or die($mysqli->error);
+        $user = NULL;
+        $reg->bind_param("i", $user);
+        $user = $_SESSION["user_id"];
+        $reg->execute() or die($mysqli->error);
+        $reg->close();
+        $mysqli->query("UPDATE timetable SET liberi = liberi-1 WHERE ID_TimeTable = $id;") or die($mysqli->error);
+        $reg = $mysqli->query("SELECT Max(ID_Ticket) as 'ticket' FROM biglietto;") or die($mysqli->error);
+        $idB = $reg->fetch_row();
+        $mysqli->close();
+        return $idB[0];
+    } else {
+        $mysqli->close();
+        return false;
+    }
 }

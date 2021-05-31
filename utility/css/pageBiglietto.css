@@ -1,0 +1,24 @@
+button {
+    margin: 1px;
+    border: 1px solid;
+    outline: none;
+}
+
+.subnav {
+    display: flex;
+    align-items: center;
+    background-color: #267347;
+    justify-content: space-around;
+    padding: 2px;
+}
+
+.subnav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 700px) {
+    .subnav {
+        flex-direction: column;
+    }
+}

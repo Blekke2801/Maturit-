@@ -58,6 +58,7 @@
         background-color: #267347;
         justify-content: space-around;
         padding: 2px;
+        z-index: 1;
     }
     
     .subnav a {
@@ -112,6 +113,7 @@
         transition: all 0.5s ease;
         left: 0;
         display: none;
+        z-index: 3;
     }
     
     ul li:hover>ul,
@@ -137,7 +139,7 @@
         align-self: flex-end;
         padding: 4px;
         border-radius: 4px;
-        color: black;
+        color: white;
         cursor: pointer;
         margin: 0 5px;
         outline: none;
