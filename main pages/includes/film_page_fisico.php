@@ -16,7 +16,6 @@ if (isset($_GET["ID_Film"])) {
 } else {
     Header("Location:Home.php");
 }
-//titolo,riga,prenota/guarda se loggato,locandina,riga,genere,trama
 ?>
 <div>
     <?php
@@ -48,6 +47,9 @@ if (isset($_GET["ID_Film"])) {
     }
     fclose($myfile);
     $trama = $trama . "...";
+    $genere = $Dati[2];
+    $durata = $Dati[3];
+    echo "<hr><div><h4>Genere:</h4><p>$genere</p><br><h4>Durata: </h4><p>$durata</p></div>";
     echo "<hr><div><h1>Trama</h1><br><p>" . $trama . "</p></div>";
     ?>
 </div>

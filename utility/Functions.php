@@ -94,7 +94,7 @@ function login($email, $password, $cookie)
         $db_password = $row["Password"];
         $ruolo = $row["Cln_Imp"];
         if ($ruolo) {
-            $_SESSION["tariffa"] = $row["Free_Premium"]; //0 per free 1 per premium
+            $tariffa = $row["Free_Premium"]; //0 per free 1 per premium
         }
         if (!$cookie) {
             $password = md5($password, FALSE); // codifica la password usando una chiave univoca.
@@ -120,6 +120,9 @@ function login($email, $password, $cookie)
                     $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
                     $_SESSION["ruolo"] = $ruolo; // 1 per cliente, 0 per impiegato
+                    if($_SESSION["ruolo"]){
+                        $_SESSION["tariffa"] = $tariffa;
+                    }
                     $_SESSION['login_string'] = md5($password . $user_browser, false);
                     $mysqli->close();
                     // Login eseguito con successo.
@@ -382,7 +385,11 @@ function Prenotato($ID_TIME)
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $Dati = array();
     $resultStream = $mysqli->query("SELECT posto FROM biglietto where ID_TimeTable = $ID_TIME;") or die($mysqli->error);
-    $Biglietti = $resultStream->fetch_array(MYSQLI_NUM);
+    $i = 0;
+    foreach ($resultStream as $row) {
+        $Biglietti[$i] = $row["posto"];
+        $i++;
+    }
     return $Biglietti;
 }
 function biglietti($id = null)
