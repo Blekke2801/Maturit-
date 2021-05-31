@@ -6,7 +6,7 @@ if (isset($_GET["NomeFilm"])) {
     } else {
         Header("Location:./Home.php");
     }
-    if (sizeof($Dati) < 5) {
+    if (sizeof($Dati) == 0) {
         Header("Location:Home.php");
     } else {
         $percorsoFilm = "../films/stream/" . $nome;
@@ -21,9 +21,9 @@ if (isset($_GET["NomeFilm"])) {
     $disabled = false;
     $DBName = $nome;
     $tariffa = $Dati[4];
-    if($tariffa && !$_SESSION["tariffa"]){
+    if ($tariffa && !$_SESSION["Free_Premium"]) {
         $disabled = "disabled";
-    }else {
+    } else {
         $disabled = "";
     }
     $nome[0] = strtoupper($nome[0]);

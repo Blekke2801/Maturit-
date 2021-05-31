@@ -227,7 +227,7 @@ function take_film_stream($nome = NULL)
     } else {
         $nome = strtolower($nome);
         $resultStream = $mysqli->query("SELECT * FROM film_stream where Titolo = '$nome' LIMIT 1") or die($mysqli->error);
-        $Dati = $resultStream->fetch_assoc() or die($resultStream->error);
+        $Dati = $resultStream->fetch_row() or die($resultStream->error);
         if (sizeof($Dati) > 0) {
             $mysqli->close();
             return $Dati;
