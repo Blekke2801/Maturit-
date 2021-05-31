@@ -1,6 +1,6 @@
 <?php
-DEFINE("User", "root");
-define("pwd", "");
+DEFINE("User", "sec_user");
+define("pwd", "5e91a8e7a77acba9e3e9f1f545a7da4b");
 function checkbrute($user_id, $ip)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');

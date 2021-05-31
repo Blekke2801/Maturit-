@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 30, 2021 alle 22:13
+-- Creato il: Mag 31, 2021 alle 21:44
 -- Versione del server: 5.7.17
 -- Versione PHP: 5.6.30
 
@@ -21,6 +21,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `cinema_mat`
 --
+-- crea utente sec_user
+CREATE USER 'sec_user'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';GRANT SELECT, INSERT, UPDATE ON *.* TO 'sec_user1'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+GRANT USAGE ON *.* TO 'sec_user'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE ON `cinema_mat`.* TO 'sec_user'@'localhost';
 CREATE DATABASE IF NOT EXISTS `cinema_mat` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `cinema_mat`;
 
@@ -36,32 +41,6 @@ CREATE TABLE `biglietto` (
   `posto` varchar(6) NOT NULL,
   `ID_TimeTable` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dump dei dati per la tabella `biglietto`
---
-
-INSERT INTO `biglietto` (`ID_Ticket`, `ID_User`, `posto`, `ID_TimeTable`) VALUES
-(4, 1, 'A-1', 1),
-(5, 1, 'E-5', 1),
-(6, 1, 'E-5', 1),
-(7, 1, 'E-6', 1),
-(8, 1, 'E-5', 1),
-(9, 1, 'E-6', 1),
-(10, 1, 'E-5', 1),
-(11, 1, 'E-6', 1),
-(12, 1, 'E-5', 1),
-(13, 1, 'E-6', 1),
-(14, 1, 'E-5', 1),
-(15, 1, 'E-6', 1),
-(16, 1, 'E-5', 1),
-(17, 1, 'E-6', 1),
-(18, 1, 'E-5', 1),
-(19, 1, 'E-6', 1),
-(20, 1, 'E-5', 1),
-(21, 1, 'E-6', 1),
-(22, 1, 'E-5', 1),
-(23, 1, 'E-6', 1);
 
 -- --------------------------------------------------------
 
@@ -128,6 +107,13 @@ CREATE TABLE `tentativi_login` (
   `time` varchar(30) NOT NULL,
   `ip` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `tentativi_login`
+--
+
+INSERT INTO `tentativi_login` (`User_ID`, `time`, `ip`) VALUES
+(1, '1622472016', '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -235,7 +221,7 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `biglietto`
 --
 ALTER TABLE `biglietto`
-  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 --
 -- AUTO_INCREMENT per la tabella `film_prenotabili`
 --
