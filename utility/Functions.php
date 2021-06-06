@@ -1,7 +1,7 @@
 <?php
 //pogina contenente tutte le funzioni del sito
-DEFINE("User", "sec_user");//utente che ha un numero limitato di permessi
-define("pwd", "5e91a8e7a77acba9e3e9f1f545a7da4b");
+DEFINE("User", "root");//utente che ha un numero limitato di permessi nome="utente_sicuro" pwd="JteENZgJhMn7"
+define("pwd", "");
 //ci previene da un attacco a forza bruta
 function checkbrute($user_id, $ip)
 {

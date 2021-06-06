@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 -- Database: `cinema_mat`
 --
 -- crea utente sec_user
-CREATE USER 'sec_user'@'localhost' IDENTIFIED WITH mysql_native_password AS '***';GRANT SELECT, INSERT, UPDATE ON *.* TO 'sec_user1'@'localhost' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;
+CREATE USER 'sec_user'@'localhost' IDENTIFIED WITH mysql_native_password AS '***'
 GRANT USAGE ON *.* TO 'sec_user'@'localhost';
 
 GRANT SELECT, INSERT, UPDATE ON `cinema_mat`.* TO 'sec_user'@'localhost';

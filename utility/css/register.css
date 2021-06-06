@@ -1,89 +1,146 @@
-            html,
-            body {
-                padding: 0;
-                margin: 0;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .subnav {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 2px;
-            }
-            
-            .subnav a {
-                color: black;
-                text-decoration: none;
-                margin-left: 40px;
-                margin-right: 40px;
-            }
-            
-            @media screen and (max-width: 700px) {
-                .subnav {
-                    flex-direction: column;
-                }
-            }
-            
-            label {
-                padding-top: 5px;
-            }
-            
-            div.register {
-                min-height: 758px;
-                display: flex;
-                flex-direction: column;
-                align-content: center;
-                width: 50%;
-            }
-            
-            form {
-                min-height: 468px;
-                display: flex;
-                flex-direction: column;
-                border: 1px solid black;
-                padding: 25px;
-                align-content: space-between;
-            }
-            
-            input {
-                border-top: 0px;
-                border-left: 0px;
-                border-right: 0px;
-                border-bottom: 1px solid black;
-                outline: none;
-            }
-            
-            .tariffa {
-                display: flex;
-                flex-direction: column;
-            }
-            
-            #showOffer>img[src="../img/Free.jpg"] {
-                max-width: 99px;
-                max-height: 55px;
-            }
-            
-            #showOffer>img[src="../img/Premium.jpg"] {
-                max-width: 95px;
-                max-height: 95px;
-            }
-            
-            #showOffer {
-                display: flex;
-                min-height: 135px;
-                justify-content: flex-start;
-            }
-            
-            #showOffer>span {
-                align-self: flex-end;
-            }
-            
-            .error {
-                border-bottom: 1px solid red;
-                color: red;
-            }
+    html,
+    body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(../../img/register.jpg);
+        background-size: auto;
+    }
+    
+    .title,
+    .title div {
+        display: flex;
+    }
+    
+    .title div {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    label {
+        padding-top: 5px;
+    }
+    
+    div.register {
+        min-height: 660px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        width: 50%;
+        background-color: white;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        padding: 25px;
+        align-content: space-between;
+    }
+    
+    .subnav {
+        text-align: center;
+        font-size: 17px;
+    }
+    
+    .input {
+        position: relative;
+        padding: 15px 0 0;
+        margin-top: 10px;
+        width: 50%;
+    }
+    
+    .testo {
+        font-family: inherit;
+        width: 100%;
+        border: 0;
+        border-bottom: 2px solid #9b9b9b;
+        outline: 0;
+        font-size: 1.3rem;
+        padding: 7px 0;
+        background: transparent;
+        transition: border-color 0.2s;
+    }
+    
+    .label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #9b9b9b;
+    }
+    
+    .input:focus~.label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: #11998e;
+        font-weight: 700;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    .tariffa {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    button {
+        margin: 50px;
+        font-family: inherit;
+    }
+    
+    #showOffer {
+        padding-top: 20px;
+        font-family: calibri;
+        font-size: 20px;
+    }
+    
+    .btn {
+        font-size: 20px;
+        font-weight: 200;
+        letter-spacing: 1px;
+        padding: 13px 50px 13px;
+        outline: 0;
+        border: 1px solid black;
+        cursor: pointer;
+        position: relative;
+        background-color: rgba(0, 0, 0, 0);
+    }
+    
+    .btn::after {
+        content: "";
+        background-color: green;
+        opacity: 50%;
+        width: 100%;
+        position: absolute;
+        height: 100%;
+        top: 7px;
+        left: 7px;
+        transition: 0.2s;
+    }
+    
+    .btn:hover::after {
+        top: 0px;
+        left: 0px;
+    }
+    
+    #showOffer {
+        display: flex;
+        min-height: 40px;
+        justify-content: flex-start;
+    }
+    
+    .error {
+        border-bottom: 1px solid red;
+        color: red;
+    }

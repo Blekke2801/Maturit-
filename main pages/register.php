@@ -14,40 +14,58 @@
 </head>
 
 <body>
-<!--pagina di registrazione, controlli dei campi effettuati con js -->
+    <!--pagina di registrazione, controlli dei campi effettuati con js -->
     <div class="register">
-        <h1 style="text-align:center">Registrati!</h1>
+        <div class="title">
+            <a href="Home.php"><img src="../img/home.png" title="Home"></a>
+            <div>
+                <h1>Registrati!</h1>
+            </div>
+
+        </div>
+
         <form action="Login.php" method="post" autocomplete="off">
             <div class="" id="error"></div>
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" placeholder="Nome...">
-            <label for="cognome">Cognome:</label>
-            <input type="text" id="cognome" name="cognome" placeholder="Cognome...">
-            <label for="mail">Email:</label>
-            <input type="mail" id="mail" name="mail" placeholder="E-mail...">
-            <label for="pwd">Password:</label>
-            <input type="password" id="pwd" name="pwd" placeholder="Password...">
-            <label for="Cpwd">Conferma password:</label>
-            <input type="password" id="Cpwd" onkeyup="different()" placeholder="Ripeti password...">
-            <label for="birth">Data di nascita:</label>
-            <input type="date" id="birth" name="birth" placeholder="dd/mm/aaaa">
+            <div class="input">
+                <input type="text" class="testo" id="nome" name="nome">
+                <label for="nome" class="label">Nome:</label>
+            </div>
+            <div class="input">
+                <input type="text" class="testo" id="cognome" name="cognome">
+                <label for="cognome" class="label">Cognome:</label>
+            </div>
+            <div class="input">
+                <input type="mail" class="testo" id="mail" name="mail">
+                <label for="mail" class="label">Email:</label>
+            </div>
+            <div class="input">
+                <input type="password" class="testo" id="pwd" name="pwd">
+                <label for="pwd" class="label">Password:</label>
+            </div>
+            <div class="input">
+                <input type="password" class="testo" id="Cpwd" onkeyup="different()">
+                <label for="Cpwd" class="label">Conferma password:</label>
+            </div>
+            <div class="input">
+                <input type="date" class="testo" id="birth" name="birth">
+                <label for="birth" class="label">Data di nascita:</label>
+            </div>
             <label for="tariffa">Piano:</label>
             <div class="tariffa" id="tariffa">
-                <div>
-                    <input type="radio" id="free" name="tariffa" onclick="show()" value="false" checked>
-                    <span>Free</span>
+                <div style="padding-right:20px">
+                    <input type="radio" id="free" name="tariffa" onclick="show()" value="false" checked hidden>
+                    <label for="free"><img src="../img/Free.jpg"></label>
                 </div>
                 <div>
-                    <input type="radio" id="premium" name="tariffa" onclick="show()" value="true">
-                    <span>Premium</span>
+                    <input type="radio" id="premium" name="tariffa" onclick="show()" value="true" hidden>
+                    <label for="premium"><img src="../img/Premium.jpg"></label>
                 </div>
-                <div id="showOffer"><img src="../img/Free.jpg"><br><span>Potrai vedere tutti i film che vuoi,<br /> ma in una lista limitata</span></div>
             </div>
-            <button type="button" onclick="ceck(this.form)">Registrati!</button>
+            <div id="showOffer"><span>Potrai vedere tutti i film che vuoi,<br /> ma in una lista limitata</span></div>
+            <button type="button" class="btn" onclick="ceck(this.form)">Registrati!</button>
 
             <div class="subnav">
-                <a class="btn" href="Home.php">Home</a>
-                <p>Hai un account? <a class="btn" href="Login.php">Esegui il login</a></p>
+                <p>Hai già un account? <a href="Login.php">Login</a></p>
             </div>
         </form>
     </div>
