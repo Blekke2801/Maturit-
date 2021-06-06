@@ -1,11 +1,7 @@
 .subnav {
     display: flex;
-    align-items: center;
-    position: sticky;
-    top: 103px;
+    justify-content: space-between;
     background-color: #267347;
-    justify-content: space-around;
-    padding: 2px;
 }
 
 .subnav a {
@@ -13,10 +9,16 @@
     text-decoration: none;
 }
 
-@media screen and (max-width: 700px) {
-    .subnav {
-        flex-direction: column;
-    }
+.login_card {
+    height: 400px;
+    width: 350px;
+    background: #267347;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .modal__overlay {

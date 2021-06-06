@@ -5,7 +5,7 @@ $register = false;
 $error = false;
 if (isset($_POST["nome"])) { // se true vuol dire che l'utente arriva dalla pagina di registrazione, quindi lo registra
 	$register = true;
-	if(!register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"])){
+	if (!register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"])) {
 		$error = true;
 	}
 }
@@ -25,18 +25,19 @@ if (isset($_POST["nome"])) { // se true vuol dire che l'utente arriva dalla pagi
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
 
-<body <?php if($error) echo "onload='errorReg()'"; //funzione js per avvisare che la registrazione ha fallito?>>
-	<div class="subnav">
-		<a class="btn" href="Home.php">Home</a>
-		<a class="btn" href="register.php">Registrati</a>
-	</div>
+<body <?php if ($error) echo "onload='errorReg()'"; //funzione js per avvisare che la registrazione ha fallito
+		?>>
 	<div class="container h-100">
 		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
+			<div class="login_card">
 				<div class="d-flex justify-content-center">
 					<div class="brand_logo_container">
-						<img src="../img/logo_login.jpg" class="brand_logo" alt="Logo">
+						<img src="../img/logo_login.jpg" style="border-radius:50%" alt="Logo">
 					</div>
+				</div>
+				<div class="subnav">
+					<a href="Home.php"><img src="../img/home.png" title="Home"></a>
+					<a href="Home.php"><img src="../img/register.png" title="Registrati!"></a>
 				</div>
 				<div class="d-flex justify-content-center form_container">
 					<form action="Home.php" method="post">
