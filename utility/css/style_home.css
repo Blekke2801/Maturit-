@@ -58,11 +58,13 @@
         background-color: #267347;
         justify-content: space-around;
         padding: 2px;
+        z-index: 0;
     }
     
     .subnav a {
         color: #fff;
         text-decoration: none;
+        z-index: inherit;
     }
     
     @media screen and (max-width: 700px) {
@@ -76,6 +78,7 @@
         list-style: none;
         margin: 0;
         padding-left: 0;
+        z-index: 1000;
     }
     
     li {
@@ -92,6 +95,7 @@
     
     li a {
         color: #fff;
+        text-decoration: none;
     }
     
     li:hover,
@@ -190,11 +194,13 @@
     .film:hover .locandinaElenco {
         opacity: 0%;
         transition: opacity 1s linear;
+        z-index: 0;
     }
     
     .film:hover .tramaIntro {
         opacity: 0%;
         transition: opacity 1s linear;
+        z-index: 0;
     }
     /*pagina locandina film*/
     
