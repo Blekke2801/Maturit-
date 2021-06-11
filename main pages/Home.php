@@ -2,7 +2,7 @@
 <html>
 <?php
 //pagina home
-require("../utility/Functions.php");// file con tutte le funzioni
+require("../utility/Functions.php"); // file con tutte le funzioni
 sec_session_start(); //avvia la sessione sicura
 if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quindi lo effettuo
     $user = htmlentities($_POST["user"]);
@@ -28,7 +28,7 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
 </head>
 
 <body>
-<!-- navbar -->
+    <!-- navbar -->
     <nav>
         <img src="../img/logo.jfif" alt="Brand">
         <div class="searchbar">
@@ -36,7 +36,8 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
             <label class="btn" for="search" id="btnsrc" onclick="ricerca()">Go</label>
         </div>
         <div class="account">
-            <?php if (!login_check()) { //se l'utente ha effettuato il login viene mostrato nome utente e pulsante per prenotare i biglietti, altrimenti 2 pulsanti per login o registrazione?>
+            <?php if (!login_check()) { //se l'utente ha effettuato il login viene mostrato nome utente e pulsante per prenotare i biglietti, altrimenti 2 pulsanti per login o registrazione
+            ?>
                 <a class="btn" href="Login.php">Login</a>
                 <a class="btn" href="register.php">Register</a>
             <?php } else {
@@ -48,7 +49,7 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
                             <ul class="dropdown">
                                 <?php
                                 if (!$_SESSION["ruolo"]) {
-                                    echo '<li><a href="AdminPage.php">Aggiungi film</a></li>';
+                                    echo '<li><a href="AdminPage.php">Operazioni admin</a></li>';
                                 } else {
                                     echo '<li><a href="Home.php?site=fisico&page=biglietti">I miei biglietti</a></li>';
                                 } ?>
@@ -120,7 +121,18 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
 
 
     ?>
-    <div class="contacts"></div><!-- zona in cui sono indicati i possibili contatti con il cinema (non compilato)-->
+    <div class="contacts">
+        <h1>Contattaci:</h1>
+        <div>
+            <div>
+                <span>Email:email.cinema@cinema.com;</span>
+                <span>Numero telefonico: 1234567890;</span>
+            </div>
+            <div>
+                <span>Indirizzo: via cinema 3, (LE);</span>
+            </div>
+        </div>
+    </div><!-- zona in cui sono indicati i possibili contatti con il cinema (non compilato)-->
 </body>
 
 </html>

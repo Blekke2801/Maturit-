@@ -12,8 +12,6 @@
     }
     
     nav:not(nav[role=navigation]) {
-        position: sticky;
-        top: 0px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -54,17 +52,15 @@
         display: flex;
         align-items: center;
         position: sticky;
-        top: 103px;
+        top: 0px;
         background-color: #267347;
         justify-content: space-around;
         padding: 2px;
-        z-index: 0;
     }
     
     .subnav a {
         color: #fff;
         text-decoration: none;
-        z-index: inherit;
     }
     
     @media screen and (max-width: 700px) {
@@ -78,7 +74,6 @@
         list-style: none;
         margin: 0;
         padding-left: 0;
-        z-index: 1000;
     }
     
     li {
@@ -124,7 +119,8 @@
     ul li ul:focus {
         visibility: visible;
         opacity: 1;
-        display: block
+        display: block;
+        z-index: 9999;
     }
     
     ul li ul li {
@@ -145,6 +141,28 @@
         cursor: pointer;
         margin: 0 5px;
         outline: none;
+    }
+    
+    .contacts {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 99%;
+        padding: 5px;
+        background-color: teal;
+    }
+    
+    .contacts div {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 99%;
+    }
+    
+    .contacts div div {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
     }
     /*elenco film*/
     

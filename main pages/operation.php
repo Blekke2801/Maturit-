@@ -2,7 +2,7 @@
 require "../utility/Functions.php";
 sec_session_start();
 //pagina in cui vengono effettuate effettivamente le operazioni dell'admin
-if (!login_check() || !$_SESSION["ruolo"]) {
+if (!login_check() || $_SESSION["ruolo"] != 0) {
     header("Location:Home.php");
 } else {
     if (isset($_POST["op"])) {
@@ -28,20 +28,27 @@ if (!login_check() || !$_SESSION["ruolo"]) {
                     }
                 } else {
 ?>
-                    <form action="<?php htmlentities($_SERVER["PHP_SELF"]); ?>method=" post">
-                        <input type="radio" name="data" value="<?php echo $_POST["data"]; ?>" checked hidden>
-                        <input type="radio" name="ora" value="<?php echo $_POST["ora"]; ?>" checked hidden>
-                        <input type="radio" name="sala" value="<?php echo $_POST["sala"]; ?>" checked hidden>
-                        <select name="id_film">
-                            <?php
-                            foreach (take_film_prenota() as $film) {
-                                echo "<option value=" . $film["ID_Film"] . ">" . $film["Titolo"] . "</option>";
-                            } ?>
-                        </select>
+                    <form action="<?php htmlentities($_SERVER["PHP_SELF"]); ?>" method="post" style="display:flex;flex-direction:column">
+                        <fieldset>
+                            <legend>Selezionare il film:</legend>
+                            <input type="radio" name="data" value="<?php echo $_POST["data"]; ?>" checked hidden>
+                            <input type="radio" name="ora" value="<?php echo $_POST["ora"]; ?>" checked hidden>
+                            <input type="radio" name="sala" value="<?php echo $_POST["sala"]; ?>" checked hidden>
+                            <select name="id_film">
+                                <?php
+                                foreach (take_film_prenota() as $film) {
+                                    echo "<option value=" . $film["ID_Film"] . ">" . $film["Titolo"] . "</option>";
+                                } ?>
+                            </select>
+                            <button type="submit" name="op" value="2">Conferma</button>
+                        </fieldset>
                     </form>
 <?php
                 }
 
+                break;
+            default:
+                header("AdminPage.php");
                 break;
         }
     } else {
