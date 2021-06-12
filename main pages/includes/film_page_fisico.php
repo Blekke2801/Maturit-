@@ -31,6 +31,7 @@ if (isset($_GET["ID_Film"])) {
     ?>
     <form action="Biglietto.php" method="POST">
         <input type="checkbox" name="ID_Film" value="<?php echo htmlentities($id); ?>" hidden checked>
+        
         <select name="TimeTable">
             <?php
             $orari = prendi_orari($id);
@@ -39,9 +40,11 @@ if (isset($_GET["ID_Film"])) {
             }
             ?>
         </select>
+        <br>
         <input type="number" name="numero" min="1" max="<?php if($ora["liberi"] == 0){ echo "disabled";} else {$numero = $ora["liberi"]; echo $numero;}?>" step="1" value="1" placeholder="n°" required>
         <button type="submit" <?php if($ora["liberi"] == 0) echo "disabled"; ?>>Prenota ora!</button>
     </form>
+</div>
     <?php
     $myfile = fopen($percorsoFilm . "/trama.txt", "r") or die("Unable to open file!");
     $trama = "";

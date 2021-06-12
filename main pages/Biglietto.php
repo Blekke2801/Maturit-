@@ -36,7 +36,8 @@ sec_session_start();
             echo "<p>Durata: " . $film[3] . "</p>";
             echo "</div>";
             echo '<form action="ticketBooked.php" method="post">';
-            echo "<input type='radio' name='ID_table' value='" . $_POST["ID_Film"] . "' checked hidden>";
+            echo "<input type='radio' name='ID_Film' value='" . $_POST["ID_Film"] . "' checked hidden>";
+            echo "<input type='radio' name='ID_table' value='" . $_POST["TimeTable"] . "' checked hidden>";
             echo "<div class='posti'>";
             echo "<h2>Seleziona i posti che vuoi prenotare</h1>";
             for ($i = 0; $i < 5; $i++) {

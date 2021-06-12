@@ -24,4 +24,3 @@ if (sizeof($t) > 0) {
     echo "<h4>Nessun risultato trovato</h4>";
 }
 ?>
-?>

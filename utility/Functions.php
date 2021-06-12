@@ -1,6 +1,6 @@
 <?php
 //pogina contenente tutte le funzioni del sito
-DEFINE("User", "root");//utente che ha un numero limitato di permessi nome="utente_sicuro" pwd="JteENZgJhMn7"
+DEFINE("User", "root"); //utente che ha un numero limitato di permessi nome="utente_sicuro" pwd="JteENZgJhMn7"
 define("pwd", "");
 //ci previene da un attacco a forza bruta
 function checkbrute($user_id, $ip)
@@ -125,7 +125,7 @@ function login($email, $password, $cookie)
                     $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
                     $_SESSION["ruolo"] = $ruolo; // 1 per cliente, 0 per impiegato
-                    if($_SESSION["ruolo"]){
+                    if ($_SESSION["ruolo"]) {
                         $_SESSION["tariffa"] = $tariffa; //0 se free altrimenti premium
                     }
                     $_SESSION['login_string'] = md5($password . $user_browser, false);
@@ -368,8 +368,12 @@ function prendi_orari($id, $preciso = null)
         $Dati = array();
         $resultStream = $mysqli->query("SELECT * FROM timetable where ID_Film = $id") or die($mysqli->error);
         $i = 0;
+        $today = date("Y-m-d");
         foreach ($resultStream as $row) {
-            $Dati[$i] = $row;
+            if ($row["Data"] > $today) {
+                $Dati[$i] = $row;
+                $i++;
+            }
         }
         if (sizeof($Dati) > 0) {
             $mysqli->close();
@@ -397,7 +401,7 @@ function prendi_orari($id, $preciso = null)
 function Prenotato($ID_TIME)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $Dati = array();
+    $Biglietti = array();
     $resultStream = $mysqli->query("SELECT posto FROM biglietto where ID_TimeTable = $ID_TIME;") or die($mysqli->error);
     $i = 0;
     foreach ($resultStream as $row) {
@@ -484,7 +488,7 @@ function new_film()
     $controllo = $result->fetch_row();
     if ($controllo[0] == "0") {
         $result = $mysqli->prepare("INSERT INTO film_stream (Titolo,Data_Add,Genere,Free_Premium,durata) VALUES ('$titolo',?,'$genere',?,$durata);");
-        $cartella = "../films/$titolo";
+        $cartella = "../films/stream/$titolo";
         mkdir($cartella, 0700);
         $result->bind_param("si", $data, $tariffa);
         $data = date("Y-m-d");
@@ -494,16 +498,15 @@ function new_film()
             $tariffa = true;
         }
         $result->execute();
-        move_uploaded_file($locandinaV["tmp_name"], $cartella);
-        rename($locandinaV["name"], "locandina.jpg");
-        move_uploaded_file($locandinaH["tmp_name"], $cartella);
-        rename($locandinaH["name"], "horizontal.jpg");
-        move_uploaded_file($trama["tmp_name"], $cartella);
-        rename($trama["name"], "trama.txt");
+        //rename($locandinaV["name"], "locandina.jpg");
+        move_uploaded_file($locandinaV["tmp_name"], $cartella . "/locandina.jpg");
+        move_uploaded_file($locandinaH["tmp_name"], $cartella . "/horizontal.jpg");
+        //rename($locandinaH["name"], "horizontal.jpg");
+        move_uploaded_file($trama["tmp_name"], $cartella . "/trama.txt");
+        //rename($trama["name"], "trama.txt");
         mkdir($cartella . "/film", 0700);
-        move_uploaded_file($film["tmp_name"], $cartella . "/film");
         $estensione = explode(".", $film["name"]);
-        rename($film["name"], "it" . $estensione[1]);
+        move_uploaded_file($film["tmp_name"], $cartella . "/film/it." . $estensione[1]);
         $result->close();
         $mysqli->close();
         return true;
@@ -512,7 +515,38 @@ function new_film()
         return false;
     }
 }
-
+function searchFile($name) {
+    // reads informations over the path
+    $info = pathinfo($name);
+    if (!empty($info['extension'])) {
+        // if the file already contains an extension returns it
+        return $name;
+    }
+    $filename = $info['filename'];
+    $len = strlen($filename);
+    // open the folder
+    $dh = opendir($info['dirname']);
+    if (!$dh) {
+        return false;
+    }
+    // scan each file in the folder
+    while (($file = readdir($dh)) !== false) {
+        if (strncmp($file, $filename, $len) === 0) {
+            if (strlen($name) > $len) {
+                // if name contains a directory part
+                $name = substr($name, 0, strlen($name) - $len) . $file;
+            } else {
+                // if the name is at the path root
+                $name = $file;
+            }
+            closedir($dh);
+            return $name;
+        }
+    }
+    // file not found
+    closedir($dh);
+    return false;
+}
 //operazione dell'admin che permette di aggiungere una nuova tabella oraria
 function new_hour()
 {
