@@ -21,7 +21,7 @@ if (isset($_GET["NomeFilm"])) {
     $disabled = false;
     $DBName = $nome;
     $tariffa = $Dati[4];
-    if ($tariffa && !$_SESSION["Free_Premium"]) {
+    if ($tariffa != $_SESSION["tariffa"]) {
         $disabled = "disabled";
     } else {
         $disabled = "";
@@ -29,8 +29,8 @@ if (isset($_GET["NomeFilm"])) {
     $nome[0] = strtoupper($nome[0]);
     echo "<h1>$nome</h1><hr>";
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
-    echo "<a href='guardafilm.php' class='btn'>Guarda Subito!</a>";
-    echo "<a onclick='lista(this.value)' id='lista' class='btn' value='" . $DBName . "' >Aggiungi alla lista!</a></div>";
+    echo "<button onclick='location.href=\"guardafilm.php\"' class='btn'>Guarda Subito!</button>";
+    echo "<button onclick='lista(this.value)' id='lista' class='btn' value='" . $DBName . "' >Aggiungi alla lista!</button></div>";
     $myfile = fopen($percorsoFilm . "/trama.txt", "r") or die("Unable to open file!");
     $trama = "";
     for ($i = 0; $i < 600; $i++) {
