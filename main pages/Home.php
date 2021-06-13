@@ -41,8 +41,11 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
                 <a class="btn" href="Login.php">Login</a>
                 <a class="btn" href="register.php">Register</a>
             <?php } else {
-            ?>
-                <a class="btn" href="Home.php?site=fisico">Prenota i Biglietti</a>
+                if ($_SESSION["ruolo"]) {
+                    echo '<a class="btn" href="Home.php?site=fisico">Prenota i Biglietti</a>';
+                } ?>
+
+
                 <nav role="navigation">
                     <ul>
                         <li class="btn main-drop"><a><?php echo $_SESSION["username"]; ?></a>

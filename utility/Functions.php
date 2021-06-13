@@ -298,16 +298,13 @@ function lista()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
     $records = $mysqli->query("SELECT * FROM lista where ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
-
-    if (sizeof($records->fetch_assoc()) > 0) {
-        $i = 0;
-        foreach ($records as $row) {
-            $films[$i] = $row["Titolo"];
-            $i++;
-        }
-    } else {
-        $films = array();
+    $films = array();
+    $i = 0;
+    while ($row = $records->fetch_row()) {
+        $films[$i] = $row[1];
+        $i++;
     }
+
 
 
     $mysqli->close();
@@ -322,20 +319,24 @@ function addLista($Titolo)
     $film = null;
     if (sizeof($dati) > 0) {
         $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-        $search = $mysqli->prepare("SELECT * from lista where ID_User = ? AND ID_Film = ? LIMIT 1;") or die($mysqli->error);
+        $search = $mysqli->prepare("SELECT * from lista where ID_User = ? AND ID_Film = ?;") or die($mysqli->error);
         $search->bind_param("ii", $user, $film);
         $user = $_SESSION['user_id'];
-        $film = $dati["ID_Film"];
+        $film = $dati[0];
         $search->execute() or die("Error description: " . $search->error);
         if (!$search->fetch()) {
+            $search->close();
             $stmt = $mysqli->prepare("INSERT INTO lista values (?,?);") or die($mysqli->error);
             $stmt->bind_param("ii", $user, $film);
             $stmt->execute() or die("Error description: " . $stmt->error);
             $stmt->close();
+            $mysqli->close();
+            header("Location: Home.php?NomeFilm=" . $dati[1]);
         }
         $search->close();
         $mysqli->close();
     }
+    header("Location: Home.php");
 }
 //rimuove alla lista il film indicato
 function removeLista($Titolo)
@@ -345,20 +346,24 @@ function removeLista($Titolo)
     $film = null;
     if (sizeof($dati) > 0) {
         $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-        $search = $mysqli->prepare("SELECT * from lista where ID_User = ? AND ID_Film = ? LIMIT 1;") or die($mysqli->error);
+        $search = $mysqli->prepare("SELECT * from lista where ID_User = ? AND ID_Film = ?;") or die($mysqli->error);
         $search->bind_param("ii", $user, $film);
         $user = $_SESSION['user_id'];
-        $film = $dati["ID_Film"];
+        $film = $dati[0];
         $search->execute() or die("Error description: " . $search->error);
         if ($search->fetch()) {
+            $search->close();
             $stmt = $mysqli->prepare("DELETE from lista where ID_User = ? AND ID_Film = ?;") or die($mysqli->error);
             $stmt->bind_param("ii", $user, $film);
             $stmt->execute() or die("Error description: " . $stmt->error);
             $stmt->close();
+            $mysqli->close();
+            header("Location: Home.php?NomeFilm=" . $dati[1]);
         }
         $search->close();
         $mysqli->close();
     }
+    header("Location: Home.php");
 }
 //ottiene tutti gli orari di un film, se preciso è settato l'orario con id = preciso
 function prendi_orari($id, $preciso = null)
@@ -416,7 +421,7 @@ function biglietti($id = null)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     if ($id == NULL) {
-        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION["user_id"] . ";") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION['user_id'] . ";") or die($mysqli->error);
         $Biglietti = array();
         $i = 0;
         foreach ($resultStream as $row) {
@@ -426,7 +431,7 @@ function biglietti($id = null)
         $mysqli->close();
         return $Biglietti;
     } else {
-        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION["user_id"] . " AND ID_Ticket = $id;") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION['user_id'] . " AND ID_Ticket = $id;") or die($mysqli->error);
         $Biglietto = $resultStream->fetch_row();
         $mysqli->close();
         return $Biglietto;
@@ -458,7 +463,7 @@ function prenota($id, $posto)
         $reg = $mysqli->prepare("INSERT INTO biglietto (ID_User,posto,ID_TimeTable) VALUES (?,'$posto',$id);") or die($mysqli->error);
         $user = NULL;
         $reg->bind_param("i", $user);
-        $user = $_SESSION["user_id"];
+        $user = $_SESSION['user_id'];
         $reg->execute() or die($mysqli->error);
         $reg->close();
         $mysqli->query("UPDATE timetable SET liberi = liberi-1 WHERE ID_TimeTable = $id;") or die($mysqli->error);
@@ -515,7 +520,8 @@ function new_film()
         return false;
     }
 }
-function searchFile($name) {
+function searchFile($name)
+{
     // reads informations over the path
     $info = pathinfo($name);
     if (!empty($info['extension'])) {

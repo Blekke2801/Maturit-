@@ -54,7 +54,7 @@ sec_session_start();
     }
 
     .returnhome:hover {
-      opacity: 100%;
+      opacity: 100% !important;
     }
   </style>
 </head>
@@ -94,9 +94,6 @@ sec_session_start();
     $(document).mousemove(function(event) {
 
       clearTimeout(moveTimer);
-
-
-      
       moveTimer = setTimeout(function() {
         indietro.css("opacity", "0%");
         indietro.css("transition", "opacity 1s linear");

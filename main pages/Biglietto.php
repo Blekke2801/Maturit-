@@ -12,8 +12,6 @@ sec_session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../img/favicon.ico" />
     <link rel="stylesheet" href="../utility/css/prenota.css">
-    <script src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js'></script>
-    <script src="../js/fisico.js"></script>
     <title>Prenota!</title>
 </head>
 
@@ -77,3 +75,19 @@ sec_session_start();
 </body>
 
 </html>
+<script>
+    var max = parseInt(<?php echo $_POST["numero"]; ?>,10);
+
+
+    function calcola() {
+        var t = 0;
+        document.querySelectorAll("[type=checkbox]").forEach(e => {
+            if (e.checked) t++;
+        });
+        if (t > max)
+            this.checked = false;
+    }
+    document.querySelectorAll("[type=checkbox]").forEach(e => {
+        e.onchange = calcola;
+    })
+</script>

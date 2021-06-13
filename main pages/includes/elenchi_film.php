@@ -20,6 +20,7 @@ if (isset($_GET["ricerca"])) {
     if (sizeof($films) > 0) {
         foreach ($films as $single) {
             $percorsoFilm = "../films/stream/" . $single;
+            $dati = take_film_stream($single);
             $Titolo = $single;
             $cartella = $Titolo;
             $Titolo[0] = strtoupper($Titolo[0]);
@@ -32,7 +33,13 @@ if (isset($_GET["ricerca"])) {
             }
             fclose($myfile);
             $trama = $trama . "...";
-            echo "<a href='Home.php?NomeFilm=$cartella' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p><h1 class='text'>$Titolo</h1></a>";
+            if ($dati[4]) {
+                $crown = "<img class='crown' src='../img/crown.png'>";
+            } 
+            else {
+                $crown = "";
+            }
+            echo "<a href='Home.php?NomeFilm=$cartella' class='film'><img class='locandinaElenco' src='$img'><p class='tramaIntro'>$trama</p>$crown<h1 class='text'>$Titolo</h1></a>";
         }
     } else {
         echo "<h4>Nessun risultato trovato</h4>";

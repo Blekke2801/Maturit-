@@ -198,6 +198,12 @@
         opacity: 0%;
     }
     
+    .film .crown {
+        width: 20px;
+        height: 20px;
+        align-self: flex-end;
+    }
+    
     .film:hover .text {
         opacity: 100%;
         transition: opacity 1s linear;
@@ -213,6 +219,11 @@
         opacity: 0%;
         transition: opacity 1s linear;
         z-index: 0;
+    }
+    
+    .film:hover .crown {
+        filter: invert(1);
+        transition: 1s filter linear;
     }
     
     .film:hover .tramaIntro {

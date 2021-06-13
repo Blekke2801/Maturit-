@@ -70,7 +70,7 @@ INSERT INTO `film_prenotabili` (`ID_Film`, `Titolo`, `Genere`, `durata`, `prezzo
 --
 
 CREATE TABLE `film_stream` (
-  `ID_FIlm` int(11) NOT NULL,
+  `ID_Film` int(11) NOT NULL,
   `Titolo` char(30) NOT NULL,
   `Data_Add` date NOT NULL,
   `Genere` char(20) NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `film_stream` (
 -- Dump dei dati per la tabella `film_stream`
 --
 
-INSERT INTO `film_stream` (`ID_FIlm`, `Titolo`, `Data_Add`, `Genere`, `Free_Premium`, `durata`) VALUES
+INSERT INTO `film_stream` (`ID_Film`, `Titolo`, `Data_Add`, `Genere`, `Free_Premium`, `durata`) VALUES
 (1, 'bohemian rhapsody', '2019-10-15', 'Biografico', 1, 133);
 
 -- --------------------------------------------------------
@@ -93,7 +93,7 @@ INSERT INTO `film_stream` (`ID_FIlm`, `Titolo`, `Data_Add`, `Genere`, `Free_Prem
 
 CREATE TABLE `lista` (
   `ID_User` int(11) NOT NULL,
-  `ID_FIlm` int(11) NOT NULL
+  `ID_Film` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -184,14 +184,14 @@ ALTER TABLE `film_prenotabili`
 -- Indici per le tabelle `film_stream`
 --
 ALTER TABLE `film_stream`
-  ADD PRIMARY KEY (`ID_FIlm`);
+  ADD PRIMARY KEY (`ID_Film`);
 
 --
 -- Indici per le tabelle `lista`
 --
 ALTER TABLE `lista`
-  ADD PRIMARY KEY (`ID_User`,`ID_FIlm`),
-  ADD KEY `Lista con` (`ID_FIlm`);
+  ADD PRIMARY KEY (`ID_User`,`ID_Film`),
+  ADD KEY `Lista con` (`ID_Film`);
 
 --
 -- Indici per le tabelle `tentativi_login`
@@ -231,7 +231,7 @@ ALTER TABLE `film_prenotabili`
 -- AUTO_INCREMENT per la tabella `film_stream`
 --
 ALTER TABLE `film_stream`
-  MODIFY `ID_FIlm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT per la tabella `timetable`
 --
@@ -257,7 +257,7 @@ ALTER TABLE `biglietto`
 -- Limiti per la tabella `lista`
 --
 ALTER TABLE `lista`
-  ADD CONSTRAINT `Lista con` FOREIGN KEY (`ID_FIlm`) REFERENCES `film_stream` (`ID_FIlm`),
+  ADD CONSTRAINT `Lista con` FOREIGN KEY (`ID_Film`) REFERENCES `film_stream` (`ID_Film`),
   ADD CONSTRAINT `Lista di` FOREIGN KEY (`ID_User`) REFERENCES `utente` (`ID_User`);
 
 --
