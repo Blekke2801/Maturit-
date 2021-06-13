@@ -331,12 +331,12 @@ function addLista($Titolo)
             $stmt->execute() or die("Error description: " . $stmt->error);
             $stmt->close();
             $mysqli->close();
-            header("Location: Home.php?NomeFilm=" . $dati[1]);
+            header("Location: Home.php?NomeFilm=" . $Titolo);
         }
         $search->close();
         $mysqli->close();
-    }
-    header("Location: Home.php");
+    }else
+        header("Location: Home.php");
 }
 //rimuove alla lista il film indicato
 function removeLista($Titolo)
@@ -358,12 +358,12 @@ function removeLista($Titolo)
             $stmt->execute() or die("Error description: " . $stmt->error);
             $stmt->close();
             $mysqli->close();
-            header("Location: Home.php?NomeFilm=" . $dati[1]);
+            header("Location: Home.php?NomeFilm=" . $Titolo);
         }
         $search->close();
         $mysqli->close();
-    }
-    header("Location: Home.php");
+    }else
+        header("Location: Home.php");
 }
 //ottiene tutti gli orari di un film, se preciso è settato l'orario con id = preciso
 function prendi_orari($id, $preciso = null)
