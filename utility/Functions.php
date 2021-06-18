@@ -118,9 +118,10 @@ function login($email, $password, $cookie)
                     $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_id'] = $user_id;
                     if (!empty($_POST["remember"])) {
-                        setcookie("user", serialize(array($username, $password)), time() + (86400 * 7)); //metto un cookie con valore un simil array che contiene username e password criptata
+                        $expires = time() + 7 * 24 * 60 * 60;
+                        setcookie("user", serialize(array($username, $password)),$expires); //metto un cookie con valore un simil array che contiene username e password criptata
                     } else {
-                        setcookie("user", "");
+                        unset($_COOKIE["user"]);
                     }
                     $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
@@ -421,7 +422,7 @@ function biglietti($id = null)
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     if ($id == NULL) {
-        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION['user_id'] . ";") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT biglietto.*, timetable.Data, timetable.ora,timetable.sala, film_prenotabili.Titolo,film_prenotabili.genere FROM biglietto,timetable,film_prenotabili where biglietto.ID_TimeTable = timetable.ID_TimeTable AND timetable.ID_Film = film_prenotabili.ID_Film AND ID_User = " . $_SESSION['user_id'] . ";") or die($mysqli->error);
         $Biglietti = array();
         $i = 0;
         foreach ($resultStream as $row) {
@@ -431,7 +432,7 @@ function biglietti($id = null)
         $mysqli->close();
         return $Biglietti;
     } else {
-        $resultStream = $mysqli->query("SELECT * FROM biglietto where ID_User = " . $_SESSION['user_id'] . " AND ID_Ticket = $id;") or die($mysqli->error);
+        $resultStream = $mysqli->query("SELECT biglietto.*, timetable.Data, timetable.ora,timetable.sala, film_prenotabili.Titolo,film_prenotabili.genere FROM biglietto,timetable,film_prenotabili where biglietto.ID_TimeTable = timetable.ID_TimeTable AND timetable.ID_Film = film_prenotabili.ID_Film AND ID_User = " . $_SESSION['user_id'] . " AND ID_Ticket = $id;") or die($mysqli->error);
         $Biglietto = $resultStream->fetch_row();
         $mysqli->close();
         return $Biglietto;

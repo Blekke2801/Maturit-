@@ -41,17 +41,26 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arr
             echo "<h1>Il tuo biglietto:</h1>";
             if ($biglietto != false) {
                 $t = biglietti($biglietto);
-                $TimeTable = prendi_orari(null, $t[3]);
-                $film = take_film_prenota($TimeTable[5]);
-                $titolo = $film[1];
-                $genere = $film[2];
-                $data = $TimeTable[1];
-                $ora = $TimeTable[2];
+                $titolo = $t[7];
+                $genere = $t[8];
+                $data = $t[4];
+                $ora = $t[5];
                 $posto = $t[2];
-                $sala = $TimeTable[3];
-                echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Sala:' . $sala . '</h4><h4>Posto:' . $posto . '</h4><h4>Codice QR:</h4>';
+                $sala = $t[6];
                 $url = urlencode("ticketBooked.php?id=" . $biglietto);
-                echo '<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr"/></div>';
+                echo '<div class="biglietto">
+                        <div>
+                            <h4>' . $data . '</h4>
+                            <h4>' . $ora . '</h4>
+                        </div>
+                        <div>
+                            <h3>' . $titolo . '</h3>
+                            <h4>Genere: ' . $genere . '</h4>
+                            <h4>Sala:' . $sala . '</h4>
+                            <h4>Posto:' . $posto . '</h4>
+                        </div>
+                        <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr" />
+                    </div>';
             } else {
                 echo "<div class='biglietto'><h4>Biglietto già prenotato o non disponibile</h4></div>";
             }
@@ -63,17 +72,25 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arr
             header("Location:Home.php?site=fisico");
         }
         $t = biglietti($biglietto);
-        $TimeTable = prendi_orari(null, $t[3]);
-        $film = take_film_prenota($TimeTable[5]);
-        $titolo = $film[1];
-        $genere = $film[2];
-        $data = $TimeTable[1];
-        $ora = $TimeTable[2];
+        $titolo = $t[7];
+        $genere = $t[8];
+        $data = $t[4];
+        $ora = $t[5];
         $posto = $t[2];
-        $sala = $TimeTable[3];
-        echo '<div class="biglietto"><h3>' . $titolo . '</h3><h4>Genere: ' . $genere . '</h4><h4>Data: ' . $data . '</h4><h4>Ora: ' . $ora . '</h4><h4>Sala: ' . $sala . '</h4><h4>Posto: ' . $posto . '</h4><h4>Codice QR:</h4>';
+        $sala = $t[6];
         $url = urlencode("ticketBooked.php?id=" . $biglietto);
-        echo '<img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr"/></div>';
+        echo '<div class="biglietto">
+        <div>
+            <span>' . $data . '</span>
+            <span>' . $ora . '</span>
+        </div>
+        <div>
+            <h3>' . $titolo . '</h3>
+            <span><b>Genere: </b>' . $genere . '</span>
+            <span><b>Sala: </b>' . $sala . '</span>
+            <span><b>Posto: </b>' . $posto . '</span>
+        </div><img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr" />
+    </div>';
     }
 
     ?>
