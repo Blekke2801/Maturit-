@@ -16,7 +16,7 @@ if (isset($_GET["NomeFilm"])) {
     Header("Location:./Home.php");
 }
 ?>
-<div>
+<div class="filmpage">
     <?php
 
     $disabled = false;
@@ -49,8 +49,8 @@ if (isset($_GET["NomeFilm"])) {
     }
     fclose($myfile);
     $trama = $trama . "...";
-    $genere = $Dati[2];
-    $durata = $Dati[3];
+    $genere = $Dati[3];
+    $durata = $Dati[5];
     echo "<hr><div><h4>Genere:</h4><p>$genere</p><br><h4>Durata: </h4><p>$durata</p></div>";
     echo "<hr><div><h1>Trama</h1><br><p>" . $trama . "</p></div>";
     ?>

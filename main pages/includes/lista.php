@@ -10,8 +10,8 @@ echo "<div>";
 echo "<h3> Ecco i Film presenti nella tua lista</h3><hr>";
 if (sizeof($films) > 0) {
     foreach ($films as $single) {
-        $percorsoFilm = "../films/stream/" . $single;
-        $Titolo = $single;
+        $percorsoFilm = "../films/stream/" . $single[3];
+        $Titolo = $single[3];
         $cartella = $Titolo;
         $Titolo[0] = strtoupper($Titolo[0]);
         $img = $percorsoFilm . "/horizontal.jpg";

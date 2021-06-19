@@ -17,7 +17,7 @@ if (isset($_GET["ID_Film"])) {
     Header("Location:Home.php");
 }
 ?>
-<div>
+<div class="filpage">
     <?php
     //dati del film
     $disabled = false;
@@ -41,8 +41,8 @@ if (isset($_GET["ID_Film"])) {
             ?>
         </select>
         <br>
-        <input type="number" name="numero" min="1" max="<?php if($ora["liberi"] == 0){ echo "disabled";} else {$numero = $ora["liberi"]; echo $numero;}?>" step="1" value="1" placeholder="n°" required>
-        <button type="submit" <?php if($ora["liberi"] == 0) echo "disabled"; ?>>Prenota ora!</button>
+        <input type="number" name="numero" min="1" max="40" step="1" value="1" placeholder="n°" required>
+        <button type="submit">Prenota ora!</button>
     </form>
 </div>
     <?php

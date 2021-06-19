@@ -119,7 +119,7 @@ function login($email, $password, $cookie)
                     $_SESSION['user_id'] = $user_id;
                     if (!empty($_POST["remember"])) {
                         $expires = time() + 7 * 24 * 60 * 60;
-                        setcookie("user", serialize(array($username, $password)),$expires); //metto un cookie con valore un simil array che contiene username e password criptata
+                        setcookie("user", serialize(array($username, $password)), $expires); //metto un cookie con valore un simil array che contiene username e password criptata
                     } else {
                         unset($_COOKIE["user"]);
                     }
@@ -161,6 +161,9 @@ function logout()
     // Recupera i parametri di sessione.
     $params = session_get_cookie_params();
     // Cancella i cookie attuali.
+    if (isset($_COOKIE['user'])) {
+        unset($_COOKIE['user']);
+    }
     setcookie(
         session_name(),
         '',
@@ -172,7 +175,7 @@ function logout()
     );
     // Cancella la sessione.
     session_destroy();
-    header('Location: Login.php');
+    header('Refresh:0; url=Login.php');
 }
 //funzione che controlla se l'utente ha eseguito il login
 function login_check()
@@ -234,7 +237,7 @@ function take_film_stream($nome = NULL)
         return $films;
     } else {
         $nome = strtolower($nome);
-        $resultStream = $mysqli->query("SELECT * FROM film_stream where Titolo = '$nome' LIMIT 1") or die($mysqli->error);
+        $resultStream = $mysqli->query('SELECT * FROM film_stream where Titolo = "'.$nome.'" LIMIT 1') or die($mysqli->error);
         $Dati = $resultStream->fetch_row() or die($resultStream->error);
         if (sizeof($Dati) > 0) {
             $mysqli->close();
@@ -294,15 +297,15 @@ function research($ricerca)
     $mysqli->close();
     return $films;
 }
-//restituisce la l'id dei film nella lista dell'utente
+//restituisce i dati dei film nella lista dell'utente
 function lista()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
-    $records = $mysqli->query("SELECT * FROM lista where ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
+    $records = $mysqli->query("SELECT lista.*,film_stream.* FROM lista,film_stream where lista.ID_Film = film_stream.ID_Film AND ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
     $films = array();
     $i = 0;
     while ($row = $records->fetch_row()) {
-        $films[$i] = $row[1];
+        $films[$i] = $row;
         $i++;
     }
 
@@ -336,7 +339,7 @@ function addLista($Titolo)
         }
         $search->close();
         $mysqli->close();
-    }else
+    } else
         header("Location: Home.php");
 }
 //rimuove alla lista il film indicato
@@ -363,7 +366,7 @@ function removeLista($Titolo)
         }
         $search->close();
         $mysqli->close();
-    }else
+    } else
         header("Location: Home.php");
 }
 //ottiene tutti gli orari di un film, se preciso è settato l'orario con id = preciso
@@ -482,18 +485,18 @@ function prenota($id, $posto)
 function new_film()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $titolo = $_POST["titolo"];
-    $genere = $_POST["genere"];
+    $titolo = strtolower($_POST["titolo"]);
+    $genere = strtolower($_POST["genere"]);
     $durata = $_POST["durata"];
     $tariffa = $_POST["tariffa"];
     $locandinaV = $_FILES["locandinaV"];
     $locandinaH = $_FILES["locandinaH"];
     $film = $_FILES["film"];
     $trama = $_FILES["trama"];
-    $result = $mysqli->query("SELECT COUNT(ID_Film) from film_stream where Titolo = '$titolo';");
+    $result = $mysqli->query('SELECT COUNT(ID_Film) from film_stream where Titolo = "'.$titolo.'"') or die($mysqli->error);
     $controllo = $result->fetch_row();
     if ($controllo[0] == "0") {
-        $result = $mysqli->prepare("INSERT INTO film_stream (Titolo,Data_Add,Genere,Free_Premium,durata) VALUES ('$titolo',?,'$genere',?,$durata);");
+        $result = $mysqli->prepare('INSERT INTO film_stream (Titolo,Data_Add,Genere,Free_Premium,durata) VALUES ("'.$titolo.'",?,"'.$genere.'",?,'.$durata.');');
         $cartella = "../films/stream/$titolo";
         mkdir($cartella, 0700);
         $result->bind_param("si", $data, $tariffa);

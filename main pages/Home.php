@@ -8,13 +8,12 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
     $user = htmlentities($_POST["user"]);
     $pwd = htmlentities($_POST["pwd"]);
     login($user, $pwd, false);
+} else if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
+    logout(); //cliccando su logout viene ricaricata la pagina con $_GET["logout" = true, così da poter effettuare il logout
 } else if (isset($_COOKIE["user"])) {
     $data = unserialize($_COOKIE["user"]); //il cookie ha un value creato dalla funzione serialize che restituisce un simil array formato da 2 campi inseriti, in questo caso sono stati inseriti user e pwd criptata
     Login($data[0], $data[1], true);
-} else if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
-    Logout(); //cliccando su logout viene ricaricata la pagina con $_GET["logout" = true, così da poter effettuare il logout
 }
-
 ?>
 
 <head>
@@ -84,7 +83,7 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
     <?php
     //a seconda del campo $_GET["site"] il sito si divide in 2, la parte di prenotazione e la parte di streaming
     if (!isset($_GET["site"]) || $_GET["site"] != "fisico") {
-        if (isset($_GET["page"])) // se non è specificata la parte del sito verrà mostrata di default la zon streming con pagina specifica e non, il tutto viene mostrato con include
+        if (isset($_GET["page"])) // se non è specificata la parte del sito verrà mostrata di default la zona streaming con pagina specifica e non, il tutto viene mostrato con include
             $page = $_GET["page"];
         else
             $page = "null";

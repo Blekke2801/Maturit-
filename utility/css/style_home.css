@@ -233,8 +233,17 @@
     }
     /*pagina locandina film*/
     
+    .filmpage {
+        margin-left: 10px;
+    }
+    
     .filmRow1 {
         display: flex;
+    }
+    
+    .filmRow1 img {
+        width: 20%;
+        height: auto;
     }
     
     .filmRow1 form {
