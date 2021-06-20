@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Mag 31, 2021 alle 21:44
+-- Creato il: Giu 20, 2021 alle 19:36
 -- Versione del server: 5.7.17
--- Versione PHP: 5.6.30
+-- Versione PHP: 7.1.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,11 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cinema_mat`
 --
--- crea utente sec_user
-CREATE USER 'sec_user'@'localhost' IDENTIFIED WITH mysql_native_password AS '***'
-GRANT USAGE ON *.* TO 'sec_user'@'localhost';
-
-GRANT SELECT, INSERT, UPDATE ON `cinema_mat`.* TO 'sec_user'@'localhost';
 CREATE DATABASE IF NOT EXISTS `cinema_mat` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
 USE `cinema_mat`;
 
@@ -83,7 +78,11 @@ CREATE TABLE `film_stream` (
 --
 
 INSERT INTO `film_stream` (`ID_Film`, `Titolo`, `Data_Add`, `Genere`, `Free_Premium`, `durata`) VALUES
-(1, 'bohemian rhapsody', '2019-10-15', 'Biografico', 1, 133);
+(1, 'bohemian rhapsody', '2019-10-15', 'Biografico', 1, 133),
+(2, 'avengers endgame', '2021-06-20', 'azione', 0, 182),
+(3, 'jojo rabbit', '2021-06-20', 'storico', 1, 108),
+(4, 'your name', '2021-06-20', 'anime', 0, 107),
+(5, 'ritorno al futuro', '2021-06-20', 'fantascienza', 0, 116);
 
 -- --------------------------------------------------------
 
@@ -95,6 +94,13 @@ CREATE TABLE `lista` (
   `ID_User` int(11) NOT NULL,
   `ID_Film` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `lista`
+--
+
+INSERT INTO `lista` (`ID_User`, `ID_Film`) VALUES
+(3, 3);
 
 -- --------------------------------------------------------
 
@@ -160,7 +166,8 @@ CREATE TABLE `utente` (
 
 INSERT INTO `utente` (`ID_User`, `Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES
 (1, 'comi.emanuele@issvigano.org', 'c6a427a9f1fc3250cfcffee2ba0cc936', 'Emanuele', 'Comi', '2001-12-28', 1, 0),
-(2, 'admin.cinema@ComVid.com', '2ac9cb7dc02b3c0083eb70898e549b63', 'admin', 'admin', '2001-11-02', 0, NULL);
+(2, 'admin.cinema@ComVid.com', '2ac9cb7dc02b3c0083eb70898e549b63', 'admin', 'admin', '2001-11-02', 0, NULL),
+(3, 'ghisleni.davi@gmail.com', '35a0f08b3f003041ad467775734e9a5d', 'davide', 'ghisleni', '2001-10-08', 1, 1);
 
 --
 -- Indici per le tabelle scaricate
@@ -231,7 +238,7 @@ ALTER TABLE `film_prenotabili`
 -- AUTO_INCREMENT per la tabella `film_stream`
 --
 ALTER TABLE `film_stream`
-  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT per la tabella `timetable`
 --
@@ -241,7 +248,7 @@ ALTER TABLE `timetable`
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Limiti per le tabelle scaricate
 --

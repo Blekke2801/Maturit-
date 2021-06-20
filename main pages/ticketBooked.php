@@ -50,14 +50,16 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arr
                 $url = urlencode("ticketBooked.php?id=" . $biglietto);
                 echo '<div class="biglietto">
                         <div>
-                            <h4>' . $data . '</h4>
-                            <h4>' . $ora . '</h4>
-                        </div>
-                        <div>
-                            <h3>' . $titolo . '</h3>
-                            <h4>Genere: ' . $genere . '</h4>
-                            <h4>Sala:' . $sala . '</h4>
-                            <h4>Posto:' . $posto . '</h4>
+                            <div>
+                                <span>' . $data . '</span>
+                                <span>' . $ora . '</span>
+                            </div>
+                            <div>
+                                <h3>' . $titolo . '</h3>
+                                <span><b>Genere: </b>' . $genere . '</span>
+                                <span><b>Sala: </b>' . $sala . '</span>
+                                <span><b>Posto: </b>' . $posto . '</span>
+                            </div>
                         </div>
                         <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr" />
                     </div>';
@@ -80,17 +82,20 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arr
         $sala = $t[6];
         $url = urlencode("ticketBooked.php?id=" . $biglietto);
         echo '<div class="biglietto">
-        <div>
-            <span>' . $data . '</span>
-            <span>' . $ora . '</span>
-        </div>
-        <div>
-            <h3>' . $titolo . '</h3>
-            <span><b>Genere: </b>' . $genere . '</span>
-            <span><b>Sala: </b>' . $sala . '</span>
-            <span><b>Posto: </b>' . $posto . '</span>
-        </div><img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr" />
-    </div>';
+                <div>
+                    <div>
+                        <span>' . $data . '</span>
+                        <span>' . $ora . '</span>
+                    </div>
+                    <div>
+                        <h3>' . $titolo . '</h3>
+                        <span><b>Genere: </b>' . $genere . '</span>
+                        <span><b>Sala: </b>' . $sala . '</span>
+                        <span><b>Posto: </b>' . $posto . '</span>
+                    </div>
+                </div>
+                <img src="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=' . $url . '&choe=UTF-8" alt="qr" />
+            </div>';
     }
 
     ?>

@@ -17,7 +17,7 @@ if (isset($_GET["ID_Film"])) {
     Header("Location:Home.php");
 }
 ?>
-<div class="filpage">
+<div class="filmpage">
     <?php
     //dati del film
     $disabled = false;

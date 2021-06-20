@@ -36,7 +36,14 @@ if (isset($_GET["NomeFilm"])) {
     echo "<div class='filmRow1'><img src='$percorsoFilm/locandina.jpg' >";
     echo "<button onclick='location.href=\"guardafilm.php?film=".$Dati[1]."\"' class='btn'>Guarda Subito!</button>";
     $lista = lista();
-    if(array_search($Dati[0],$lista,true) !== false){
+    $trovato = false;
+    foreach($lista as $film){
+        if($Dati[0] == $film[1]){
+            $trovato = true;
+            break;
+        }
+    }
+    if($trovato){
         $gest = "Rimuovi dalla lista!";
     }else {
         $gest = "Aggiungi alla lista!";

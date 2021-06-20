@@ -119,9 +119,9 @@ function login($email, $password, $cookie)
                     $_SESSION['user_id'] = $user_id;
                     if (!empty($_POST["remember"])) {
                         $expires = time() + 7 * 24 * 60 * 60;
-                        setcookie("user", serialize(array($username, $password)), $expires); //metto un cookie con valore un simil array che contiene username e password criptata
+                        setcookie("user", serialize(array($username, $password)), $expires, "/"); //metto un cookie con valore un simil array che contiene username e password criptata
                     } else {
-                        unset($_COOKIE["user"]);
+                        setcookie("user","",time()-(3600*24*7),"/");
                     }
                     $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
@@ -162,7 +162,7 @@ function logout()
     $params = session_get_cookie_params();
     // Cancella i cookie attuali.
     if (isset($_COOKIE['user'])) {
-        unset($_COOKIE['user']);
+        setcookie("user","",time()-(3600*24*7),"/");
     }
     setcookie(
         session_name(),
