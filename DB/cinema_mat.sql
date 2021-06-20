@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 20, 2021 alle 19:36
+-- Creato il: Giu 20, 2021 alle 21:45
 -- Versione del server: 5.7.17
 -- Versione PHP: 7.1.3
 
@@ -36,6 +36,13 @@ CREATE TABLE `biglietto` (
   `posto` varchar(6) NOT NULL,
   `ID_TimeTable` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dump dei dati per la tabella `biglietto`
+--
+
+INSERT INTO `biglietto` (`ID_Ticket`, `ID_User`, `posto`, `ID_TimeTable`) VALUES
+(1, 1, 'A-3', 2);
 
 -- --------------------------------------------------------
 
@@ -100,6 +107,7 @@ CREATE TABLE `lista` (
 --
 
 INSERT INTO `lista` (`ID_User`, `ID_Film`) VALUES
+(1, 1),
 (3, 3);
 
 -- --------------------------------------------------------
@@ -119,7 +127,11 @@ CREATE TABLE `tentativi_login` (
 --
 
 INSERT INTO `tentativi_login` (`User_ID`, `time`, `ip`) VALUES
-(1, '1622472016', '127.0.0.1');
+(1, '1622472016', '127.0.0.1'),
+(2, '1624216135', '127.0.0.1'),
+(2, '1624216186', '127.0.0.1'),
+(2, '1624216217', '127.0.0.1'),
+(2, '1624216239', '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -141,7 +153,8 @@ CREATE TABLE `timetable` (
 --
 
 INSERT INTO `timetable` (`ID_TimeTable`, `Data`, `ora`, `sala`, `liberi`, `ID_Film`) VALUES
-(1, '2021-05-31', '17:15', 2, 50, 1);
+(1, '2021-05-31', '17:15', 2, 50, 1),
+(2, '2021-06-30', '20:00', 4, 49, 1);
 
 -- --------------------------------------------------------
 
@@ -167,7 +180,8 @@ CREATE TABLE `utente` (
 INSERT INTO `utente` (`ID_User`, `Mail`, `Password`, `Nome`, `Cognome`, `Data_Birth`, `Cln_Imp`, `Free_Premium`) VALUES
 (1, 'comi.emanuele@issvigano.org', 'c6a427a9f1fc3250cfcffee2ba0cc936', 'Emanuele', 'Comi', '2001-12-28', 1, 0),
 (2, 'admin.cinema@ComVid.com', '2ac9cb7dc02b3c0083eb70898e549b63', 'admin', 'admin', '2001-11-02', 0, NULL),
-(3, 'ghisleni.davi@gmail.com', '35a0f08b3f003041ad467775734e9a5d', 'davide', 'ghisleni', '2001-10-08', 1, 1);
+(3, 'ghisleni.davi@gmail.com', '35a0f08b3f003041ad467775734e9a5d', 'davide', 'ghisleni', '2001-10-08', 1, 1),
+(4, 'alberto.comi70@gmail.com', 'aa0520c573def75ab957811f4ef55fa6', 'carlos', 'comi', '1970-07-14', 1, 0);
 
 --
 -- Indici per le tabelle scaricate
@@ -228,7 +242,7 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `biglietto`
 --
 ALTER TABLE `biglietto`
-  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT per la tabella `film_prenotabili`
 --
@@ -243,12 +257,12 @@ ALTER TABLE `film_stream`
 -- AUTO_INCREMENT per la tabella `timetable`
 --
 ALTER TABLE `timetable`
-  MODIFY `ID_TimeTable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_TimeTable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT per la tabella `utente`
 --
 ALTER TABLE `utente`
-  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- Limiti per le tabelle scaricate
 --
