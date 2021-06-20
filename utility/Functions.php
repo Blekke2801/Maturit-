@@ -229,8 +229,8 @@ function take_film_stream($nome = NULL)
         $result = $mysqli->query("SELECT * FROM film_stream") or die($mysqli->error);
         $films = array();
         $i = 0;
-        foreach ($result as $row) {
-            $films[$i] = $row["Titolo"];
+        while ($row = $result->fetch_row()) {
+            $films[$i] = $row;
             $i++;
         }
         $mysqli->close();
@@ -290,8 +290,8 @@ function research($ricerca)
 
     $films = array();
     $i = 0;
-    foreach ($result as $row) {
-        $films[$i] = $row["Titolo"];
+    while ($row = $result->fetch_row()) {
+        $films[$i] = $row;
         $i++;
     }
     $mysqli->close();
@@ -301,16 +301,13 @@ function research($ricerca)
 function lista()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
-    $records = $mysqli->query("SELECT lista.*,film_stream.* FROM lista,film_stream where lista.ID_Film = film_stream.ID_Film AND ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
+    $records = $mysqli->query("SELECT film_stream.*,lista.* FROM lista,film_stream where lista.ID_Film = film_stream.ID_Film AND lista.ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
     $films = array();
     $i = 0;
     while ($row = $records->fetch_row()) {
         $films[$i] = $row;
         $i++;
     }
-
-
-
     $mysqli->close();
     return $films;
 }
@@ -339,6 +336,7 @@ function addLista($Titolo)
         }
         $search->close();
         $mysqli->close();
+        header("Location: Home.php?NomeFilm=" . $Titolo);
     } else
         header("Location: Home.php");
 }
@@ -366,6 +364,7 @@ function removeLista($Titolo)
         }
         $search->close();
         $mysqli->close();
+        header("Location: Home.php?NomeFilm=" . $Titolo);
     } else
         header("Location: Home.php");
 }

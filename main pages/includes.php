@@ -1,88 +1,10 @@
-<!DOCTYPE html>
-<html>
 <?php
-//pagina home
-require("../utility/Functions.php"); // file con tutte le funzioni
-sec_session_start(); //avvia la sessione sicura
-if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quindi lo effettuo
-    $user = htmlentities($_POST["user"]);
-    $pwd = htmlentities($_POST["pwd"]);
-    login($user, $pwd, false);
-} else if (isset($_GET["logout"]) && $_GET["logout"] === "true") {
-    logout(); //cliccando su logout viene ricaricata la pagina con $_GET["logout" = true, così da poter effettuare il logout
-} else if (isset($_COOKIE["user"])) {
-    $data = unserialize($_COOKIE["user"]); //il cookie ha un value creato dalla funzione serialize che restituisce un simil array formato da 2 campi inseriti, in questo caso sono stati inseriti user e pwd criptata
-    Login($data[0], $data[1], true);
-}
-?>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ComVid</title>
-    <script src="../js/features.js"></script>
-    <link href="../utility/css/style_home.css" rel="stylesheet">
-    <link rel="icon" href="../img/favicon.ico" />
-</head>
-
-<body>
-    <!-- navbar -->
-    <nav>
-        <img src="../img/logo.jfif" alt="Brand">
-        <div class="searchbar">
-            <input id="search" type="text" placeholder="Cerca un film">
-            <label class="btn" for="search" id="btnsrc" onclick="ricerca()">Go</label>
-        </div>
-        <div class="account">
-            <?php if (!login_check()) { //se l'utente ha effettuato il login viene mostrato nome utente e pulsante per prenotare i biglietti, altrimenti 2 pulsanti per login o registrazione
-            ?>
-                <a class="btn" href="Login.php">Login</a>
-                <a class="btn" href="register.php">Register</a>
-            <?php } else {
-                if ($_SESSION["ruolo"]) {
-                    echo '<a class="btn" href="Home.php?site=fisico">Prenota i Biglietti</a>';
-                } ?>
-
-
-                <nav role="navigation">
-                    <ul>
-                        <li class="btn main-drop"><a><?php echo $_SESSION["username"]; ?></a>
-                            <ul class="dropdown">
-                                <?php
-                                if (!$_SESSION["ruolo"]) {
-                                    echo '<li><a href="AdminPage.php">Operazioni admin</a></li>';
-                                } else {
-                                    echo '<li><a href="Home.php?site=fisico&page=biglietti">I miei biglietti</a></li>';
-                                } ?>
-                                <li><a href="Home.php?logout=true">Logout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav> <?php
-                    } ?>
-        </div>
-    </nav>
-    <div class="subnav">
-        <a class="btn" href="Home.php">Home</a>
-        <a class="btn" href="?page=lista">Lista</a>
-        <nav role="navigation">
-            <ul>
-                <li class="btn main-drop"><a>Generi</a>
-                    <ul class="dropdown">
-                        <li><a href="#">Sub-1</a></li>
-                        <li><a href="#">Sub-2</a></li>
-                        <li><a href="#">Sub-3</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <a class="btn" href="?page=novita">Novità</a>
-    </div>
-
-    <?php
-    //a seconda del campo $_GET["site"] il sito si divide in 2, la parte di prenotazione e la parte di streaming
-    if (!login_check()) {
+$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+//pagina di benvenuto, viene controllato se l'utente è entrato direttamente in questa pagina o è passato tramite home, se passato tramite home vengono mostrati: un messaggio di benvenuto, richiesta di login o regitrazione con appositi pulsanti e 5 film di esempio per vedere cosa è disponibile vedere nel sito 
+if (strpos($url, 'Home.php') === false) {
+    require "../../utility/Functions.php";
+    header("Location:../Home.php");
+} else if (!login_check()) {
 ?>
     <div class="main">
         <h1 style="color:#fff">Benvenuto nel nostro sito!</h1>
@@ -293,18 +215,3 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
         echo "<hr><div><h1>Trama</h1><br><p>" . $trama . "</p></div>";
     }
 } ?>
-    <div class="contacts">
-        <h1>Contattaci:</h1>
-        <div>
-            <div>
-                <span>Email:email.cinema@cinema.com;</span>
-                <span>Numero telefonico: 1234567890;</span>
-            </div>
-            <div>
-                <span>Indirizzo: via cinema 3, (LE);</span>
-            </div>
-        </div>
-    </div><!-- zona in cui sono indicati i possibili contatti con il cinema (non compilato)-->
-</body>
-
-</html>
