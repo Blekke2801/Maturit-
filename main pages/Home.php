@@ -306,5 +306,4 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
         </div>
     </div><!-- zona in cui sono indicati i possibili contatti con il cinema (non compilato)-->
 </body>
-
 </html>
