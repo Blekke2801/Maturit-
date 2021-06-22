@@ -6,10 +6,8 @@ $prenotato = false;
 if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arriva dalla pagina di prenotazione viene eseguita la prenotazione, poi vengono visualizzati i biglietti
     if (is_array($_POST["posto"])) {
         $idB = array();
-        $i = 0;
         foreach ($_POST["posto"] as $posto) {
-            $idB[$i] = prenota($_POST["ID_table"], $posto);
-            $i++;
+            array_push($idB, prenota($_POST["ID_table"], $posto));
         }
     } else {
         $idB = prenota($_POST["ID_table"], $_POST["posto"]);
@@ -39,7 +37,7 @@ if (isset($_POST["prenota"]) && $_POST["prenota"] == "true") { //se l'utente arr
         echo "<h1>Pagamento eseguito con successo!</h1>";
         foreach ($idB as $biglietto) {
             echo "<h1>Il tuo biglietto:</h1>";
-            if ($biglietto != false) {
+            if ($biglietto !== false) {
                 $t = biglietti($biglietto);
                 $titolo = $t[7];
                 $genere = $t[8];

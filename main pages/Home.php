@@ -184,8 +184,14 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
         } else {
             echo "<h1 style='color:white'> film in questa settimana </h1>";
             $Table = this_week();
+            $films = array();
             foreach ($Table as $row) {
-                $single = take_film_prenota($row["ID_Film"])[1];
+                if (array_search($row["ID_Film"], $films, true) === false) {
+                    $single = take_film_prenota($row["ID_Film"])[1];
+                    array_push($films,$row["ID_Film"]);
+                } else {
+                    continue;
+                }
                 $percorsoFilm = "../films/prenota/" . $single;
                 $Titolo = $single;
                 $cartella = $Titolo;

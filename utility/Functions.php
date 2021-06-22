@@ -121,7 +121,7 @@ function login($email, $password, $cookie)
                         $expires = time() + 7 * 24 * 60 * 60;
                         setcookie("user", serialize(array($username, $password)), $expires, "/"); //metto un cookie con valore un simil array che contiene username e password criptata
                     } else {
-                        setcookie("user","",time()-(3600*24*7),"/");
+                        setcookie("user", "", time() - (3600 * 24 * 7), "/");
                     }
                     $username = preg_replace("/[^a-zA-Z0-9_\-]+/", "_", $username); // ci proteggiamo da un attacco XSS
                     $_SESSION['username'] = $username;
@@ -162,7 +162,7 @@ function logout()
     $params = session_get_cookie_params();
     // Cancella i cookie attuali.
     if (isset($_COOKIE['user'])) {
-        setcookie("user","",time()-(3600*24*7),"/");
+        setcookie("user", "", time() - (3600 * 24 * 7), "/");
     }
     setcookie(
         session_name(),
@@ -228,16 +228,14 @@ function take_film_stream($nome = NULL)
     if ($nome == NULL) {
         $result = $mysqli->query("SELECT * FROM film_stream") or die($mysqli->error);
         $films = array();
-        $i = 0;
         while ($row = $result->fetch_row()) {
-            $films[$i] = $row;
-            $i++;
+            array_push($films, $row);
         }
         $mysqli->close();
         return $films;
     } else {
         $nome = strtolower($nome);
-        $resultStream = $mysqli->query('SELECT * FROM film_stream where Titolo = "'.$nome.'" LIMIT 1') or die($mysqli->error);
+        $resultStream = $mysqli->query('SELECT * FROM film_stream where Titolo = "' . $nome . '" LIMIT 1') or die($mysqli->error);
         $Dati = $resultStream->fetch_row() or die($resultStream->error);
         if (sizeof($Dati) > 0) {
             $mysqli->close();
@@ -266,10 +264,8 @@ function take_film_prenota($id = NULL)
         }
     } else {
         $resultStream = $mysqli->query("SELECT * FROM film_prenotabili;") or die($mysqli->error);
-        $i = 0;
         foreach ($resultStream as $single) {
-            $Dati[$i] = $single;
-            $i++;
+            array_push($Dati, $single);
         }
         if (sizeof($Dati) > 0) {
 
@@ -289,10 +285,8 @@ function research($ricerca)
     $result = $mysqli->query("SELECT * FROM film_stream Where Titolo like '$ricerca%'");
 
     $films = array();
-    $i = 0;
     while ($row = $result->fetch_row()) {
-        $films[$i] = $row;
-        $i++;
+        array_push($films, $row);
     }
     $mysqli->close();
     return $films;
@@ -303,10 +297,8 @@ function lista()
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die($mysqli->error);
     $records = $mysqli->query("SELECT film_stream.*,lista.* FROM lista,film_stream where lista.ID_Film = film_stream.ID_Film AND lista.ID_User = " . $_SESSION['user_id']) or die($mysqli->error);
     $films = array();
-    $i = 0;
     while ($row = $records->fetch_row()) {
-        $films[$i] = $row;
-        $i++;
+        array_push($films, $row);
     }
     $mysqli->close();
     return $films;
@@ -375,12 +367,10 @@ function prendi_orari($id, $preciso = null)
     if ($preciso == NULL) {
         $Dati = array();
         $resultStream = $mysqli->query("SELECT * FROM timetable where ID_Film = $id") or die($mysqli->error);
-        $i = 0;
         $today = date("Y-m-d");
         foreach ($resultStream as $row) {
             if ($row["Data"] > $today) {
-                $Dati[$i] = $row;
-                $i++;
+                array_push($Dati, $row);
             }
         }
         if (sizeof($Dati) > 0) {
@@ -411,10 +401,8 @@ function Prenotato($ID_TIME)
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $Biglietti = array();
     $resultStream = $mysqli->query("SELECT posto FROM biglietto where ID_TimeTable = $ID_TIME;") or die($mysqli->error);
-    $i = 0;
     foreach ($resultStream as $row) {
-        $Biglietti[$i] = $row["posto"];
-        $i++;
+        array_push($Biglietti, $row["posto"]);
     }
     return $Biglietti;
 }
@@ -426,10 +414,8 @@ function biglietti($id = null)
     if ($id == NULL) {
         $resultStream = $mysqli->query("SELECT biglietto.*, timetable.Data, timetable.ora,timetable.sala, film_prenotabili.Titolo,film_prenotabili.genere FROM biglietto,timetable,film_prenotabili where biglietto.ID_TimeTable = timetable.ID_TimeTable AND timetable.ID_Film = film_prenotabili.ID_Film AND ID_User = " . $_SESSION['user_id'] . ";") or die($mysqli->error);
         $Biglietti = array();
-        $i = 0;
         foreach ($resultStream as $row) {
-            $Biglietti[$i] = $row;
-            $i++;
+            array_push($Biglietti, $row);
         }
         $mysqli->close();
         return $Biglietti;
@@ -447,10 +433,8 @@ function this_week()
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $result = $mysqli->query("SELECT * FROM TimeTable where week(data) = week(CURDATE()) OR week(data) = week(CURDATE()) + 1;");
     $films = array();
-    $i = 0;
     foreach ($result as $row) {
-        $films[$i] = $row;
-        $i++;
+        array_push($films, $row);
     }
     $mysqli->close();
     return $films;
@@ -492,10 +476,10 @@ function new_film()
     $locandinaH = $_FILES["locandinaH"];
     $film = $_FILES["film"];
     $trama = $_FILES["trama"];
-    $result = $mysqli->query('SELECT COUNT(ID_Film) from film_stream where Titolo = "'.$titolo.'"') or die($mysqli->error);
+    $result = $mysqli->query('SELECT COUNT(ID_Film) from film_stream where Titolo = "' . $titolo . '"') or die($mysqli->error);
     $controllo = $result->fetch_row();
     if ($controllo[0] == "0") {
-        $result = $mysqli->prepare('INSERT INTO film_stream (Titolo,Data_Add,Genere,Free_Premium,durata) VALUES ("'.$titolo.'",?,"'.$genere.'",?,'.$durata.');');
+        $result = $mysqli->prepare('INSERT INTO film_stream (Titolo,Data_Add,Genere,Free_Premium,durata) VALUES ("' . $titolo . '",?,"' . $genere . '",?,' . $durata . ');');
         $cartella = "../films/stream/$titolo";
         mkdir($cartella, 0700);
         $result->bind_param("si", $data, $tariffa);
