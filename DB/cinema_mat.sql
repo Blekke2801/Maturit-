@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 20, 2021 alle 21:45
+-- Creato il: Giu 22, 2021 alle 17:55
 -- Versione del server: 5.7.17
 -- Versione PHP: 7.1.3
 
@@ -42,7 +42,24 @@ CREATE TABLE `biglietto` (
 --
 
 INSERT INTO `biglietto` (`ID_Ticket`, `ID_User`, `posto`, `ID_TimeTable`) VALUES
-(1, 1, 'A-3', 2);
+(1, 1, 'A-3', 2),
+(2, 3, 'B-4', 2),
+(3, 3, 'B-5', 2),
+(4, 3, 'B-6', 2),
+(5, 3, 'B-7', 2),
+(6, 1, 'B-1', 3),
+(7, 1, 'B-2', 3),
+(8, 1, 'B-3', 3),
+(9, 1, 'B-4', 3),
+(10, 1, 'B-5', 3),
+(11, 1, 'B-6', 3),
+(12, 1, 'B-7', 3),
+(13, 1, 'B-8', 3),
+(14, 1, 'B-9', 3),
+(15, 1, 'B-10', 3),
+(16, 3, 'A-2', 3),
+(17, 3, 'A-3', 3),
+(18, 3, 'A-4', 3);
 
 -- --------------------------------------------------------
 
@@ -89,7 +106,9 @@ INSERT INTO `film_stream` (`ID_Film`, `Titolo`, `Data_Add`, `Genere`, `Free_Prem
 (2, 'avengers endgame', '2021-06-20', 'azione', 0, 182),
 (3, 'jojo rabbit', '2021-06-20', 'storico', 1, 108),
 (4, 'your name', '2021-06-20', 'anime', 0, 107),
-(5, 'ritorno al futuro', '2021-06-20', 'fantascienza', 0, 116);
+(5, 'ritorno al futuro', '2021-06-20', 'fantascienza', 0, 116),
+(6, 'ratatouille', '2021-06-22', 'animazione', 0, 107),
+(7, 'man in black international', '2021-06-22', 'fantascienza', 1, 115);
 
 -- --------------------------------------------------------
 
@@ -108,6 +127,7 @@ CREATE TABLE `lista` (
 
 INSERT INTO `lista` (`ID_User`, `ID_Film`) VALUES
 (1, 1),
+(3, 1),
 (3, 3);
 
 -- --------------------------------------------------------
@@ -154,7 +174,8 @@ CREATE TABLE `timetable` (
 
 INSERT INTO `timetable` (`ID_TimeTable`, `Data`, `ora`, `sala`, `liberi`, `ID_Film`) VALUES
 (1, '2021-05-31', '17:15', 2, 50, 1),
-(2, '2021-06-30', '20:00', 4, 49, 1);
+(2, '2021-06-30', '20:00', 4, 45, 1),
+(3, '2021-07-01', '17:17', 3, 37, 1);
 
 -- --------------------------------------------------------
 
@@ -242,7 +263,7 @@ ALTER TABLE `utente`
 -- AUTO_INCREMENT per la tabella `biglietto`
 --
 ALTER TABLE `biglietto`
-  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID_Ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT per la tabella `film_prenotabili`
 --
@@ -252,12 +273,12 @@ ALTER TABLE `film_prenotabili`
 -- AUTO_INCREMENT per la tabella `film_stream`
 --
 ALTER TABLE `film_stream`
-  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID_Film` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT per la tabella `timetable`
 --
 ALTER TABLE `timetable`
-  MODIFY `ID_TimeTable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID_TimeTable` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT per la tabella `utente`
 --

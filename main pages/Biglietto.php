@@ -25,11 +25,10 @@ sec_session_start();
             $film = take_film_prenota($_POST["ID_Film"]);
             $titolo = $film[1]; //dati del film e della tabella oraria
             $titolo[0] = strtoupper($titolo[0]);
-            $TimeTable = prendi_orari($film[0], $_POST["TimeTable"]);
             $Biglietti = Prenotato($_POST["TimeTable"]);
             $fila = array("A", "B", "C", "D", "E");
             echo "<div class='film_scelto'>";
-            echo "<p>Film scelto: " . $titolo . "</p>";
+            echo "<p>Film: <b>" . $titolo . "</b></p>";
             echo "<p>Genere: " . $film[2] . "</p>";
             echo "<p>Durata: " . $film[3] . "</p>";
             echo "</div>";
@@ -59,7 +58,7 @@ sec_session_start();
             }
             echo "</div>";
             $prezzoTot = floatval($film[4]) * floatval($_POST["numero"]);
-            echo "Totale: $prezzoTot";
+            echo "<p>Totale: $prezzoTot €</p>";
         ?>
             <select name="metodo">
                 <option value="presenza">Pagamento in presenza</option>

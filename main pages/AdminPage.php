@@ -35,7 +35,6 @@ if (!login_check() || $_SESSION["ruolo"] != 0) { //controllo se ha effettuato il
 
 </html>
 <script>
-    var form = document.getElementById("form");
     var labelFilm = document.getElementById("labelFilm");
     var labeltable = document.getElementById("labelTable");
 
@@ -57,23 +56,25 @@ if (!login_check() || $_SESSION["ruolo"] != 0) { //controllo se ha effettuato il
         }
     }
 
-    function conferma(form) {
+    function conferma() {
         var free = document.getElementById("rb1");
         var premium = document.getElementById("rb2");
         var inputs = document.getElementsByTagName('input');
         var button = document.getElementById("button");
         var completo = true;
         for (index = 0; index < inputs.length; ++index) {
-            if(inputs[index].value == "" || inputs[index].value == null || inputs[index].value == " " && input[index].type != "radio")
+            if (inputs[index].value == "" || inputs[index].value == null || inputs[index].value == " " && input[index].type != "radio")
                 completo = false;
         }
         if (free.checked == false && premium.checked == false) {
             completo = false;
         }
-        if(completo){
+        if (completo) {
             button.innerHTML = "Confermi?";
-            button.setAttribute("Type","submit");
-        }else{
+            setTimeout(function() {
+                button.setAttribute("Type", "submit");
+            }, 500);
+        } else {
             alert("inserire tutti i campi");
         }
     }
