@@ -317,16 +317,17 @@ function addLista($Titolo)
         $user = $_SESSION['user_id'];
         $film = $dati[0];
         $search->execute() or die("Error description: " . $search->error);
+        $s = true;
         if (!$search->fetch()) {
             $search->close();
+            $s = false;
             $stmt = $mysqli->prepare("INSERT INTO lista values (?,?);") or die($mysqli->error);
             $stmt->bind_param("ii", $user, $film);
             $stmt->execute() or die("Error description: " . $stmt->error);
             $stmt->close();
-            $mysqli->close();
-            header("Location: Home.php?NomeFilm=" . $Titolo);
         }
-        $search->close();
+        if ($s)
+            $search->close();
         $mysqli->close();
         header("Location: Home.php?NomeFilm=" . $Titolo);
     } else
@@ -345,16 +346,17 @@ function removeLista($Titolo)
         $user = $_SESSION['user_id'];
         $film = $dati[0];
         $search->execute() or die("Error description: " . $search->error);
+        $s = true;
         if ($search->fetch()) {
+            $s = false;
             $search->close();
             $stmt = $mysqli->prepare("DELETE from lista where ID_User = ? AND ID_Film = ?;") or die($mysqli->error);
             $stmt->bind_param("ii", $user, $film);
             $stmt->execute() or die("Error description: " . $stmt->error);
             $stmt->close();
-            $mysqli->close();
-            header("Location: Home.php?NomeFilm=" . $Titolo);
         }
-        $search->close();
+        if ($s)
+            $search->close();
         $mysqli->close();
         header("Location: Home.php?NomeFilm=" . $Titolo);
     } else
