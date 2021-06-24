@@ -39,7 +39,7 @@
                 <label for="mail" class="label">Email:</label>
             </div>
             <div class="input">
-                <input type="password" class="testo" id="pwd" name="pwd">
+                <input type="password" minlength="4" maxlength="12" class="testo" id="pwd" name="pwd">
                 <label for="pwd" class="label">Password:</label>
             </div>
             <div class="input">

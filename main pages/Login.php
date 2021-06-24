@@ -5,7 +5,7 @@ $register = false;
 $error = false;
 if (isset($_POST["nome"])) { // se true vuol dire che l'utente arriva dalla pagina di registrazione, quindi lo registra
 	$register = true;
-	if (!register($_POST["nome"], $_POST["cognome"], $_POST["mail"], $_POST["pwd"], $_POST["birth"], $_POST["tariffa"])) {
+	if (!register(htmlentities($_POST["nome"]),htmlentities($_POST["cognome"]), htmlentities($_POST["mail"]), htmlentities($_POST["pwd"]), htmlentities($_POST["birth"]), htmlentities($_POST["tariffa"]))) {
 		$error = true;
 	}
 }
