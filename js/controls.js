@@ -65,5 +65,5 @@ function ceck(form) {
 }
 
 function errorReg() {
-
+    alert("errore nella registrazione");
 }

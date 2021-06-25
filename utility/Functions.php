@@ -68,7 +68,7 @@ function register($nome, $cognome, $email, $pwd, $birth, $tariffa)
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
     $sql = "SELECT COUNT(*) FROM utente WHERE Mail = '$email'"; //controlla se l'utente esiste già
     $exists = $mysqli->query($sql);
-    if ($exists->fetch_row()[0] > 0) {
+    if (intval($exists->fetch_row()[0]) > 0) {
         $mysqli->close();
         return false;
     }

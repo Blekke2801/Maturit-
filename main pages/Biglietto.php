@@ -2,6 +2,9 @@
 require "../utility/Functions.php";
 sec_session_start();
 //pagina in cui seleziono il posto da prenotare
+if(!login_check()){
+    header("Location:Home.php");
+}
 ?>
 <!DOCTYPE html>
 <html>

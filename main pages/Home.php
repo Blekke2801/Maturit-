@@ -142,6 +142,9 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
                         <?php
                         $orari = prendi_orari($id);
                         foreach ($orari as $ora) {
+                            if($ora[4] == "0"){
+                                continue;
+                            }
                             echo '<option value="' . $ora["ID_TimeTable"] . '">Data:' . $ora["Data"] . " Alle ore:" . $ora["ora"] . '</option>';
                         }
                         ?>
@@ -182,7 +185,7 @@ if (isset($_POST["user"])) { //se è settato vuol dire che arriva da Login quind
                 echo "<h4>Nessun risultato trovato</h4>";
             }
         } else {
-            echo "<h1 style='color:white'> film in questa settimana </h1>";
+            echo "<h1> film in questa settimana </h1>";
             $Table = this_week();
             $films = array();
             foreach ($Table as $row) {
