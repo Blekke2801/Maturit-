@@ -220,6 +220,19 @@ function login_check()
         return false;
     }
 }
+function getPremium()
+{
+
+    $id = $_SESSION["user_id"];
+    if (isset($_SESSION["tariffa"]) && $_SESSION["tariffa"] == "false") {
+        $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
+        $mysqli->query("UPDATE utente SET Free_Premium = 1 WHERE ID_User = $id;");
+        $mysqli->close();
+        return true;
+    } else {
+        return false;
+    }
+}
 //se la variabile nome non è settata prende tutti i titoli film, altrimenti prende i dati del film indicato in $nome
 function take_film_stream($nome = NULL)
 {
@@ -433,7 +446,7 @@ function biglietti($id = null)
 function this_week()
 {
     $mysqli = new mysqli("localhost", User, pwd, "cinema_mat") or die('Could not connect to server.');
-    $result = $mysqli->query("SELECT * FROM TimeTable where week(data) = week(CURDATE()) OR week(data) = week(CURDATE()) + 1;");
+    $result = $mysqli->query("SELECT * FROM TimeTable where week(Data) = week(CURDATE()) OR week(Data) = week(CURDATE()) + 1;");
     $films = array();
     foreach ($result as $row) {
         array_push($films, $row);
